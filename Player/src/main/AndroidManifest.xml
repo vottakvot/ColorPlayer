@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ru.playme.color_player"
+    android:versionCode="1"
+    android:versionName="1.0"
+    android:installLocation="auto">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/application"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light"
+        android:name="ru.playme.color_player.PlayerApplication">
+
+        <activity
+            android:name="ru.playme.color_player.MainActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:label="@string/app_name"
+            android:launchMode = "singleInstance">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="ru.playme.color_player.PlayerPreferences"
+            android:windowSoftInputMode="adjustPan"
+            android:label="@string/app_name"
+            android:launchMode = "singleInstance">
+        </activity>
+
+        <service
+            android:enabled="true"
+            android:exported="true"
+            android:name="ru.playme.color_player.PlayService">
+            <intent-filter>
+                <action android:name="ru.color_player.action.EXIT"/>
+                <action android:name="ru.color_player.action.PLAY_PAUSE"/>
+                <action android:name="ru.color_player.action.NEXT"/>
+                <action android:name="ru.color_player.action.PREVIOUS"/>
+                <action android:name="ru.color_player.action.SEEK"/>
+                <action android:name="ru.color_player.action.TIMER_START"/>
+                <action android:name="ru.color_player.action.TIMER_STOP"/>
+            </intent-filter>
+        </service>
+
+        <receiver android:name="ru.playme.color_player.ActionReceiver">
+            <intent-filter
+                android:priority="999">
+                <action android:name="android.media.AUDIO_BECOMING_NOISY"/>
+                <action android:name="android.intent.action.HEADSET_PLUG"/>
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+                <action android:name="android.intent.action.SCREEN_OFF"/>
+                <action android:name="android.intent.action.SCREEN_ON"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="ru.playme.color_player.PlayerWidget"
+            android:icon="@android:drawable/star_big_on"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="ru.color_player.action.UPDATE_WIDGET"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_metadata">
+            </meta-data>
+        </receiver>
+
+    </application>
+
+</manifest>

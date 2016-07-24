@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 70 * n – 30 - where n - count cells-->
+<appwidget-provider
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialKeyguardLayout="@layout/widget_control"
+    android:initialLayout="@layout/widget_control"
+    android:minHeight="110dp"
+    android:minWidth="250dp"
+    android:widgetCategory="home_screen|keyguard"
+    android:resizeMode="horizontal"
+    android:updatePeriodMillis="0">
+</appwidget-provider>

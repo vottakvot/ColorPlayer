@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/drawable_dialog"
+    android:padding="10dp">
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/equalizerChooseMode"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:clickable="false"
+        android:focusable="false"/>
+
+    <ListView
+        android:id="@+id/equalizerSettings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:dividerHeight="1dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:clickable="false"
+        android:focusable="false"/>
+
+</LinearLayout>

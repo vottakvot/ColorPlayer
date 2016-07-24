@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:enabled="false">
+
+    <ImageView
+        style="@style/PlayerImageViewCommon"
+        android:id="@+id/action_bar_image"
+        android:src="@drawable/app_bar"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_alignParentLeft="true"/>
+
+    <Button
+        style="@style/PlayerButtonCommon"
+        android:id="@+id/action_bar_timer"
+        android:layout_alignParentRight="true"
+        android:textSize="12sp"
+        android:layout_marginRight="2dp"
+        android:minLines="2"
+        android:maxLines="2"
+        android:visibility="invisible"
+        android:background="@drawable/drawable_common_buttons"/>
+
+    <TextView
+        style="@style/PlayerTextCommon"
+        android:text="@string/app_name"
+        android:layout_toRightOf="@+id/action_bar_image"
+        android:layout_toLeftOf="@+id/action_bar_timer"
+        android:textStyle="italic"/>
+
+</RelativeLayout>

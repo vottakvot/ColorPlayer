@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Color audio player</string>
+    <string name="pagePlaylist">Плейлист</string>
+    <string name="pageExplorer">Добавить музыку</string>
+
+    <string name="drawer_open">Открыть</string>
+    <string name="drawer_close">Закрыть</string>
+
+    <string name="explorer_list_header">Список музыки</string>
+    <string name="explorer_root_message">Вы в корневом каталоге!</string>
+    <string name="explorer_add_to_playlist">Добавлено в плейлист:</string>
+    <string name="explorer_add_to_playlist_nothing">Нечего добавлять!</string>
+    <string name="explorer_sort_header">Сортировать по</string>
+    <string name="explorer_sort_by_folders">Папки</string>
+    <string name="explorer_sort_by_artists">Исполнители</string>
+    <string name="explorer_sort_by_albums">Альбомы</string>
+    <string name="explorer_sort_by_AZ">А-Я</string>
+    <string name="explorer_sort_by_size">Размер</string>
+    <string name="explorer_clear_check">Все отметки сняты!</string>
+    <string name="explorer_sort_by_name">Имена</string>
+    <string name="explorer_sort_by_duration">Длина треков</string>
+    <string name="explorer_update_music">Обновить список музыки</string>
+
+    <string name="playlist_create_header">Введите название плейлиста</string>
+    <string name="playlist_create_create">Создать</string>
+    <string name="playlist_create_cancel">Отмена</string>
+    <string name="playlist_create_done">Плейлист создан!</string>
+    <string name="playlist_create_wrong_name">Введите имя!</string>
+    <string name="playlist_create_hint">Введите название плейлиста...</string>
+    <string name="playlist_get_header">Выберите или удалите</string>
+    <string name="playlist_get_chose">Выбран плейлист:</string>
+    <string name="playlist_get_empty">Не найдены плейлисты</string>
+    <string name="playlist_get_no_choice">Не выбран плейлист для добавления! Используется временный плейлист...</string>
+    <string name="playlist_sort_by_name">Имена</string>
+    <string name="playlist_sort_by_duration">Длина треков</string>
+    <string name="playlist_delete_track">Удалить трек</string>
+    <string name="playlist_search_empty">Введите текст для поиска</string>
+    <string name="playlist_search_first_position">Первая позиция</string>
+    <string name="playlist_search_no_match">Нет совпадений</string>
+    <string name="playlist_search_hint">Введите значение для поиска...</string>
+    <string name="playlist_header">Выберите или создайте плейлист!</string>
+    <string name="playlist_rename_change">Изменить</string>
+    <string name="playlist_rename_header">Переименуйте плейлист</string>
+    <string name="playlist_rename_done">Плейлист переименован</string>
+    <string name="playlist_rename_wrong_name">Введите имя плейлиста!</string>
+    <string name="playlist_rename_hint">Введите новое название плейлиста...</string>
+
+    <string name="notification_header">Сервис сообщений</string>
+    <string name="notification_message">Воспроизведите музыку...</string>
+
+    <string name="equalizer_custom">Пользовательские настройки</string>
+
+    <string name="timer_message">Таймер запущен!</string>
+    <string name="timer_zero">Установите время!</string>
+    <string name="timer_header">Таймер</string>
+    <string name="timer_create">Запустить</string>
+    <string name="timer_reset">Сбросить</string>
+    <string name="timer_cancel">Закрыть</string>
+    <string name="timer_type_wake">Воспроизвести в заданное время</string>
+    <string name="timer_type_pause">Остановить через заданное время</string>
+    <string name="timer_type_play">Воспроизвести через заданное время</string>
+
+    <string name="preferences_main_preferences">Настройки</string>
+    <string name="preferences_button_receive_title">Получать комады всегда</string>
+    <string name="preferences_button_receive_summary">Получать команды от медиа-кнопок всё время, с момента загрузки ОС...</string>
+    <string name="preferences_track_position_title">Последняя позиция</string>
+    <string name="preferences_track_position_summary">Устанавливать последнюю позицию трека при запуске приложения...</string>
+    <string name="preferences_headset_plug_title">Подключение гарнитуры</string>
+    <string name="preferences_headset_plug_summary">Начинать проигрывание музыки при подключении гарнитуры...</string>
+    <string name="preferences_double_power_title">Нажатие на кнопку power</string>
+    <string name="preferences_double_power_summary">Использвать двойное нажатие на кнопку power для воспроизведения/паузы...</string>
+    <string name="preferences_common_info">Информация</string>
+    <string name="preferences_common_info_about_app_title">О приложении</string>
+    <string name="preferences_common_info_about_app_summary">Нажмите, чтобы посмотреть информацию о приложении...</string>
+    <string name="preferences_common_info_about_media_title">Медиа кнопки</string>
+    <string name="preferences_common_info_about_media_summary">Используйте медиа кнопки "Воспроизвести", "Следующий", "Предыдущий" и кнопку на гарнитуре (один раз - воспроизвести/пауза, два раза - следующий) для управления плеером...</string>
+    <string name="preferences_common_info_about_long_tap_title">Долгое нажатие</string>
+    <string name="preferences_common_info_about_long_tap_summary">
+        Долгое нажатие на кнопку поиска - перейти к первой позиции плейлиста.
+        Долгое нажатие на кнопку добавить - снимает все отметки и перемещает к первой позиции обозревателя.
+        Долгое нажатие на бегущую строку или кнопки воспроизвести/остановить, предыдущий, следующий переводит плейлист к текущему треку...
+    </string>
+
+    <string name="colors_header">Выберите цвет темы</string>
+
+    <string name="crush_title">Внутренняя ошибка приложения.</string>
+    <string name="crush_message">Если хотите - отправьте отчет разработчику :)</string>
+    <string name="crush_button_send">Отправить</string>
+    <string name="crush_button_cancel">Отмена</string>
+
+    <string-array name="config_drawer_items">
+      <item>Создать плейлист</item>
+      <item>Выбрать плейлист</item>
+      <item>Эквалайзер</item>
+      <item>Таймер</item>
+      <item>Настройки</item>
+      <item>Выбрать цвет темы</item>
+      <item>Выход</item>
+    </string-array>
+
+    <string name="preferences_visualizer_title">Визуализатор</string>
+    <string name="preferences_visualizer_summary">Выберите визуализатор для фона проигрываемой песни...</string>
+    <string name="permissions_write_warning">Для работы с плейлистами - необходимо разрешение работы с медиа...</string>
+    <string name="permissions_record_warning">Для работы визуализатора - необходимо разрешение записи аудио...</string>
+
+    <string-array name="visualizer_items">
+        <item>Нет</item>
+        <item>Линия</item>
+        <item>Пузыри</item>
+        <item>Прямоугольники</item>
+    </string-array>
+
+</resources>

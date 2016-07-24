@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/common_transparent"
+    android:layout_weight="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/currentTrackName"
+            android:gravity="left|center_vertical"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:focusableInTouchMode="true"
+            android:freezesText="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:maxHeight="30dp"
+            android:minHeight="30dp"
+            android:background="@color/common_transparent">
+
+            <requestFocus
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:duplicateParentState="true"/>
+        </TextView>
+    </LinearLayout>
+
+    <!-- If weight not 0, thumb shift down -->
+    <SeekBar
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/seekPlayPosition"
+        android:layout_weight="0"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:minHeight="20dp"
+        android:maxHeight="20dp"
+        android:background="@color/common_transparent"
+        android:thumb="@color/common_transparent"
+        android:progressDrawable="@drawable/drawable_control_seekbar_progress"
+        android:max="100"
+        android:progress="0"/>
+
+    <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/common_transparent"
+            android:layout_weight="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/currentPositionTrack"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:gravity="center|center_vertical"
+            android:maxHeight="30dp"
+            android:minHeight="30dp"
+            android:background="@color/common_transparent"
+            android:text="00:00"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/currentTrack"
+            android:layout_centerInParent="true"
+            android:gravity="center|center_vertical"
+            android:maxHeight="30dp"
+            android:minHeight="30dp"
+            android:background="@color/common_transparent"
+            android:text="0000/0000"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/totalTrackTime"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:gravity="center|center_vertical"
+            android:maxHeight="30dp"
+            android:minHeight="30dp"
+            android:background="@color/common_transparent"
+            android:text="00:00"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/common_transparent"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="5">
+
+        <ImageButton
+            style="@style/PlayerImageButtonCommon"
+            android:id="@+id/expand"
+            android:layout_weight="1"
+            android:background="@drawable/drawable_image_buttons_background"
+            android:src="@drawable/expand_inactive"/>
+
+        <ImageButton
+            style="@style/PlayerImageButtonCommon"
+            android:id="@+id/random"
+            android:layout_weight="1"
+            android:background="@drawable/drawable_image_buttons_background"
+            android:src="@drawable/shuffle_inactive"/>
+
+        <ImageButton
+            style="@style/PlayerImageButtonCommon"
+            android:id="@+id/previous"
+            android:layout_weight="1"
+            android:background="@drawable/drawable_image_buttons_background"
+            android:src="@drawable/previous"/>
+
+        <ImageButton
+            style="@style/PlayerImageButtonCommon"
+            android:id="@+id/play_pause"
+            android:layout_weight="1"
+            android:background="@drawable/drawable_image_buttons_background"
+            android:src="@drawable/play"/>
+
+        <ImageButton
+            style="@style/PlayerImageButtonCommon"
+            android:id="@+id/next"
+            android:layout_weight="1"
+            android:background="@drawable/drawable_image_buttons_background"
+            android:src="@drawable/next"/>
+
+        <ImageButton
+            style="@style/PlayerImageButtonCommon"
+            android:id="@+id/repeat"
+            android:layout_weight="1"
+            android:background="@drawable/drawable_image_buttons_background"
+            android:src="@drawable/repeat_inactive"/>
+    </LinearLayout>
+</LinearLayout>

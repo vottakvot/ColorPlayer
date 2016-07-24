@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/layoutExplorer_files"
+    android:background="@color/common_transparent"
+    android:layout_alignParentTop="true" >
+
+    <!-- 1 view files-->
+    <ImageView
+        style="@style/PlayerImageViewCommon"
+        android:id="@+id/imageFiles"
+        android:layout_alignParentLeft="true"/>
+
+    <!-- 2 view duration of the content media-file -->
+    <TextView
+        style="@style/PlayerTextCommon"
+        android:id="@+id/durationFiles"
+        android:layout_alignRight="@id/imageFiles"
+        android:textSize="14sp"/>
+
+    <!-- 4 view check for add in active playlist -->
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/noteFiles"
+        android:focusable="false"
+        android:clickable="true"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true" />
+
+    <!-- 3 view name of the content media-file -->
+    <TextView
+        style="@style/PlayerTextCommon"
+        android:id="@+id/nameFiles"
+        android:layout_toRightOf="@id/imageFiles"
+        android:layout_toLeftOf="@id/noteFiles"
+        android:layout_marginLeft="10dp"
+        android:textSize="15sp"
+        android:textStyle="normal"/>
+
+</RelativeLayout>

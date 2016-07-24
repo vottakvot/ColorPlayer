@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Green colors -->
+    <color name="greenPrimary">#28c904</color>
+    <color name="greenPrimaryDark">#1f4300</color>
+    <color name="greenAccent">#408918</color>
+    <color name="greenHints">#afffa1</color>
+    <color name="greenBackground">#75ff5e</color>
+    <color name="greenText">#148e00</color>
+
+    <!-- Blue colors -->
+    <color name="bluePrimary">#2897ff</color>
+    <color name="bluePrimaryDark">#0039b4</color>
+    <color name="blueAccent">#1c5cff</color>
+    <color name="blueHints">#8abbff</color>
+    <color name="blueBackground">#4f95ff</color>
+    <color name="blueText">#0040b7</color>
+
+    <!-- Red colors -->
+    <color name="redPrimary">#ff2cb5</color>
+    <color name="redPrimaryDark">#7c0074</color>
+    <color name="redAccent">#73126f</color>
+    <color name="redHints">#fa85fa</color>
+    <color name="redBackground">#ff00f2</color>
+    <color name="redText">#990087</color>
+
+    <!-- Common colors -->
+    <color name="common_transparent">@android:color/transparent</color>
+
+    <color name="common_drawable_background">#ffffff</color>
+    <color name="common_white_background">#ffffff</color>
+    <color name="common_border">#9c9a8c</color>
+
+    <color name="common_find_list_item">#8cfbff00</color>
+    <color name="common_unselected_item">#ffffff</color>
+    <color name="common_select_list_item">#ededed</color>
+
+    <color name="common_light_button">#87ffffff</color>
+    <color name="common_dark_button">#87585858</color>
+    <color name="common_text_button">#dcdcdc</color>
+
+    <color name="common_text_edit">#dcdcdc</color>
+    <color name="common_underline_edit">#000000</color>
+
+    <color name="common_text_playlists">#afafaf</color>
+    <color name="common_artist_playlist">#9e9e9e</color>
+    <color name="common_artist_top">#c69e9e9e</color>
+
+    <color name="common_text_timer">#dcdcdc</color>
+    <color name="common_background_timer">#50ffffff</color>
+
+    <color name="common_seekbar_progress">#fff700</color>
+    <color name="common_config_drawer">#78000000</color>
+    <color name="common_text_drawer">#bababa</color>
+    <color name="common_dialog_background">#8c000000</color>
+
+    <color name="common_for_define">#80fff700</color>
+    <color name="common_notification_background">#000000</color>
+    <color name="common_config_select">#1affffff</color>
+
+</resources>

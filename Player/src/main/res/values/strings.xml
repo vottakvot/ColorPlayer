@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ButtonsReceive">ButtonsReceive</string>
+    <string name="LastTrackPosition">LastTrackPosition</string>
+    <string name="HeadsetPlug">HeadsetPlug</string>
+    <string name="DoublePower">DoublePower</string>
+    <string name="InfoPreferences">InfoPreferences</string>
+    <string name="AboutPreferences">AboutPreferences</string>
+    <string name="Visualizer">Visualizer</string>
+
+    <string name="EmailForApplication">vottakvot555@gmail.com</string>
+    <string name="temp_playlist">Playlist for temp</string>
+
+    <string name="About_app">
+        <u>ABOUT COLOR AUDIO PLAYER</u>
+        \n<u>Version:</u> 1.0
+        \n<b>Copyright (C) 2016 Color audio player.</b>
+        \n\nThis program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation.
+        \n\nThis program is distributed WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    </string>
+
+    <string-array name="visualizer_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+</resources>

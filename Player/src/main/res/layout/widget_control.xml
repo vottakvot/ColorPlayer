@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/drawable_dialog">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/PlayerTextCommon"
+            android:id="@+id/widgetCurrentTrackName"
+            android:layout_width="match_parent"
+            android:singleLine="true"
+            android:textSize="24sp"
+            android:minHeight="30dp"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit ="marquee_forever"
+            android:scrollHorizontally="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:duplicateParentState="true">
+            <requestFocus
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:duplicateParentState="true"/>
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/common_transparent">
+
+        <ImageButton
+            style="@style/PlayerImageButtonCommon"
+            android:id="@+id/widgetPrevious"
+            android:layout_weight="1"
+            android:background="@drawable/drawable_image_buttons_background"
+            android:src="@drawable/previous"/>
+
+        <ImageButton
+            style="@style/PlayerImageButtonCommon"
+            android:id="@+id/widgetPlayPause"
+            android:layout_weight="1"
+            android:background="@drawable/drawable_image_buttons_background"
+            android:src="@drawable/play"/>
+
+        <ImageButton
+            style="@style/PlayerImageButtonCommon"
+            android:id="@+id/widgetNext"
+            android:layout_weight="1"
+            android:background="@drawable/drawable_image_buttons_background"
+            android:src="@drawable/next"/>
+
+    </LinearLayout>
+</LinearLayout>
