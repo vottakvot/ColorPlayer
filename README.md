@@ -10,3 +10,5 @@ Player has:
   - equalizer
   - mini visualizer
   - find track by name
+  - play in background
+  - simple widget
