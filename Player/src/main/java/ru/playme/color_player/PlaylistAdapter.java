@@ -70,6 +70,11 @@ public class PlaylistAdapter
         getPlaylist(currentSortBy);
     }
 
+    public void sortByModify(){
+        currentSortBy = PlaylistUtil.SORT_MODIFY + PlaylistUtil.SORT_ASC;
+        getPlaylist(currentSortBy);
+    }
+
     public void getPlaylist(final String sortBy){
         activeViewPlaylist = PlayerApplication.getPlayerApplication().setActivePlaylist(sortBy, true);
         notifyDataSetChanged();

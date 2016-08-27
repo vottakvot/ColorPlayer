@@ -34,6 +34,7 @@
     <string name="playlist_get_no_choice">Не выбран плейлист для добавления! Используется временный плейлист...</string>
     <string name="playlist_sort_by_name">Имена</string>
     <string name="playlist_sort_by_duration">Длина треков</string>
+    <string name="playlist_sort_by_modify">Дата изменения</string>
     <string name="playlist_delete_track">Удалить трек</string>
     <string name="playlist_search_empty">Введите текст для поиска</string>
     <string name="playlist_search_first_position">Первая позиция</string>

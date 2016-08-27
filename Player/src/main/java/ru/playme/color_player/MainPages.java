@@ -424,6 +424,10 @@ public class MainPages {
                         playlistAdapter.sortByDuration();
                         setPlaylistPosition();
                         return true;
+                    case R.id.sortByTrackModify:
+                        playlistAdapter.sortByModify();
+                        setPlaylistPosition();
+                        return true;
                     case R.id.deleteTrack:
                         playlistAdapter.deleteTrack(playlistSelectPosition);
                         return true;

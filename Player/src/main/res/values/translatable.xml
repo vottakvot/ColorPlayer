@@ -34,6 +34,7 @@
 	<string name="playlist_get_no_choice">Not choosen playlist! Use playlist for temp...</string>
 	<string name="playlist_sort_by_name">Names</string>
 	<string name="playlist_sort_by_duration">Track duration</string>
+	<string name="playlist_sort_by_modify">Track added</string>
 	<string name="playlist_delete_track">Delete track</string>
 	<string name="playlist_search_empty">Input text for search</string>
 	<string name="playlist_search_first_position">Move to first</string>

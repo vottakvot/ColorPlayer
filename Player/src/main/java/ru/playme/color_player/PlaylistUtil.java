@@ -16,6 +16,7 @@ public class PlaylistUtil {
     public static final String SORT_DESC = " DESC";
     public static final String SORT_NAME = MediaStore.Audio.Media.DATA;
     public static final String SORT_DURATION = MediaStore.Audio.Media.DURATION;
+    public static final String SORT_MODIFY = MediaStore.Audio.Media.DATE_MODIFIED;
     public static final String SORT_NONE = null;
 
     public static TreeMap<Long, String> getPlaylists(ContentResolver resolver) {

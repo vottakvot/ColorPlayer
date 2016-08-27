@@ -8,6 +8,9 @@
         android:id="@+id/sortByTrackDuration"
         android:title="@string/playlist_sort_by_duration"/>
     <item
+        android:id="@+id/sortByTrackModify"
+        android:title="@string/playlist_sort_by_modify"/>
+    <item
         android:id="@+id/deleteTrack"
         android:title="@string/playlist_delete_track"/>
 </menu>
