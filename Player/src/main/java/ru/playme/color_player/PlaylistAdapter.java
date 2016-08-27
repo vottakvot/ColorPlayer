@@ -95,7 +95,7 @@ public class PlaylistAdapter
 
     @Override
     public int getCount() {
-        return (activeViewPlaylist != null)? activeViewPlaylist.getCount() : 0;
+        return (activeViewPlaylist != null && !activeViewPlaylist.isClosed())? activeViewPlaylist.getCount() : 0;
     }
 
     @Override

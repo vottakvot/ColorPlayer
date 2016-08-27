@@ -254,14 +254,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void restartActivity(){
-        if(context != null) {
+        try {
             Intent mStartActivity = new Intent(context, MainActivity.class);
             int mPendingIntentId = 20032016;
             PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
             AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
             MainActivity.stopActivity();
-        }
+        } catch(Exception e){
+                e.printStackTrace();
+            }
     }
 
     public static void showInfoMessage(String message) {
