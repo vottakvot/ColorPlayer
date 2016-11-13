@@ -1,6 +1,8 @@
 package ru.playme.color_player;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -68,7 +70,6 @@ public class MainPages {
     // --------------------------------------------------------------------------------------------
     // Content
     public static class PageFragment extends Fragment {
-
         static final String PAGE_NUMBER = "page_number";
         int pageNumber;
         View view = null;
@@ -81,6 +82,34 @@ public class MainPages {
             arguments.putInt(PAGE_NUMBER, page);
             pageFragment.setArguments(arguments);
             return pageFragment;
+        }
+
+        static public void changePlaylistBackground(){
+            if(playlistView != null && playlistAdapter != null){
+                if(playlistAdapter.getCount() <= 0){
+                    if(MainActivity.getOrientation()){
+                        playlistView.setBackgroundResource(R.drawable.hints_vertical_playlist);
+                    } else {
+                        playlistView.setBackgroundResource(R.drawable.hints_horizontal_playlist);
+                    }
+                } else {
+                    playlistView.setBackgroundResource(R.drawable.drawable_playlist_background);
+                }
+            }
+        }
+
+        static public void changeExplorerBackground(){
+            if(explorerListView != null && folderlistAdapter != null){
+                if(folderlistAdapter.getCount() <= 0){
+                    if(MainActivity.getOrientation()){
+                        explorerListView.setBackgroundResource(R.drawable.hints_vertical_explorer);
+                    } else {
+                        explorerListView.setBackgroundResource(R.drawable.hints_horizontal_explorer);
+                    }
+                } else {
+                    explorerListView.setBackgroundResource(R.drawable.drawable_explorer_background);
+                }
+            }
         }
 
         @Override
@@ -160,8 +189,6 @@ public class MainPages {
 
                             } catch (RuntimeException e){
                                     e.printStackTrace();
-                                    // Send crush report
-                                    new BugReportDialog(context, e.getMessage()).show();
                                 }
                             }
                         }
@@ -182,6 +209,7 @@ public class MainPages {
                     playlistView.addHeaderView(playlistHeader);
                     playlistView.setAdapter(playlistAdapter);
                     registerForContextMenu(playlistView);
+                    changePlaylistBackground();
 
                     break;
                 }
@@ -220,8 +248,6 @@ public class MainPages {
                                 }
                             } catch(RuntimeException e){
                                     e.printStackTrace();
-                                    // Send crush report
-                                    new BugReportDialog(context, e.getMessage()).show();
                                 }
                         }
                     });
@@ -287,15 +313,14 @@ public class MainPages {
                                 // Update textview with count tracks
                                 PlayerControl.setCountTracks();
 
-                                if (totalAddTrack != 0)
+                                if (totalAddTrack != 0){
+                                    playlistView.setBackgroundResource(R.drawable.drawable_playlist_background);
                                     MainActivity.showInfoMessage(context.getResources().getString(R.string.explorer_add_to_playlist) + " " + totalAddTrack);
-                                else
+                                } else
                                     MainActivity.showInfoMessage(context.getResources().getString(R.string.explorer_add_to_playlist_nothing));
 
                             } catch (RuntimeException e){
                                     e.printStackTrace();
-                                    // Send crush report
-                                    new BugReportDialog(context, e.getMessage()).show();
                                 }
                         }
                     });
@@ -308,8 +333,6 @@ public class MainPages {
                                 MainActivity.showInfoMessage(context.getResources().getString(R.string.explorer_clear_check));
                             } catch (RuntimeException e){
                                     e.printStackTrace();
-                                    // Send crush report
-                                    new BugReportDialog(context, e.getMessage()).show();
                                 }
 
                             return true;
@@ -325,6 +348,7 @@ public class MainPages {
                     explorerListView.setAdapter(folderlistAdapter);
                     explorerListView.setOnItemClickListener(folderlistAdapter);
                     registerForContextMenu(explorerListView);
+                    changeExplorerBackground();
 
                     break;
                 }
@@ -435,8 +459,6 @@ public class MainPages {
 
             } catch (RuntimeException e){
                     e.printStackTrace();
-                    // Send crush report
-                    new BugReportDialog(context, e.getMessage()).show();
                 }
 
             return super.onContextItemSelected(item);

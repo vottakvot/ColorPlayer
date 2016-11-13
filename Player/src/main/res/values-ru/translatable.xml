@@ -3,7 +3,7 @@
     <string name="app_name">Color audio player</string>
     <string name="pagePlaylist">Плейлист</string>
     <string name="pageExplorer">Добавить музыку</string>
-
+    <string name="app_error_message">Послать письмо об ошибке разработчику!</string>
     <string name="drawer_open">Открыть</string>
     <string name="drawer_close">Закрыть</string>
 
@@ -46,6 +46,12 @@
     <string name="playlist_rename_done">Плейлист переименован</string>
     <string name="playlist_rename_wrong_name">Введите имя плейлиста!</string>
     <string name="playlist_rename_hint">Введите новое название плейлиста...</string>
+
+    <string name="playlist_item_artists">Артист:</string>
+    <string name="playlist_item_album">Альбом:</string>
+    <string name="playlist_item_title">Название:</string>
+    <string name="playlist_item_date">Дата файла:</string>
+
 
     <string name="notification_header">Сервис сообщений</string>
     <string name="notification_message">Воспроизведите музыку...</string>

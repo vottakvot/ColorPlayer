@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_weight="1"
     android:orientation="vertical"
-    android:background="@color/common_transparent"
-    android:layout_weight="1">
+    android:background="@color/common_transparent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,9 +17,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/currentTrackName"
             android:gravity="left|center_vertical"
-            android:textStyle="bold"
-            android:layout_weight="1"
             android:singleLine="true"
+            android:textStyle="bold"
+            android:textSize="@dimen/player_controls_track_name_textsize"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
@@ -27,8 +27,6 @@
             android:freezesText="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:maxHeight="30dp"
-            android:minHeight="30dp"
             android:background="@color/common_transparent">
 
             <requestFocus
@@ -43,11 +41,10 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:id="@+id/seekPlayPosition"
-        android:layout_weight="0"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:minHeight="20dp"
-        android:maxHeight="20dp"
+        android:layout_marginBottom="@dimen/player_controls_between_margins"
+        android:layout_marginTop="@dimen/player_controls_between_margins"
+        android:minHeight="@dimen/player_controls_seek_height"
+        android:maxHeight="@dimen/player_controls_seek_height"
         android:background="@color/common_transparent"
         android:thumb="@color/common_transparent"
         android:progressDrawable="@drawable/drawable_control_seekbar_progress"
@@ -58,42 +55,28 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/common_transparent"
-            android:layout_weight="1">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@color/common_transparent">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/PlayerControlTrackInfo"
             android:id="@+id/currentPositionTrack"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="20dp"
-            android:gravity="center|center_vertical"
-            android:maxHeight="30dp"
-            android:minHeight="30dp"
-            android:background="@color/common_transparent"
             android:text="00:00"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/PlayerControlTrackInfo"
             android:id="@+id/currentTrack"
             android:layout_centerInParent="true"
-            android:gravity="center|center_vertical"
-            android:maxHeight="30dp"
-            android:minHeight="30dp"
-            android:background="@color/common_transparent"
             android:text="0000/0000"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/PlayerControlTrackInfo"
             android:id="@+id/totalTrackTime"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            android:gravity="center|center_vertical"
-            android:maxHeight="30dp"
-            android:minHeight="30dp"
-            android:background="@color/common_transparent"
             android:text="00:00"/>
     </RelativeLayout>
 
@@ -102,8 +85,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/common_transparent"
-        android:layout_marginBottom="10dp"
-        android:layout_weight="5">
+        android:layout_marginBottom="@dimen/player_controls_between_margins"
+        android:weightSum="6">
 
         <ImageButton
             style="@style/PlayerImageButtonCommon"

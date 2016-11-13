@@ -9,13 +9,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:weightSum="100"
+        android:layout_margin="0dp"
+        android:padding="0dp"
         android:orientation="vertical">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="5">
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:padding="0dp"
+            android:layout_weight="99">
                 <android.support.v4.view.PagerTabStrip
                     android:id="@+id/pagerTabStrip"
                     android:layout_width="match_parent"
@@ -31,9 +36,8 @@
         style="@style/PlayerListCommon"
         android:id="@+id/drawer_list_config"
         android:divider="@null"
-        android:layout_gravity="start"
+        android:layout_gravity="left"
         android:choiceMode="singleChoice"
         android:listSelector="@color/common_config_select"
-        android:background="@drawable/drawable_config_right_background"/>
-
+        android:background="@drawable/drawable_config_background"/>
 </android.support.v4.widget.DrawerLayout>

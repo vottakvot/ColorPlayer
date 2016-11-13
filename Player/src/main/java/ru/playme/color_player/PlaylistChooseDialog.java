@@ -124,6 +124,7 @@ public class PlaylistChooseDialog
             PlayerApplication.getPlayerApplication().setPlaylistId(FindMedia.getMapMediaPosition(playlistMap, position));
             MainPages.getPlaylistAdapter().getPlaylist(PlaylistUtil.SORT_NONE);
             MainPages.getTextPlaylistHeader().setText(playlistMap.get(FindMedia.getMapMediaPosition(playlistMap, position)));
+            MainPages.PageFragment.changePlaylistBackground();
             PlayerControl.setCountTracks();
             dismiss();
             MainActivity.showInfoMessage(context.getResources().getString(R.string.playlist_get_chose) + " " + playlistMap.get(PlayerApplication.getPlayerApplication().getPlaylistId()));

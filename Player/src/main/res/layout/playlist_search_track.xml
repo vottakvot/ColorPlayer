@@ -5,12 +5,14 @@
     android:layout_height="wrap_content"
     android:id="@+id/searchPlaylistLayout"
     android:layout_alignParentTop="true"
+    android:padding="0dp"
+    android:layout_margin="0dp"
     android:background="@color/common_transparent">
 
     <ImageButton
         style="@style/PlayerImageButtonCommon"
         android:id="@+id/searchTrackButton"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:maxHeight="35dp"
         android:minHeight="35dp"
         android:layout_marginTop="5dp"
@@ -22,8 +24,7 @@
         style="@style/PlayerEditCommon"
         android:id="@+id/searchTrackInput"
         android:background="@drawable/drawable_common_search_edit"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/searchTrackButton"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/searchTrackButton"
         android:hint="@string/playlist_search_hint" />
-
 </RelativeLayout>

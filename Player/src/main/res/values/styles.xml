@@ -8,7 +8,7 @@
         <item name="android:textColorHint">@color/greenHints</item>
         <item name="android:textColor">@color/greenText</item>
         <item name="android:windowBackground">@color/greenPrimary</item>
-        <item name="android:itemBackground">@color/greenBackground</item>
+        <!--<item name="android:itemBackground">@color/greenBackground</item>-->
     </style>
 
     <style name="BlueTheme" parent="Theme.AppCompat.Light">
@@ -18,7 +18,7 @@
         <item name="android:textColorHint">@color/blueHints</item>
         <item name="android:textColor">@color/blueText</item>
         <item name="android:windowBackground">@color/bluePrimary</item>
-        <item name="android:itemBackground">@color/blueBackground</item>
+        <!--<item name="android:itemBackground">@color/blueBackground</item>-->
     </style>
 
     <style name="RedTheme" parent="Theme.AppCompat.Light">
@@ -28,7 +28,7 @@
         <item name="android:textColorHint">@color/redHints</item>
         <item name="android:textColor">@color/redText</item>
         <item name="android:windowBackground">@color/redPrimary</item>
-        <item name="android:itemBackground">@color/redBackground</item>
+        <!--<item name="android:itemBackground">@color/redBackground</item>-->
     </style>
 
     <!-- Begin common styles -->
@@ -51,6 +51,7 @@
         <item name="android:focusable">true</item>
         <item name="android:visibility">visible</item>
         <item name="android:background">@android:color/transparent</item>
+        <item name="android:cursorVisible">false</item>
     </style>
 
     <style name="PlayerTextCommon" parent="android:Widget.TextView">
@@ -100,6 +101,8 @@
     <style name="PlayerListCommon" parent="android:Widget.ListView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_margin">0dp</item>
         <item name="android:layout_alignParentTop">true</item>
         <item name="android:dividerHeight">0dp</item>
         <item name="android:cacheColorHint">@color/common_transparent</item>
@@ -119,12 +122,11 @@
         <item name="android:layout_weight">1</item>
         <item name="android:textColor">@color/common_text_timer</item>
     </style>
-
     <!-- End common styles -->
 
     <!-- Custom buttons for dialogs-->
     <style name="PlayerButtonDialog" parent="PlayerButtonCommon">
-        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:clickable">true</item>
         <item name="android:textStyle">bold</item>
@@ -135,7 +137,7 @@
 
     <!-- Custom buttons for timer-->
     <style name="PlayerButtonTimerDialog" parent="PlayerButtonDialog">
-        <item name="android:layout_width">70dp</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">12sp</item>
     </style>
 
@@ -147,6 +149,107 @@
         <item name="android:maxHeight">80dp</item>
         <item name="android:maxWidth">80dp</item>
         <item name="android:background">@drawable/drawable_colors_button_green</item>
+    </style>
+
+    <style name="PlayerPlaylistItemLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">@dimen/playlist_item_outer_layout_margin</item>
+        <item name="android:paddingTop">@dimen/playlist_item_outer_layout_paddingTop</item>
+        <item name="android:paddingBottom">@dimen/playlist_item_outer_layout_paddingBottom</item>
+        <item name="android:background">@drawable/selector_listview_item</item>
+    </style>
+
+    <style name="PlayerPlaylistItemLayoutDescriptions">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:weightSum">@integer/playlist_item_weight_sum_description</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="PlayerPlaylistItemTextName" parent="PlayerTextCommon">
+        <item name="android:layout_marginLeft">@dimen/playlist_item_left_margin_into</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:minLines">2</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textSize">@dimen/playlist_item_track_name</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:layout_centerVertical">@bool/playlist_item_name_layout_align</item>
+        <item name="android:layout_gravity">top</item>
+        <item name="android:gravity">left</item>
+        <item name="android:shadowColor">@color/common_text_shadow</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">4</item>
+    </style>
+
+    <style name="PlayerPlaylistItemTextDescription" parent="PlayerTextCommon">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/playlist_item_text_size_description</item>
+        <item name="android:textColor">@color/common_artist_playlist</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+    <style name="PlayerActionBarTextAppName" parent="PlayerTextCommon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:textSize">@dimen/action_bar_app_name_text_size</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:shadowColor">@color/common_text_shadow</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">5</item>
+    </style>
+
+    <style name="PlayerPlaylistItemTextTextMains" parent="PlayerTextCommon">
+        <item name="android:shadowColor">@color/common_text_shadow</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:paddingRight">@dimen/playlist_item_outer_layout_paddingRight</item>
+    </style>
+
+    <style name="PlayerListviewHeaders" parent="PlayerTextCommon">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center_horizontal|top</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:background">@drawable/selector_listview_header</item>
+        <item name="android:paddingLeft">@dimen/listview_header_paddings</item>
+        <item name="android:paddingRight">@dimen/listview_header_paddings</item>
+        <item name="android:focusable">true</item>
+        <item name="android:minHeight">@dimen/listview_header_min_height</item>
+        <item name="android:maxHeight">@dimen/listview_header_max_height</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+        <item name="android:textSize">@dimen/listview_header_text_size</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:minLines">1</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:shadowColor">@color/common_text_shadow</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">5</item>
+    </style>
+
+    <style name="PlayerControlTrackInfo" parent="PlayerTextCommon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+        <item name="android:background">@color/common_transparent</item>
+        <item name="android:textSize">@dimen/player_controls_track_info_textsize</item>
+        <!--<item name="android:shadowColor">@color/common_text_shadow</item>-->
+        <!--<item name="android:shadowDx">2</item>-->
+        <!--<item name="android:shadowDy">2</item>-->
+        <!--<item name="android:shadowRadius">1</item>-->
     </style>
 
     <style name="PlayerButtonColorGreen" parent="PlayerButtonColor">

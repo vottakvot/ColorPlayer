@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import ru.playme.data_structure.ItemFile;
-import ru.playme.color_player.BugReportDialog;
 import ru.playme.color_player.MainActivity;
 import ru.playme.color_player.R;
 
@@ -95,13 +94,12 @@ public class MediaFilesAdapter
                 viewHolder.checkFile.setChecked(itemFile.isChecked());
 
                 if(itemFile.isChecked()){
-                    view.setBackgroundColor(MainActivity.getColor(context, R.color.common_select_list_item));
+                    view.setBackgroundResource(R.drawable.drawable_listview_item_explorer);
                 } else {
                         view.setBackgroundColor(Color.WHITE);
                     }
         } catch (RuntimeException e ){
                 e.printStackTrace();
-                new BugReportDialog(context, e.getMessage()).show();
             }
 
         return view;

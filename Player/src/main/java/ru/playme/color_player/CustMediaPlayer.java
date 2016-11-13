@@ -94,7 +94,7 @@ public class CustMediaPlayer
         seekHandler.sendMessage(seekHandler.obtainMessage(PlayService.UPDATE_PLAY_PAUSE, true));
         // Get audio focus
         audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
-        // Reset audiofocus trigger
+        // Reset audio focus trigger
         isAudioFocusPause = false;
     }
 
@@ -184,8 +184,6 @@ public class CustMediaPlayer
                             PlayerApplication.getPlayerApplication().getSeekCurrentPosition() < getDuration()) {
                                 seekTo(PlayerApplication.getPlayerApplication().getSeekCurrentPosition());
                         }
-                        start();
-                        pause();
                     } else {
                         start();
                     }
@@ -255,18 +253,6 @@ public class CustMediaPlayer
                     if(PlayerApplication.getPlayerApplication().getUniqueRandom().size() == activePlaylist.getCount()){
                         PlayerApplication.getPlayerApplication().getUniqueRandom().clear();
                     }
-
-                    // Find repeat by recursion
-//                    Integer position = new Random().nextInt(activePlaylist.getCount());
-//
-//                    // if container don't contain this position
-//                    if(!PlayerApplication.getPlayerApplication().getUniqueRandom().contains(position)){
-//                        activePlaylist.moveToPosition(position);
-//                        play(true, false);
-//                        PlayerApplication.getPlayerApplication().getUniqueRandom().add(position);
-//                    } else {
-//                        next();
-//                    }
 
                     // Find repeat by cycle
                     do {

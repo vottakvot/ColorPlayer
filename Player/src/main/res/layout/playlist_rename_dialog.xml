@@ -26,22 +26,24 @@
             android:layout_marginBottom="10dp"
             android:textColor="@color/common_text_edit"/>
 
-        <Button
-            style="@style/PlayerButtonDialog"
-            android:id="@+id/playlistRename_create"
-            android:layout_below="@id/playlistRename_edit"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
-            android:text="@string/playlist_rename_change"/>
-
-        <Button
-            style="@style/PlayerButtonDialog"
-            android:id="@+id/playlistRename_cancel"
-            android:layout_below="@id/playlistRename_edit"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_alignParentRight="true"
-            android:text="@string/playlist_create_cancel"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/playlistRename_edit">
+            <Button
+                style="@style/PlayerButtonDialog"
+                android:id="@+id/playlistRename_create"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:text="@string/playlist_rename_change"/>
+            <Button
+                style="@style/PlayerButtonDialog"
+                android:id="@+id/playlistRename_cancel"
+                android:layout_weight="1"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:text="@string/playlist_create_cancel"/>
+        </LinearLayout>
     </RelativeLayout>
 
 </LinearLayout>

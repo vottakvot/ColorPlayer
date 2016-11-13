@@ -8,8 +8,8 @@
         style="@style/PlayerImageViewCommon"
         android:id="@+id/action_bar_image"
         android:src="@drawable/app_bar"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
+        android:layout_margin="0dp"
+        android:padding="0dp"
         android:layout_alignParentLeft="true"/>
 
     <Button
@@ -23,11 +23,27 @@
         android:visibility="invisible"
         android:background="@drawable/drawable_common_buttons"/>
 
-    <TextView
-        style="@style/PlayerTextCommon"
-        android:text="@string/app_name"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="@integer/action_bar_app_name_orientation"
         android:layout_toRightOf="@+id/action_bar_image"
-        android:layout_toLeftOf="@+id/action_bar_timer"
-        android:textStyle="italic"/>
-
+        android:layout_toLeftOf="@+id/action_bar_timer">
+        <TextView
+            style="@style/PlayerActionBarTextAppName"
+            android:id="@+id/action_bar_name_color"
+            android:text="@string/app_name_action_bar_color"
+            android:textColor="@color/redPrimary"/>
+        <TextView
+            style="@style/PlayerActionBarTextAppName"
+            android:id="@+id/action_bar_name_audio"
+            android:text="@string/app_name_action_bar_audio"
+            android:textColor="@color/bluePrimary"/>
+        <TextView
+            style="@style/PlayerActionBarTextAppName"
+            android:id="@+id/action_bar_name_player"
+            android:text="@string/app_name_action_bar_player"
+            android:textColor="@color/greenPrimary"/>
+    </LinearLayout>
 </RelativeLayout>

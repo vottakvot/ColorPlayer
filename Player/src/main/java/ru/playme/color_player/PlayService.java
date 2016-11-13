@@ -401,6 +401,7 @@ public class PlayService
                 visualizerPlayer = new Visualizer(mediaPlayer.getAudioSessionId());
                 visualizerPlayer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
                 visualizerPlayer.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
+                    @Override
                     public void onWaveFormDataCapture(Visualizer visualizer, byte[] bytes, int samplingRate) {
                         PlaylistAdapter.updateVisualizer(bytes, mediaPlayer.isPlaying());
                     }

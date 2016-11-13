@@ -1,67 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 1 view track -->
-    <ImageView
-        style="@style/PlayerImageViewCommon"
-        android:id="@+id/imageTrack"
-        android:layout_alignParentLeft="true"/>
+    <RelativeLayout
+        style="@style/PlayerPlaylistItemLayout">
 
-    <!-- 2 view number of track -->
-    <TextView
-        style="@style/PlayerTextCommon"
-        android:id="@+id/numberTrack"
-        android:layout_alignLeft="@id/imageTrack"
-        android:layout_marginLeft="0dp"/>
+        <!-- 1 view track -->
+        <ImageView
+            style="@style/PlayerImageViewCommon"
+            android:id="@+id/imageTrack"
+            android:layout_alignParentLeft="true"/>
 
-    <!-- 4 view duration of track -->
-    <TextView
-        style="@style/PlayerTextCommon"
-        android:id="@+id/durationTrack"
-        android:layout_alignParentRight="true"/>
+        <!-- 2 view number of track -->
+        <TextView
+            style="@style/PlayerTextCommon"
+            android:id="@+id/numberTrack"
+            android:layout_alignLeft="@id/imageTrack"
+            android:layout_marginLeft="0dp"/>
 
-    <!-- 3 view name of track -->
-    <TextView
-        style="@style/PlayerTextCommon"
-        android:id="@+id/nameTrack"
-        android:layout_toRightOf="@id/imageTrack"
-        android:layout_toLeftOf="@id/durationTrack"
-        android:layout_marginLeft="10dp"
-        android:maxLines="2"
-        android:textSize="14sp"
-        android:textStyle="normal"
-        android:layout_centerVertical="false"
-        android:layout_gravity="top"
-        android:gravity="left"/>
+        <!-- 4 view duration of track -->
+        <TextView
+            style="@style/PlayerPlaylistItemTextTextMains"
+            android:id="@+id/durationTrack"
+            android:layout_alignParentRight="true"/>
 
-    <!-- 5 view artists of track -->
-    <TextView
-        style="@style/PlayerTextCommon"
-        android:id="@+id/artistTrack"
-        android:layout_toRightOf="@id/imageTrack"
-        android:layout_toLeftOf="@id/durationTrack"
-        android:layout_below="@id/nameTrack"
-        android:layout_marginLeft="10dp"
-        android:singleLine="true"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="@color/common_artist_playlist"
-        android:layout_centerVertical="false"
-        android:layout_gravity="bottom"
-        android:ellipsize="marquee"
-        android:gravity="left"/>
+        <!-- 3 view name of track -->
+        <TextView
+            style="@style/PlayerPlaylistItemTextName"
+            android:id="@+id/nameTrack"
+            android:layout_toRightOf="@id/imageTrack"
+            android:layout_toLeftOf="@id/durationTrack"/>
+
+        <!-- Additional information-->
+        <!-- 5 view -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nameTrack"
+            android:layout_toRightOf="@id/imageTrack"
+            android:layout_toLeftOf="@id/durationTrack"
+            android:layout_marginLeft="@dimen/playlist_item_left_margin_into"
+            android:orientation="vertical">
+            <LinearLayout
+                style="@style/PlayerPlaylistItemLayoutDescriptions">
+                <TextView
+                    style="@style/PlayerPlaylistItemTextDescription"
+                    android:layout_weight="@integer/playlist_item_first_weight_description"
+                    android:text="@string/playlist_item_artists"/>
+                <TextView
+                    style="@style/PlayerPlaylistItemTextDescription"
+                    android:id="@+id/artistTrack"
+                    android:layout_weight="@integer/playlist_item_second_weight_description"/>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/PlayerPlaylistItemLayoutDescriptions">
+                <TextView
+                    style="@style/PlayerPlaylistItemTextDescription"
+                    android:layout_weight="@integer/playlist_item_first_weight_description"
+                    android:text="@string/playlist_item_album"/>
+                <TextView
+                    style="@style/PlayerPlaylistItemTextDescription"
+                    android:id="@+id/albumTrack"
+                    android:layout_weight="@integer/playlist_item_second_weight_description"/>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/PlayerPlaylistItemLayoutDescriptions">
+                <TextView
+                    style="@style/PlayerPlaylistItemTextDescription"
+                    android:layout_weight="@integer/playlist_item_first_weight_description"
+                    android:text="@string/playlist_item_date"/>
+                <TextView
+                    style="@style/PlayerPlaylistItemTextDescription"
+                    android:id="@+id/dateTrack"
+                    android:layout_weight="@integer/playlist_item_second_weight_description"/>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 
     <!-- Visualizer -->
-    <ru.playme.color_player.PlayerVisualizer
+    <ru.playme.custom_views.PlayerVisualizer
         android:id="@+id/visualizerTrack"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignTop="@+id/nameTrack"
-        android:layout_alignBottom="@+id/artistTrack"/>
-
-</RelativeLayout>
-
-
+        android:layout_margin="@dimen/playlist_item_outer_layout_margin"
+        android:background="@color/common_transparent"/>
+</FrameLayout>

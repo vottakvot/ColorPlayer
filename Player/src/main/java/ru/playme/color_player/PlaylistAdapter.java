@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import ru.playme.custom_views.PlayerVisualizer;
 import ru.playme.music_explorer.FindMedia;
 
 public class PlaylistAdapter
@@ -120,6 +122,9 @@ public class PlaylistAdapter
         public TextView numberTrack;
         public TextView nameTrack;
         public TextView artistTrack;
+        public TextView albumTrack;
+        public TextView dateTrack;
+        public TextView titleTrack;
         public TextView durationTrack;
     }
 
@@ -138,6 +143,9 @@ public class PlaylistAdapter
             viewHolder.nameTrack = (TextView) view.findViewById(R.id.nameTrack);
             viewHolder.artistTrack = (TextView) view.findViewById(R.id.artistTrack);
             viewHolder.durationTrack = (TextView) view.findViewById(R.id.durationTrack);
+            viewHolder.albumTrack = (TextView) view.findViewById(R.id.albumTrack);
+            viewHolder.titleTrack = (TextView) view.findViewById(R.id.titleTrack);
+            viewHolder.dateTrack = (TextView) view.findViewById(R.id.dateTrack);
             view.setTag(viewHolder);
         } else {
                 view = convertView;
@@ -146,18 +154,34 @@ public class PlaylistAdapter
 
         try {
                 activeViewPlaylist.moveToPosition(position);
-
                 viewHolder.imageTrack.setBackgroundResource(R.drawable.item_track);
-                viewHolder.numberTrack.setText(Integer.toString(position + 1));
-                viewHolder.nameTrack.setText(FindMedia.getName(activeViewPlaylist.getString(activeViewPlaylist.getColumnIndex(MediaStore.Audio.Media.DATA))));
-                viewHolder.artistTrack.setText(activeViewPlaylist.getString(activeViewPlaylist.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
-                viewHolder.durationTrack.setText(FindMedia.getDuration(activeViewPlaylist.getLong(activeViewPlaylist.getColumnIndex(MediaStore.Audio.Media.DURATION))));
-
                 viewHolder.imageTrack.bringToFront();
+                viewHolder.numberTrack.setText(Integer.toString(position + 1));
                 viewHolder.numberTrack.bringToFront();
+                viewHolder.nameTrack.setText(FindMedia.getName(activeViewPlaylist.getString(activeViewPlaylist.getColumnIndex(MediaStore.Audio.Media.DATA))));
                 viewHolder.nameTrack.bringToFront();
-                viewHolder.artistTrack.bringToFront();
+                viewHolder.durationTrack.setText(FindMedia.getDuration(activeViewPlaylist.getLong(activeViewPlaylist.getColumnIndex(MediaStore.Audio.Media.DURATION))));
                 viewHolder.durationTrack.bringToFront();
+
+                if(viewHolder.artistTrack != null){
+                    viewHolder.artistTrack.setText(activeViewPlaylist.getString(activeViewPlaylist.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
+                    viewHolder.artistTrack.bringToFront();
+                }
+
+                if(viewHolder.albumTrack != null){
+                    viewHolder.albumTrack.setText(activeViewPlaylist.getString(activeViewPlaylist.getColumnIndex(MediaStore.Audio.Media.ALBUM)));
+                    viewHolder.albumTrack.bringToFront();
+                }
+
+                if(viewHolder.titleTrack != null){
+                    viewHolder.titleTrack.setText(activeViewPlaylist.getString(activeViewPlaylist.getColumnIndex(MediaStore.Audio.Media.TITLE)));
+                    viewHolder.titleTrack.bringToFront();
+                }
+
+                if(viewHolder.dateTrack != null){
+                    viewHolder.dateTrack.setText(PlayerApplication.getDateTime(1000L * activeViewPlaylist.getLong(activeViewPlaylist.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED))));
+                    viewHolder.dateTrack.bringToFront();
+                }
 
                 // For select playing position. If cursor doesn't init, select first position.
                 long sonID = PlayerApplication.getPlayerApplication().getSongId();
@@ -171,25 +195,25 @@ public class PlaylistAdapter
                 }
 
                 if(sonID == activeViewPlaylist.getLong(activeViewPlaylist.getColumnIndex(MediaStore.Audio.Media._ID))){
-                    view.setBackgroundColor(MainActivity.getColor(context, R.color.common_select_list_item));
+                    view.setBackgroundResource(R.drawable.drawable_listview_item_selection);
+                    ((GradientDrawable)view.getBackground()).setColor(PlayerApplication.getSelectionItemColor());
                     viewHolder.visualizerTrack.setVisibility(View.VISIBLE);
                     playerVisualizer = viewHolder.visualizerTrack;
                 } else {
-                        view.setBackgroundColor(Color.WHITE);
+                        view.setBackgroundColor(Color.TRANSPARENT);
                         viewHolder.visualizerTrack.setVisibility(View.INVISIBLE);
                     }
 
                 // For custom search selection
-                if(searchPosition == position && searchPosition != -1 &&
-                        searchPosition != PlayerApplication.getPlayerApplication().getActivePlaylist().getPosition()){
-                    view.setBackgroundColor(MainActivity.getColor(context, R.color.common_find_list_item));
+                if( searchPosition == position && searchPosition != -1 &&
+                    searchPosition != PlayerApplication.getPlayerApplication().getActivePlaylist().getPosition()){
+                    view.setBackgroundResource(R.drawable.drawable_listview_item_find);
                 } else if(sonID != activeViewPlaylist.getLong(activeViewPlaylist.getColumnIndex(MediaStore.Audio.Media._ID))){
-                        view.setBackgroundColor(MainActivity.getColor(context, R.color.common_unselected_item));
+                        view.setBackgroundColor(Color.TRANSPARENT);
                     }
 
         } catch (RuntimeException e){
                 e.printStackTrace();
-                new BugReportDialog(context, e.getMessage()).show();
             }
 
         return view;

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- For playlist-->
+    <dimen name="playlist_item_outer_layout_margin">2dp</dimen>
+    <dimen name="playlist_item_outer_layout_paddingTop">5dp</dimen>
+    <dimen name="playlist_item_outer_layout_paddingBottom">5dp</dimen>
+    <dimen name="playlist_item_outer_layout_paddingRight">2dp</dimen>
+    <dimen name="playlist_item_track_name">12sp</dimen>
+    <dimen name="playlist_item_left_margin_into">2dp</dimen>
+    <dimen name="playlist_item_text_size_description">10sp</dimen>
+    <dimen name="playlist_item_selection_layout_margin">5dp</dimen>
+    <integer name="playlist_item_weight_sum_description">10</integer>
+    <integer name="playlist_item_first_weight_description">4</integer>
+    <integer name="playlist_item_second_weight_description">6</integer>
+    <bool name="playlist_item_name_layout_align">true</bool>
+
+    <!-- For action bar-->
+    <integer name="action_bar_app_name_orientation">1</integer>
+    <dimen name="action_bar_app_name_text_size">10sp</dimen>
+
+    <!-- For listview headers-->
+    <dimen name="listview_header_paddings">10dp</dimen>
+    <dimen name="listview_header_min_height">30dp</dimen>
+    <dimen name="listview_header_max_height">100dp</dimen>
+    <dimen name="listview_header_text_size">14sp</dimen>
+
+    <!-- For controls-->
+    <dimen name="player_controls_track_name_textsize">14dp</dimen>
+    <dimen name="player_controls_seek_height">15dp</dimen>
+    <dimen name="player_controls_between_margins">10dp</dimen>
+    <dimen name="player_controls_track_info_textsize">14sp</dimen>
+
+    <!-- Header drawable -->
+    <dimen name="player_header_corners_radius">50dp</dimen>
+</resources>

@@ -3,14 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:padding="0dp"
+    android:layout_margin="0dp"
     android:background="@color/common_white_background">
 
     <ListView
         style="@style/PlayerListCommon"
         android:id="@+id/explorerList"
         android:choiceMode="singleChoice"
-        android:listSelector="@color/common_select_list_item"
-        android:background="@drawable/drawable_left_background"/>
+        android:divider="@color/common_transparent"
+        android:background="@drawable/drawable_explorer_background"/>
 
     <include layout="@layout/explorer_back_add" />
 

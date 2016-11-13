@@ -8,8 +8,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Shader;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -28,11 +31,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
-//    http://www.tutorialspoint.com/java/java_documentation.htm
 
     public static final String LOG_ACTIVITY = "PLAYER_LOG";
     public static final int REQUEST_PERMISSIONS_WRITE = 1;
@@ -167,18 +169,35 @@ public class MainActivity extends AppCompatActivity {
 
     public static float[] getActivitySize(){
         if(context != null){
-            Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
-            DisplayMetrics outMetrics = new DisplayMetrics ();
-            display.getMetrics(outMetrics);
+            int resolution[] = getActivitySizeInt();
+            if(resolution != null){
+                float density  = ((Activity)context).getResources().getDisplayMetrics().density;
+                float dpHeight = resolution[0] / density;
+                float dpWidth  = resolution[1] / density;
 
-            float density  = ((Activity)context).getResources().getDisplayMetrics().density;
-            float dpHeight = outMetrics.heightPixels / density;
-            float dpWidth  = outMetrics.widthPixels / density;
-
-            return new float[] {dpHeight, dpWidth};
+                return new float[] {dpHeight, dpWidth};
+            }
         }
 
         return null;
+    }
+
+    public static int[] getActivitySizeInt() {
+        if(context != null){
+            Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
+            DisplayMetrics outMetrics = new DisplayMetrics ();
+            display.getMetrics(outMetrics);
+            return new int[] {outMetrics.heightPixels, outMetrics.widthPixels};
+        }
+
+        return null;
+    }
+
+    public static boolean getOrientation(){
+        int displaySize[] = getActivitySizeInt();
+        if(displaySize != null)
+            return displaySize[0] > displaySize[1]? true : false;
+        return true;
     }
 
     public static float getTextWidth(String text){
@@ -193,28 +212,35 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setAdapter(configAdapter);
         mDrawerList.setOnItemClickListener(configAdapter);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        // Drawer button
         mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.string.drawer_open,  /* "open drawer" description */
-                R.string.drawer_close  /* "close drawer" description */
+                this,                  // host Activity
+                mDrawerLayout,         // DrawerLayout object
+                R.string.drawer_open,  // "open drawer" description
+                R.string.drawer_close  // "close drawer" description
         ) {
 
-            /** Called when a drawer has settled in a completely closed state. */
+            // Called when a drawer has settled in a completely closed state
+            @Override
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 getSupportActionBar().setTitle("onDrawerClosed");
+                supportInvalidateOptionsMenu();
             }
 
-            /** Called when a drawer has settled in a completely open state. */
+            // Called when a drawer has settled in a completely open state
+            @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getSupportActionBar().setTitle("onDrawerOpened");
+                supportInvalidateOptionsMenu();
             }
         };
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     private void setTimerButton(){
@@ -228,6 +254,27 @@ public class MainActivity extends AppCompatActivity {
                 configAdapter.getTimerDialog().show();
             }
         });
+    }
+
+    private void setFontsSizeAndGradient(){
+        // Change text size programmatically
+        // Instead this use various layouts and values
+        int screenSize[] = getActivitySizeInt();
+        float coefficient = (float)(screenSize[0] + screenSize[1]) / 1000.0f;
+        TextView actionBarColor = (TextView) findViewById(R.id.action_bar_name_color);
+        actionBarColor.setTextSize(actionBarColor.getTextSize() * coefficient);
+        TextView actionBarAudio = (TextView) findViewById(R.id.action_bar_name_audio);
+        actionBarAudio.setTextSize(actionBarAudio.getTextSize() * coefficient);
+        TextView actionBarPlayer = (TextView) findViewById(R.id.action_bar_name_player);
+        actionBarPlayer.setTextSize(actionBarPlayer.getTextSize() * coefficient);
+
+        // Gradient set for text
+        TextView textView = (TextView) findViewById(R.id.action_bar_name_color);
+        textView.measure(0, 0);
+        Shader textShader = new LinearGradient(0, 0, (float)textView.getMeasuredWidth() / 2.0f, 0,
+                new int[]{Color.RED, Color.GREEN, Color.BLUE},
+                null, Shader.TileMode.MIRROR);
+        textView.getPaint().setShader(textShader);
     }
 
     public static void setTimerButton(Bundle viewData) {

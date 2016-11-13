@@ -18,8 +18,26 @@ import android.os.SystemClock;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.View;
+
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
+
+import static org.acra.ReportField.ANDROID_VERSION;
+import static org.acra.ReportField.APP_VERSION_CODE;
+import static org.acra.ReportField.LOGCAT;
+import static org.acra.ReportField.PHONE_MODEL;
+import static org.acra.ReportField.STACK_TRACE;
+
+@ReportsCrashes(customReportContent = { APP_VERSION_CODE, ANDROID_VERSION, PHONE_MODEL, STACK_TRACE, LOGCAT },
+                mailTo = "testsimpleapps@gmail.com",
+                mode = ReportingInteractionMode.TOAST,
+                resToastText = R.string.app_error_message)
 
 public class PlayerApplication extends Application {
 
@@ -55,6 +73,7 @@ public class PlayerApplication extends Application {
     public static final int THEME_BLUE = 0;
     public static final int THEME_GREEN = 1;
     public static final int THEME_RED = 2;
+    public static int SELECTION_ITEM_COLOR = Color.WHITE;
 
     private SharedPreferences sharedPreferences;
 
@@ -97,10 +116,16 @@ public class PlayerApplication extends Application {
         return playerApplication;
     }
 
+    public static String getDateTime(long ms){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return formatter.format(new Date(ms));
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         Log.i(LOG_APP, this.getClass().getName().toString() + " - onCreate");
+        ACRA.init(this);
         playerApplication = this;
         loadPreferences();
         setActivePlaylist(PlaylistUtil.SORT_NONE, isSavePosition);
@@ -132,12 +157,15 @@ public class PlayerApplication extends Application {
         switch (PlayerApplication.getPlayerApplication().getNumberTheme()){
             case PlayerApplication.THEME_BLUE:
                 context.setTheme(R.style.BlueTheme);
+                SELECTION_ITEM_COLOR = MainActivity.getColor(this, R.color.blueHints);
                 break;
             case PlayerApplication.THEME_GREEN:
                 context.setTheme(R.style.GreenTheme);
+                SELECTION_ITEM_COLOR = MainActivity.getColor(this, R.color.greenHints);
                 break;
             case PlayerApplication.THEME_RED:
                 context.setTheme(R.style.RedTheme);
+                SELECTION_ITEM_COLOR = MainActivity.getColor(this, R.color.redHints);
                 break;
         }
     }
@@ -558,5 +586,9 @@ public class PlayerApplication extends Application {
 
     public void setNumberVisualizer(int numberVisualizer) {
         this.numberVisualizer = numberVisualizer;
+    }
+
+    public static int getSelectionItemColor() {
+        return SELECTION_ITEM_COLOR;
     }
 }

@@ -1,42 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/layoutExplorer_folders"
-    android:background="@color/common_transparent"
-    android:layout_alignParentTop="true" >
+    android:layout_height="match_parent">
 
-    <!-- 1 view folder-->
-    <ImageView
-        style="@style/PlayerImageViewCommon"
-        android:id="@+id/imageFolder"
-        android:layout_alignParentLeft="true" />
+    <RelativeLayout
+        android:id="@+id/layoutExplorer_folders"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@drawable/selector_listview_explorer_item"
+        android:layout_alignParentTop="true" >
 
-    <!-- 2 view count of media-files in album -->
-    <TextView
-        style="@style/PlayerTextCommon"
-        android:id="@+id/countFolder"
-        android:layout_alignRight="@id/imageFolder" />
+        <!-- 1 view folder-->
+        <ImageView
+            style="@style/PlayerImageViewCommon"
+            android:id="@+id/imageFolder"
+            android:layout_alignParentLeft="true" />
 
-    <!-- 4 view check for add in active playlist -->
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/noteFolder"
-        android:focusable="false"
-        android:clickable="true"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true" />
+        <!-- 2 view count of media-files in album -->
+        <TextView
+            style="@style/PlayerTextCommon"
+            android:id="@+id/countFolder"
+            android:layout_alignRight="@id/imageFolder" />
 
-    <!-- 3 view name of the content media-album -->
-    <TextView
-        style="@style/PlayerTextCommon"
-        android:id="@+id/nameFolder"
-        android:layout_toRightOf="@id/imageFolder"
-        android:layout_toLeftOf="@id/noteFolder"
-        android:layout_marginLeft="10dp"
-        android:textSize="15sp"
-        android:textStyle="normal"/>
+        <!-- 4 view check for add in active playlist -->
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/noteFolder"
+            android:focusable="false"
+            android:clickable="true"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true" />
 
-</RelativeLayout>
+        <!-- 3 view name of the content media-album -->
+        <TextView
+            style="@style/PlayerTextCommon"
+            android:id="@+id/nameFolder"
+            android:layout_toRightOf="@id/imageFolder"
+            android:layout_toLeftOf="@id/noteFolder"
+            android:layout_marginLeft="10dp"
+            android:textSize="15sp"
+            android:textStyle="normal"/>
+    </RelativeLayout>
+</LinearLayout>

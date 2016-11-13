@@ -26,11 +26,16 @@
 
     <!-- Common colors -->
     <color name="common_transparent">@android:color/transparent</color>
-
-    <color name="common_drawable_background">#ffffff</color>
+    <color name="common_header_drawable_background_gradient_begin">#ffffff</color>
+    <color name="common_header_drawable_background_gradient_end">#cacaca</color>
+    <color name="common_header_drawable_background_gradient_border">#dfdfdf</color>
+    <color name="common_item_drawable_background_gradient_begin">#f9f9f9</color>
+    <color name="common_item_drawable_background_gradient_end">#dadada</color>
+    <color name="common_drawable_background">#9dffffff</color>
     <color name="common_white_background">#ffffff</color>
     <color name="common_border">#9c9a8c</color>
 
+    <color name="common_explorer_list_item">#8cfbff00</color>
     <color name="common_find_list_item">#8cfbff00</color>
     <color name="common_unselected_item">#ffffff</color>
     <color name="common_select_list_item">#ededed</color>
@@ -41,6 +46,7 @@
 
     <color name="common_text_edit">#dcdcdc</color>
     <color name="common_underline_edit">#000000</color>
+    <color name="common_text_shadow">#96000000</color>
 
     <color name="common_text_playlists">#afafaf</color>
     <color name="common_artist_playlist">#9e9e9e</color>
@@ -50,7 +56,8 @@
     <color name="common_background_timer">#50ffffff</color>
 
     <color name="common_seekbar_progress">#fff700</color>
-    <color name="common_config_drawer">#78000000</color>
+    <color name="common_config_drawer_begin">#dc000000</color>
+    <color name="common_config_drawer_end">#32000000</color>
     <color name="common_text_drawer">#bababa</color>
     <color name="common_dialog_background">#8c000000</color>
 

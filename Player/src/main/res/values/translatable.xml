@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">Color audio player</string>
+	<string name="app_name_action_bar_color">COLOR</string>
+	<string name="app_name_action_bar_audio">AUDIO</string>
+	<string name="app_name_action_bar_player">PLAYER</string>
+	<string name="app_error_message">Send crash report to the developer!</string>
 	<string name="pagePlaylist">Playlist</string>
 	<string name="pageExplorer">Add music</string>
 
@@ -46,6 +50,11 @@
 	<string name="playlist_rename_done">Playlist renamed!</string>
 	<string name="playlist_rename_wrong_name">Input new name!</string>
 	<string name="playlist_rename_hint">Input new playlist name...</string>
+
+	<string name="playlist_item_artists">Artists:</string>
+	<string name="playlist_item_album">Album:</string>
+	<string name="playlist_item_title">Title:</string>
+	<string name="playlist_item_date">File date:</string>
 
 	<string name="notification_header">Player service message</string>
 	<string name="notification_message">Play music...</string>

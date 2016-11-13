@@ -109,7 +109,13 @@ public class PlaylistUtil {
         try{
             final Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playListID);
             tracks = contentResolver.query(  uri,
-                    new String[]{PlaylistUtil.SORT_NAME, PlaylistUtil.SORT_DURATION, MediaStore.Audio.Media._ID, MediaStore.Audio.Media.ARTIST},
+                    new String[]{   PlaylistUtil.SORT_NAME,
+                                    PlaylistUtil.SORT_DURATION,
+                                    MediaStore.Audio.Media._ID,
+                                    MediaStore.Audio.Media.ARTIST,
+                                    MediaStore.Audio.Media.ALBUM,
+                                    MediaStore.Audio.Media.DATE_MODIFIED,
+                                    MediaStore.Audio.Media.TITLE },
                     null,
                     null,
                     sortBy);

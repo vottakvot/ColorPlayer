@@ -117,7 +117,6 @@ public class FindMedia {
                 String.format("%02d", (ms / 1000) % 60);
     }
 
-
     /**
      * If this is a simple name, like as "1 or CD3" - concat with previous folder.
      * @param path - path to media file
