@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.playme.color_player"
+    package="ru.testsimpleapps.coloraudioplayer"
     android:versionCode="1"
-    android:versionName="1.0"
+    android:versionName="1.0.1"
     android:installLocation="auto">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -18,10 +18,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light"
-        android:name="ru.playme.color_player.PlayerApplication">
+        android:name="ru.testsimpleapps.coloraudioplayer.PlayerApplication">
 
         <activity
-            android:name="ru.playme.color_player.MainActivity"
+            android:name="ru.testsimpleapps.coloraudioplayer.MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name"
             android:launchMode = "singleInstance">
@@ -32,7 +32,7 @@
         </activity>
 
         <activity
-            android:name="ru.playme.color_player.PlayerPreferences"
+            android:name="ru.testsimpleapps.coloraudioplayer.PlayerPreferences"
             android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name"
             android:launchMode = "singleInstance">
@@ -41,7 +41,7 @@
         <service
             android:enabled="true"
             android:exported="true"
-            android:name="ru.playme.color_player.PlayService">
+            android:name="ru.testsimpleapps.coloraudioplayer.PlayService">
             <intent-filter>
                 <action android:name="ru.color_player.action.EXIT"/>
                 <action android:name="ru.color_player.action.PLAY_PAUSE"/>
@@ -53,7 +53,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name="ru.playme.color_player.ActionReceiver">
+        <receiver android:name="ru.testsimpleapps.coloraudioplayer.ActionReceiver">
             <intent-filter
                 android:priority="999">
                 <action android:name="android.media.AUDIO_BECOMING_NOISY"/>
@@ -66,8 +66,8 @@
         </receiver>
 
         <receiver
-            android:name="ru.playme.color_player.PlayerWidget"
-            android:icon="@android:drawable/star_big_on"
+            android:name="ru.testsimpleapps.coloraudioplayer.PlayerWidget"
+            android:icon="@drawable/application"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -78,7 +78,5 @@
                 android:resource="@xml/widget_metadata">
             </meta-data>
         </receiver>
-
     </application>
-
 </manifest>

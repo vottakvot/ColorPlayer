@@ -4,7 +4,6 @@
 	<string name="app_name_action_bar_color">COLOR</string>
 	<string name="app_name_action_bar_audio">AUDIO</string>
 	<string name="app_name_action_bar_player">PLAYER</string>
-	<string name="app_error_message">Send crash report to the developer!</string>
 	<string name="pagePlaylist">Playlist</string>
 	<string name="pageExplorer">Add music</string>
 
@@ -87,17 +86,22 @@
 	<string name="preferences_common_info_about_media_summary">Use hardware buttons "Play", "Next", "Previous" and handset button (one click - play/pause, double click - next) for control player...</string>
 	<string name="preferences_common_info_about_long_tap_title">Long tap</string>
 	<string name="preferences_common_info_about_long_tap_summary">
-		Long tap on "Search" button - move to first position of playlist.
-		Long tap on "Add" button - clear all checks and move to first position.
-		Long tab on running text or play/pause, previous, next - move to current position...
+		Long press on "Search" button - move to first position of playlist.
+		Long press on "Add" button - clear all checks and move to first position.
+		Long press on running text or play/pause, previous, next - move to current position...
 	</string>
 
 	<string name="colors_header">Choose theme color</string>
 
-	<string name="crush_title">Internal application crush.</string>
-	<string name="crush_message">If you want - send report to developer :)</string>
+	<string name="crush_title">Internal application error.</string>
+	<string name="crush_message">If you want, you can send the crash report to the developer :)</string>
 	<string name="crush_button_send">Send</string>
 	<string name="crush_button_cancel">Cancel</string>
+
+	<string name="acra_crush_title">Color audio player. Internal application error.</string>
+	<string name="acra_crush_message_text">If you want, you can send the crash report to the developer by email.</string>
+	<string name="acra_crush_message_comment">Additional information.</string>
+	<string name="acra_crush_ok">Send crash report by email.</string>
 
 	<string-array name="config_drawer_items">
 		<item>Create playlist</item>

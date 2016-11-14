@@ -13,10 +13,10 @@
 
     <string name="About_app">
         <u>ABOUT COLOR AUDIO PLAYER</u>
-        \n<u>Version:</u> 1.0
-        \n<b>Copyright (C) 2016 Color audio player.</b>
-        \n\nThis program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation.
-        \n\nThis program is distributed WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+        \nColor audio player is an ad-free simple local music player. It\'s easy to use and intuitive.
+        \nQuickly find tracks by arranging songs according to artists, albums, folders, your self-created lists etc.
+        \n\nThis program is free software.
+        \n\nE-mail of developer: <u>testsimpleapps@gmail.com</u>
     </string>
 
     <string-array name="visualizer_value">

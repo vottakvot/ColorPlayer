@@ -3,7 +3,6 @@
     <string name="app_name">Color audio player</string>
     <string name="pagePlaylist">Плейлист</string>
     <string name="pageExplorer">Добавить музыку</string>
-    <string name="app_error_message">Послать письмо об ошибке разработчику!</string>
     <string name="drawer_open">Открыть</string>
     <string name="drawer_close">Закрыть</string>
 
@@ -69,7 +68,7 @@
     <string name="timer_type_play">Воспроизвести через заданное время</string>
 
     <string name="preferences_main_preferences">Настройки</string>
-    <string name="preferences_button_receive_title">Получать комады всегда</string>
+    <string name="preferences_button_receive_title">Получать команды всегда</string>
     <string name="preferences_button_receive_summary">Получать команды от медиа-кнопок всё время, с момента загрузки ОС...</string>
     <string name="preferences_track_position_title">Последняя позиция</string>
     <string name="preferences_track_position_summary">Устанавливать последнюю позицию трека при запуске приложения...</string>
@@ -95,6 +94,11 @@
     <string name="crush_message">Если хотите - отправьте отчет разработчику :)</string>
     <string name="crush_button_send">Отправить</string>
     <string name="crush_button_cancel">Отмена</string>
+
+    <string name="acra_crush_title">Color audio player. Внутренняя ошибка приложения.</string>
+    <string name="acra_crush_message_text">Если хотите, можете отправить отчет разработчику по почте.</string>
+    <string name="acra_crush_message_comment">Добавьте свои пожелания ;)</string>
+    <string name="acra_crush_ok">Отправить отчет письмом.</string>
 
     <string-array name="config_drawer_items">
       <item>Создать плейлист</item>
