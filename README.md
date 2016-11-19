@@ -1,8 +1,8 @@
 # ColorPlayer
 Android color player
 
-This is simple example of audio player.
-Player has:
+This is simple example of audio player.<br>
+<b>Player has:</b>
   - play/stop timer
   - 3 colors
   - add/remove playlists
