@@ -13,7 +13,7 @@ Player has:
   - play in background
   - simple widget
   
-Using libs:
+<b>Using libs:</b>
 
   1) ACRA 4.9.1 ver. 
        
