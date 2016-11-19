@@ -14,7 +14,9 @@ Player has:
   - simple widget
   
 Using libs:
-  1) ACRA 4.9.1 ver. http://www.acra.ch/
+  1) ACRA 4.9.1 ver. 
+       
+       http://www.acra.ch/
   
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
