@@ -12,3 +12,6 @@ Player has:
   - find track by name
   - play in background
   - simple widget
+  
+Using libs:
+  1) ACRA 
