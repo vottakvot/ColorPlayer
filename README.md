@@ -14,6 +14,7 @@ Player has:
   - simple widget
   
 Using libs:
+
   1) ACRA 4.9.1 ver. 
        
        http://www.acra.ch/
