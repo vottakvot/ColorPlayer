@@ -4,9 +4,8 @@ Android color player
 ```
 
 This is simple example of audio player.
-``` groovy
+
 Play market: https://play.google.com/store/apps/details?id=ru.testsimpleapps.coloraudioplayer
-```
 
 ## Player has:
   - play/stop timer
