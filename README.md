@@ -1,9 +1,11 @@
-# ColorPlayer
+## ColorPlayer
+``` groovy
 Android color player
+```
 
 This is simple example of audio player.
 
-<b>Player has:</b>
+## Player has:
   - play/stop timer
   - 3 colors
   - add/remove playlists
@@ -14,9 +16,9 @@ This is simple example of audio player.
   - play in background
   - simple widget
   
-<b>Using libs:</b>
+## Using libs:
 
-  1) ACRA 4.9.1 ver. 
+  * ACRA 4.9.1 ver. 
        
        http://www.acra.ch/
   
