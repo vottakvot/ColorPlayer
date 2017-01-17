@@ -1,6 +1,6 @@
 ## ColorPlayer
 ``` groovy
-Android color player
+Android color audio player
 ```
 
 This is simple example of audio player.
