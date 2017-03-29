@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     MainActivity.restartActivity();
                 } else {
-                        Toast.makeText(this, getContext().getResources().getString(R.string.permissions_write_warning), Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, getResources().getString(R.string.permissions_write_warning), Toast.LENGTH_LONG).show();
                     }
 
                 break;
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     PlayService.visualizerInit();
                 } else {
-                        Toast.makeText(this, getContext().getResources().getString(R.string.permissions_record_warning), Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, getResources().getString(R.string.permissions_record_warning), Toast.LENGTH_LONG).show();
                     }
 
                 break;
