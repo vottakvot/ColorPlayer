@@ -330,7 +330,11 @@ public class PlayerApplication extends Application {
         }
 
         if(PlayService.getBassBoost() != null) {
-            sharedPreferences.edit().putInt(BASS_BOOST, (int) PlayService.getBassBoost().getRoundedStrength()).commit();;
+            try {
+                sharedPreferences.edit().putInt(BASS_BOOST, (int) PlayService.getBassBoost().getRoundedStrength()).commit();
+            } finally {
+
+            }
         }
     }
 
