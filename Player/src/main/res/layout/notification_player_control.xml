@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_notification_background">
+    android:background="@drawable/drawable_notification_background">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -17,17 +17,10 @@
         android:src="@drawable/icon_notification"/>
 
     <TextView
-        style="@style/PlayerTextCommon"
+        style="@style/PlayerNotificationTrackName"
         android:id="@+id/nameTrackNotification"
-        android:minLines="1"
-        android:maxLines="3"
-        android:textSize="12sp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
         android:layout_toRightOf="@+id/imageNotification"
         android:layout_toLeftOf="@+id/playPauseNotification"
-        android:gravity="center|center_vertical"
-        android:minHeight="30dp"
         android:text="This is service"/>
 
     <ImageButton

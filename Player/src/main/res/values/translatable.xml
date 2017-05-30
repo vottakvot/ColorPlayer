@@ -4,7 +4,7 @@
 	<string name="app_name_action_bar_color">COLOR</string>
 	<string name="app_name_action_bar_audio">AUDIO</string>
 	<string name="app_name_action_bar_player">PLAYER</string>
-	<string name="pagePlaylist">Playlist</string>
+	<string name="pagePlaylist">Playlist ►</string>
 	<string name="pageExplorer">Add music</string>
 
 	<string name="drawer_open">Drawer open</string>

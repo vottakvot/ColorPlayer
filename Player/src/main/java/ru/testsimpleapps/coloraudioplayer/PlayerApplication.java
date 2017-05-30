@@ -94,7 +94,7 @@ public class PlayerApplication extends Application {
 
     // Control panel
     private boolean isPlay = false;
-    private boolean isRandom = false;
+    private boolean isRandom = true;
     private boolean isExpand = false;
     private int repeat = REPEAT_NONE;
 
@@ -110,7 +110,7 @@ public class PlayerApplication extends Application {
 
     private short equalizerPresent = -1;
     private short [] equalizerBands = null;
-    private short bassBoostStrength = 0;
+    private short bassBoostStrength = 500;
 
     private int numberTheme = 0;
     private int numberVisualizer = 0;
@@ -258,8 +258,8 @@ public class PlayerApplication extends Application {
         Log.i(LOG_APP, this.getClass().getName().toString() + " - loadPreferences");
 
         sharedPreferences = getSharedPreferences(PLAYER_PREFERENCES, MODE_PRIVATE);
-        setIsExpand(sharedPreferences.getBoolean(NOTE_EXPAND, false));
-        setIsRandom(sharedPreferences.getBoolean(NOTE_RANDOM, false));
+        setIsExpand(sharedPreferences.getBoolean(NOTE_EXPAND, true));
+        setIsRandom(sharedPreferences.getBoolean(NOTE_RANDOM, true));
         setSeekCurrentPosition(sharedPreferences.getInt(NOTE_SEEK_POSITION, 0));
         setIsSavePosition(sharedPreferences.getBoolean(NOTE_SAVE_POSITION, false));
         setIsPlayHeadsetOn(sharedPreferences.getBoolean(NOTE_HEADSET_ON, false));
@@ -277,9 +277,9 @@ public class PlayerApplication extends Application {
             setSongId(-1L);
         }
 
-        setRepeat(sharedPreferences.getInt(NOTE_REPEAT, PlayerApplication.REPEAT_NONE));
+        setRepeat(sharedPreferences.getInt(NOTE_REPEAT, PlayerApplication.REPEAT_ALL));
         if (getRepeat() < PlayerApplication.REPEAT_NONE || getRepeat() > PlayerApplication.REPEAT_ALL) {
-            setRepeat(PlayerApplication.REPEAT_NONE);
+            setRepeat(PlayerApplication.REPEAT_ALL);
         }
 
         setNumberTheme(sharedPreferences.getInt(PlayerApplication.NOTE_THEME, PlayerApplication.THEME_BLUE));
@@ -287,9 +287,9 @@ public class PlayerApplication extends Application {
             setNumberTheme(PlayerApplication.THEME_BLUE);
         }
 
-        setNumberVisualizer(sharedPreferences.getInt(PlayerApplication.NOTE_VISUALIZER, PlayerApplication.VISUALIZER_LINE));
+        setNumberVisualizer(sharedPreferences.getInt(PlayerApplication.NOTE_VISUALIZER, PlayerApplication.VISUALIZER_RECT));
         if(getNumberVisualizer() < PlayerApplication.VISUALIZER_NONE || getNumberVisualizer() > PlayerApplication.VISUALIZER_RECT) {
-            setNumberVisualizer(PlayerApplication.VISUALIZER_LINE);
+            setNumberVisualizer(PlayerApplication.VISUALIZER_RECT);
         }
 
         loadAudioEffectsSettings();
@@ -353,9 +353,9 @@ public class PlayerApplication extends Application {
                 }
             }
 
-            bassBoostStrength = (short)sharedPreferences.getInt(BASS_BOOST, 0);
+            bassBoostStrength = (short)sharedPreferences.getInt(BASS_BOOST, 500);
             if(bassBoostStrength < 0 || bassBoostStrength > 1000){
-                bassBoostStrength = 0;
+                bassBoostStrength = (short)500;
             }
 
         } catch(RuntimeException e){

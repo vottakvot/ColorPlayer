@@ -37,6 +37,7 @@
 
     <color name="common_explorer_list_item">#8cfbff00</color>
     <color name="common_find_list_item">#8cfbff00</color>
+    <color name="common_find_text_edit_border">#8cfbff00</color>
     <color name="common_unselected_item">#ffffff</color>
     <color name="common_select_list_item">#ededed</color>
 
@@ -62,7 +63,8 @@
     <color name="common_dialog_background">#8c000000</color>
 
     <color name="common_for_define">#80fff700</color>
-    <color name="common_notification_background">#000000</color>
     <color name="common_config_select">#1affffff</color>
 
+    <color name="common_notification_background">#2b2b2b</color>
+    <color name="common_notification_track_name">#ffffff</color>
 </resources>

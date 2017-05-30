@@ -32,4 +32,7 @@
 
     <!-- Header drawable -->
     <dimen name="player_header_corners_radius">100dp</dimen>
+
+    <!-- Notification track name size -->
+    <dimen name="player_notification_track_name_size">14sp</dimen>
 </resources>
