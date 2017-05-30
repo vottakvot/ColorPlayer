@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         setActionBarActionDrawer();
         customizeActionBar();
         setTimerButton();
+
         PlayService.startService(this);
     }
 
