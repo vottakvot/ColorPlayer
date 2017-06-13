@@ -212,12 +212,14 @@ public class PlayService
 
             if(intent.getAction().equals(ACTION_NEXT)){
                 startForeground(NOTIFICATION_ID, createNotification(getString(R.string.notification_message)));
-                queueHandler.sendEmptyMessage(JUST_NEXT_IT);
+                if(!queueHandler.hasMessages(JUST_NEXT_IT))
+                    queueHandler.sendEmptyMessage(JUST_NEXT_IT);
             }
 
             if(intent.getAction().equals(ACTION_PREVIOUS)){
                 startForeground(NOTIFICATION_ID, createNotification(getString(R.string.notification_message)));
-                queueHandler.sendEmptyMessage(JUST_PREVIOUS_IT);
+                if(!queueHandler.hasMessages(JUST_PREVIOUS_IT))
+                    queueHandler.sendEmptyMessage(JUST_PREVIOUS_IT);
             }
 
             if(intent.getAction().equals(ACTION_SEEK)){

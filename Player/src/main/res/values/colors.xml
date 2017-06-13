@@ -37,7 +37,7 @@
 
     <color name="common_explorer_list_item">#8cfbff00</color>
     <color name="common_find_list_item">#8cfbff00</color>
-    <color name="common_find_text_edit_border">#8cfbff00</color>
+    <color name="common_find_text_edit_border">#a2a400</color>
     <color name="common_unselected_item">#ffffff</color>
     <color name="common_select_list_item">#ededed</color>
 
