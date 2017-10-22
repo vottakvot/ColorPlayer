@@ -13,16 +13,34 @@ def keystoreProperties = new Properties()
 // Load your keystore.properties file into the keystoreProperties object.
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
+
+// Constants
+// App
+def appCode = 6
+def appName = "1.0.6"
+def appId = "ru.testsimpleapps.coloraudioplayer"
+def verTarget = 25
+def verMin = 10
+
+// Libs
+def verSupportLibs = "25.4.0"
+def verConstraint = "1.0.2"
+def verMultidex = "1.0.1"
+def verBuildTool = "25.0.3"
+def verButterKnife = "8.8.1"
+def verACRA = "4.9.1"
+
+
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion verTarget
+    buildToolsVersion verBuildTool
 
     defaultConfig {
-        applicationId "ru.testsimpleapps.coloraudioplayer"
-        minSdkVersion 10
-        targetSdkVersion 23
-        versionCode 6
-        versionName "1.0.6"
+        applicationId appId
+        minSdkVersion verMin
+        targetSdkVersion verTarget
+        versionCode appCode
+        versionName appName
     }
 
     signingConfigs {
@@ -49,6 +67,17 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'ch.acra:acra:4.9.1'
+
+    // Supports
+    compile 'com.android.support:design:' + verSupportLibs
+    compile 'com.android.support:appcompat-v7:' + verSupportLibs
+    compile 'com.android.support:recyclerview-v7:' + verSupportLibs
+    compile 'com.android.support:cardview-v7:' + verSupportLibs
+    compile 'com.android.support.constraint:constraint-layout:' + verConstraint
+    compile 'com.android.support:multidex:' + verMultidex
+
+    // ButterKnife
+    compile 'ch.acra:acra:' + verACRA
+    compile 'com.jakewharton:butterknife:' + verButterKnife
+    annotationProcessor 'com.jakewharton:butterknife-compiler:' + verButterKnife
 }

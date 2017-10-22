@@ -9,9 +9,11 @@
 
     <android.support.v7.widget.RecyclerView
         style="@style/PlayerListCommon"
-        android:id="@+id/playlist_list_fragment"
+        android:id="@+id/explorer_list_fragment"
+        android:choiceMode="singleChoice"
         android:divider="@color/common_transparent"
-        android:background="@drawable/drawable_playlist_background"/>
+        android:background="@drawable/drawable_explorer_background"/>
 
-    <include layout="@layout/playlist_search_track" />
+    <include layout="@layout/explorer_back_add" />
+
 </RelativeLayout>

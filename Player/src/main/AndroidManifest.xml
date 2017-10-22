@@ -13,15 +13,15 @@
     <uses-permission android:name="android.permission.READ_LOGS"/>
 
     <application
+        android:name=".PlayerApplication"
         android:allowBackup="true"
         android:icon="@drawable/application"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light"
-        android:name="ru.testsimpleapps.coloraudioplayer.PlayerApplication">
+        android:theme="@style/Theme.AppCompat.Light">
 
         <activity
-            android:name="ru.testsimpleapps.coloraudioplayer.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name"
             android:launchMode = "singleInstance">
@@ -32,7 +32,7 @@
         </activity>
 
         <activity
-            android:name="ru.testsimpleapps.coloraudioplayer.PlayerPreferences"
+            android:name=".ui.activities.PreferencesActivity"
             android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name"
             android:launchMode = "singleInstance">
@@ -40,20 +40,21 @@
 
         <service
             android:enabled="true"
-            android:exported="true"
-            android:name="ru.testsimpleapps.coloraudioplayer.PlayService">
+            android:exported="false"
+            android:name=".PlayerService">
             <intent-filter>
                 <action android:name="ru.color_player.action.EXIT"/>
-                <action android:name="ru.color_player.action.PLAY_PAUSE"/>
+                <action android:name="ru.color_player.action.PLAY"/>
                 <action android:name="ru.color_player.action.NEXT"/>
                 <action android:name="ru.color_player.action.PREVIOUS"/>
                 <action android:name="ru.color_player.action.SEEK"/>
                 <action android:name="ru.color_player.action.TIMER_START"/>
                 <action android:name="ru.color_player.action.TIMER_STOP"/>
+                <action android:name="ru.color_player.action.AUDIO_EFFECTS"/>
             </intent-filter>
         </service>
 
-        <receiver android:name="ru.testsimpleapps.coloraudioplayer.ActionReceiver">
+        <receiver android:name=".control.receivers.MediaButtonsReceiver">
             <intent-filter
                 android:priority="999">
                 <action android:name="android.media.AUDIO_BECOMING_NOISY"/>
@@ -66,7 +67,7 @@
         </receiver>
 
         <receiver
-            android:name="ru.testsimpleapps.coloraudioplayer.PlayerWidget"
+            android:name=".ui.widgets.PlayerWidget"
             android:icon="@drawable/application"
             android:label="@string/app_name">
             <intent-filter>

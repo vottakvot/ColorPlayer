@@ -58,7 +58,7 @@
     </RelativeLayout>
 
     <!-- Visualizer -->
-    <ru.testsimpleapps.custom_views.PlayerVisualizer
+    <ru.testsimpleapps.coloraudioplayer.ui.views.PlayerVisualizer
         android:id="@+id/visualizerTrack"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

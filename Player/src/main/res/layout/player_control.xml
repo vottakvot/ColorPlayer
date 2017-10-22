@@ -1,77 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/control_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:orientation="vertical"
-    android:background="@color/common_transparent">
+    android:background="@color/blueAccent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/currentTrackName"
-            android:gravity="left|center_vertical"
-            android:singleLine="true"
-            android:textStyle="bold"
-            android:textSize="@dimen/player_controls_track_name_textsize"
-            android:ellipsize="marquee"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
+        android:id="@+id/currentTrackName"
+        android:gravity="left|center_vertical"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:textSize="@dimen/player_controls_track_name_textsize"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:focusableInTouchMode="true"
+        android:freezesText="true"
+        android:background="@color/common_transparent"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+        <requestFocus
+            android:focusable="true"
             android:focusableInTouchMode="true"
-            android:freezesText="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/common_transparent">
+            android:duplicateParentState="true"/>
+    </TextView>
 
-            <requestFocus
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:duplicateParentState="true"/>
-        </TextView>
-    </LinearLayout>
-
-    <!-- If weight not 0, thumb shift down -->
     <SeekBar
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:id="@+id/seekPlayPosition"
-        android:layout_marginBottom="@dimen/player_controls_between_margins"
-        android:layout_marginTop="@dimen/player_controls_between_margins"
         android:minHeight="@dimen/player_controls_seek_height"
         android:maxHeight="@dimen/player_controls_seek_height"
         android:background="@color/common_transparent"
         android:thumb="@color/common_transparent"
         android:progressDrawable="@drawable/drawable_control_seekbar_progress"
-        android:max="100"
-        android:progress="0"/>
+        android:max="1000"
+        android:progress="0"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/currentTrackName"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <RelativeLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:background="@color/common_transparent">
-
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@color/common_transparent"
+        android:id="@+id/relativeLayout"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/seekPlayPosition"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
         <TextView
             style="@style/PlayerControlTrackInfo"
             android:id="@+id/currentPositionTrack"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="20dp"
             android:text="00:00"/>
-
         <TextView
             style="@style/PlayerControlTrackInfo"
             android:id="@+id/currentTrack"
             android:layout_centerInParent="true"
             android:text="0000/0000"/>
-
         <TextView
             style="@style/PlayerControlTrackInfo"
             android:id="@+id/totalTrackTime"
@@ -82,26 +85,30 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/common_transparent"
-        android:layout_marginBottom="@dimen/player_controls_between_margins"
-        android:weightSum="6">
-
+        android:weightSum="6"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
         <ImageButton
             style="@style/PlayerImageButtonCommon"
             android:id="@+id/expand"
             android:layout_weight="1"
             android:background="@drawable/drawable_image_buttons_background"
             android:src="@drawable/expand_inactive"/>
-
         <ImageButton
             style="@style/PlayerImageButtonCommon"
             android:id="@+id/random"
             android:layout_weight="1"
             android:background="@drawable/drawable_image_buttons_background"
             android:src="@drawable/shuffle_inactive"/>
-
         <ImageButton
             style="@style/PlayerImageButtonCommon"
             android:id="@+id/previous"
@@ -115,14 +122,12 @@
             android:layout_weight="1"
             android:background="@drawable/drawable_image_buttons_background"
             android:src="@drawable/play"/>
-
         <ImageButton
             style="@style/PlayerImageButtonCommon"
             android:id="@+id/next"
             android:layout_weight="1"
             android:background="@drawable/drawable_image_buttons_background"
             android:src="@drawable/next"/>
-
         <ImageButton
             style="@style/PlayerImageButtonCommon"
             android:id="@+id/repeat"
@@ -130,4 +135,4 @@
             android:background="@drawable/drawable_image_buttons_background"
             android:src="@drawable/repeat_inactive"/>
     </LinearLayout>
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

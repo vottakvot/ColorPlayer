@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <integer name="fragment_replace_animation_duration">300</integer>
+
     <!-- For playlist-->
     <dimen name="playlist_item_outer_layout_margin">5dp</dimen>
     <dimen name="playlist_item_outer_layout_paddingTop">10dp</dimen>

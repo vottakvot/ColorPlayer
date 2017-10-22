@@ -14,4 +14,5 @@
         android:background="@drawable/drawable_playlist_background"/>
 
     <include layout="@layout/playlist_search_track" />
+
 </RelativeLayout>
