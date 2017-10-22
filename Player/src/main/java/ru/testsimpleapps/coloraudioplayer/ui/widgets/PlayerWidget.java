@@ -8,9 +8,9 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.PlayerApplication;
 
 
 public class PlayerWidget extends AppWidgetProvider {
@@ -26,7 +26,7 @@ public class PlayerWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        Log.d(PlayerApplication.TAG_APP, getClass().getSimpleName() + " - PlayerWidget - action - " + intent.getAction());
+        Log.d(App.TAG_APP, getClass().getSimpleName() + " - PlayerWidget - action - " + intent.getAction());
 
     }
 
@@ -52,11 +52,11 @@ public class PlayerWidget extends AppWidgetProvider {
 
 //        if(trackName != null){
 //            remoteView.setTextViewText(R.id.widgetCurrentTrackName, trackName);
-//        } else if(PlayerApplication.getPlayerApplication().getTrackName() != null){
-//            remoteView.setTextViewText(R.id.widgetCurrentTrackName, PlayerApplication.getPlayerApplication().getTrackName());
+//        } else if(App.getAppContext().getTrackName() != null){
+//            remoteView.setTextViewText(R.id.widgetCurrentTrackName, App.getAppContext().getTrackName());
 //        }
 
-        if(playPause){
+        if (playPause) {
             remoteView.setImageViewResource(R.id.widgetPlayPause, R.drawable.pause);
         } else {
             remoteView.setImageViewResource(R.id.widgetPlayPause, R.drawable.play);

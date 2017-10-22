@@ -9,24 +9,24 @@ public final class StrictQueue<T> extends LinkedList<T> {
     private final static int DEFAULT_SIZE = 64;
     private int maxSize = DEFAULT_SIZE;
 
-    public StrictQueue(){
+    public StrictQueue() {
         this.maxSize = DEFAULT_SIZE;
     }
 
-    public StrictQueue(int maxSize){
-        this.maxSize = maxSize > 0? maxSize : DEFAULT_SIZE;
+    public StrictQueue(int maxSize) {
+        this.maxSize = maxSize > 0 ? maxSize : DEFAULT_SIZE;
     }
 
-    public void push(@Nullable T value){
-        if(size() >= maxSize)
+    public void push(@Nullable T value) {
+        if (size() >= maxSize)
             removeLast();
         addFirst(value);
     }
 
     @Nullable
-    public T pop(){
+    public T pop() {
         T value = null;
-        if(size() > 0) {
+        if (size() > 0) {
             value = getFirst();
             removeFirst();
         }

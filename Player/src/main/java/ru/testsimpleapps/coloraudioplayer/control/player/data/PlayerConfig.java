@@ -5,6 +5,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 
 import java.io.Serializable;
+
 import ru.testsimpleapps.coloraudioplayer.control.player.playlist.IPlaylist;
 
 public final class PlayerConfig implements Serializable {
@@ -68,15 +69,15 @@ public final class PlayerConfig implements Serializable {
     * Audio effects
     * */
     private short mEqualizerPresent = 0;
-    private short [] mEqualizerBands;
+    private short[] mEqualizerBands;
     private short mBassBoostStrength = 0;
 
 
-    public PlayerConfig(){
-        this(false, Repeat.NONE, DEFAULT_SEEK_POSITION, null, null, (short)0, null, (short)0, null);
+    public PlayerConfig() {
+        this(false, Repeat.NONE, DEFAULT_SEEK_POSITION, null, null, (short) 0, null, (short) 0, null);
     }
 
-    public PlayerConfig(PlayerConfig playerConfig){
+    public PlayerConfig(PlayerConfig playerConfig) {
         this(playerConfig.isRandom(),
                 playerConfig.getRepeat(),
                 playerConfig.getLastSeekPosition(),
@@ -94,7 +95,7 @@ public final class PlayerConfig implements Serializable {
                         @Nullable IPlaylist playlist,
                         @Nullable String trackPath,
                         short equalizerPresent,
-                        short [] equalizerBands,
+                        short[] equalizerBands,
                         short bassBoostStrength,
                         String playlistSort) {
 
@@ -160,7 +161,7 @@ public final class PlayerConfig implements Serializable {
 
     @Nullable
     public void setTrackPathFromPlaylist() {
-        if(mPlaylist != null)
+        if (mPlaylist != null)
             mTrackPath = String.valueOf(mPlaylist.getTrackPath());
     }
 

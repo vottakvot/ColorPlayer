@@ -23,10 +23,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.model.FileDataItem;
-import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 import ru.testsimpleapps.coloraudioplayer.control.explorer.FindMedia;
 import ru.testsimpleapps.coloraudioplayer.control.explorer.FoldersArrayList;
+import ru.testsimpleapps.coloraudioplayer.model.FileDataItem;
+import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 
 /*
@@ -34,7 +34,7 @@ import ru.testsimpleapps.coloraudioplayer.control.explorer.FoldersArrayList;
 * */
 public class MediaFoldersAdapter
         extends BaseAdapter
-        implements  ListView.OnItemClickListener {
+        implements ListView.OnItemClickListener {
 
     private final Context context;
     private final LayoutInflater inflater;
@@ -122,9 +122,9 @@ public class MediaFoldersAdapter
     }
 
 
-    public void updateAllMusic(){
+    public void updateAllMusic() {
         FindMedia findMedia = new FindMedia(context);
-        if(findMedia.findMedia()){
+        if (findMedia.findMedia()) {
             mediaTree = foldersTree = findMedia.getMediaTreeFolders();
             albumsTree = findMedia.getMediaTreeAlbums();
             artistsTree = findMedia.getMediaTreeArtists();
@@ -136,33 +136,33 @@ public class MediaFoldersAdapter
         }
     }
 
-    public void setSortByFolders(){
+    public void setSortByFolders() {
         mediaTree = foldersTree;
         mediaTreeKeys = new LinkedHashSet<String>(mediaTree.keySet());
         currentIcoItem = 1;
         notifyDataSetChanged();
     }
 
-    public void setSortByArtists(){
+    public void setSortByArtists() {
         mediaTree = artistsTree;
         mediaTreeKeys = artistsTreeSet;
         currentIcoItem = 2;
         notifyDataSetChanged();
     }
 
-    public void setSortByAlbums(){
+    public void setSortByAlbums() {
         mediaTree = albumsTree;
         mediaTreeKeys = albumsTreeSet;
         currentIcoItem = 3;
         notifyDataSetChanged();
     }
 
-    public void setSortByAZ(){
+    public void setSortByAZ() {
         mediaTreeKeys = new TreeSet<String>(mediaTreeKeys);
         notifyDataSetChanged();
     }
 
-    public void setSortBySize(){
+    public void setSortBySize() {
         sizeTreeSet = new TreeSet<String>(new CompareFoldersSize(mediaTree));
         sizeTreeSet.addAll(mediaTreeKeys);
         mediaTreeKeys = sizeTreeSet;
@@ -171,7 +171,7 @@ public class MediaFoldersAdapter
 
     @Override
     public int getCount() {
-        return (mediaTree != null && mediaTree.size() > 0)? mediaTree.size() : 0;
+        return (mediaTree != null && mediaTree.size() > 0) ? mediaTree.size() : 0;
     }
 
     @Override
@@ -206,13 +206,13 @@ public class MediaFoldersAdapter
             viewHolder.checkFolder = (CheckBox) view.findViewById(R.id.noteFolder);
             view.setTag(viewHolder);
         } else {
-                view = convertView;
-                viewHolder = (ViewHolder) view.getTag();
-            }
+            view = convertView;
+            viewHolder = (ViewHolder) view.getTag();
+        }
 
 
         // Choose icon
-        switch(currentIcoItem){
+        switch (currentIcoItem) {
             case 1:
                 viewHolder.imageFolder.setImageResource(R.drawable.folders);
                 break;
@@ -235,11 +235,11 @@ public class MediaFoldersAdapter
         viewHolder.checkFolder.setOnCheckedChangeListener(checkFolder);
         viewHolder.checkFolder.setChecked(mediaTree.get(key).isChecked());
 
-        if(mediaTree.get(key).isChecked()){
+        if (mediaTree.get(key).isChecked()) {
             view.setBackgroundResource(R.drawable.drawable_listview_item_explorer);
         } else {
-                view.setBackgroundColor(Color.WHITE);
-            }
+            view.setBackgroundColor(Color.WHITE);
+        }
 
         return view;
     }
@@ -249,14 +249,14 @@ public class MediaFoldersAdapter
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(MainActivity.LOG_ACTIVITY, this.getClass().getName().toString() + " - onItemClick - " + position);
 
-        if(isFolder()){
+        if (isFolder()) {
             // Set buttonBack invisible
             explorerButtonBack.setVisibility(ImageButton.VISIBLE);
 
             // Change header's name
             //String folderName = (String) parent.getItemAtPosition(position);
             currentFolderPosition = position - 1;
-            currentFoldersKey = (String)FindMedia.getKeyMediaPosition(mediaTreeKeys, currentFolderPosition);
+            currentFoldersKey = (String) FindMedia.getKeyMediaPosition(mediaTreeKeys, currentFolderPosition);
 
             // TextView header
             TextView textView = (TextView) viewHeader.findViewById(R.id.explorer_list_header);
@@ -312,7 +312,7 @@ public class MediaFoldersAdapter
         return isFolder;
     }
 
-    public View getListHeader(){
+    public View getListHeader() {
         return viewHeader;
     }
 

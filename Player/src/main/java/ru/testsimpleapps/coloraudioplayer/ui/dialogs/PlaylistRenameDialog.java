@@ -7,11 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 import ru.testsimpleapps.coloraudioplayer.ui.MainPages;
+import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 public class PlaylistRenameDialog
-        extends AbstractDialog
+        extends BaseDialog
         implements View.OnClickListener {
 
     private final Context context;
@@ -19,10 +19,11 @@ public class PlaylistRenameDialog
     private Button cancelButton;
     private EditText editText;
 
-    public PlaylistRenameDialog(Context context){
+    public PlaylistRenameDialog(Context context) {
         super(context);
         this.context = context;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +40,10 @@ public class PlaylistRenameDialog
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.playlistRename_create:
-                if( !editText.getText().toString().trim().equals("")){
-                    //CursorTool.renamePlaylist(context.getContentResolver(), PlayerApplication.getPlayerApplication().getPlaylistId(), editText.getText().toString());
-                    if(MainPages.getTextPlaylistHeader() != null){
-                        //MainPages.getTextPlaylistHeader().setText(CursorTool.getPlaylistNameById(context.getContentResolver(), PlayerApplication.getPlayerApplication().getPlaylistId()));
+                if (!editText.getText().toString().trim().equals("")) {
+                    //CursorTool.renamePlaylist(context.getContentResolver(), App.getAppContext().getPlaylistId(), editText.getText().toString());
+                    if (MainPages.getTextPlaylistHeader() != null) {
+                        //MainPages.getTextPlaylistHeader().setText(CursorTool.getPlaylistNameById(context.getContentResolver(), App.getAppContext().getPlaylistId()));
                     }
                     dismiss();
                     MainActivity.showInfoMessage(context.getResources().getString(R.string.playlist_rename_done));

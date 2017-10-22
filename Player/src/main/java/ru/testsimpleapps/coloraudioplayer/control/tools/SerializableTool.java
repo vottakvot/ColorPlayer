@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;
 
 public class SerializableTool {
 
-    public static boolean objectToFile(String path, Object object){
+    public static boolean objectToFile(String path, Object object) {
         ObjectOutputStream outputStream = null;
         try {
             File file = new File(path);
@@ -21,7 +21,7 @@ public class SerializableTool {
             e.printStackTrace();
             return false;
         } finally {
-            if(outputStream != null){
+            if (outputStream != null) {
                 try {
                     outputStream.close();
                 } catch (IOException e) {
@@ -33,7 +33,7 @@ public class SerializableTool {
         return true;
     }
 
-    public static Object fileToObject(String path){
+    public static Object fileToObject(String path) {
         ObjectInputStream objectInputStream = null;
         Object object = null;
         try {
@@ -48,7 +48,7 @@ public class SerializableTool {
             e.printStackTrace();
             return null;
         } finally {
-            if(objectInputStream != null){
+            if (objectInputStream != null) {
                 try {
                     objectInputStream.close();
                 } catch (IOException e) {

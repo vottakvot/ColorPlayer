@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/drawable_dialog"
@@ -12,7 +11,7 @@
         android:id="@+id/playlistCreate_header"
         android:layout_width="wrap_content"
         android:text="@string/colors_header"
-        android:singleLine="true"/>
+        android:singleLine="true" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -24,20 +23,20 @@
             style="@style/PlayerButtonColorBlue"
             android:id="@+id/colors_blue"
             android:layout_marginLeft="20dp"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true" />
 
         <Button
             style="@style/PlayerButtonColorGreen"
             android:id="@+id/colors_green"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_toRightOf="@+id/colors_blue"/>
+            android:layout_toRightOf="@+id/colors_blue" />
 
         <Button
             style="@style/PlayerButtonColorRed"
             android:id="@+id/colors_red"
             android:layout_marginRight="20dp"
-            android:layout_toRightOf="@+id/colors_green"/>
+            android:layout_toRightOf="@+id/colors_green" />
     </RelativeLayout>
 
 </LinearLayout>

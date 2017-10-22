@@ -1,7 +1,6 @@
 package ru.testsimpleapps.coloraudioplayer.ui.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,7 @@ import ru.testsimpleapps.coloraudioplayer.R;
 
 public class ExplorerFragment extends BaseFragment {
 
-    public static final String TAG_FRAGMENT = ExplorerFragment.class.getSimpleName();
+    public static final String TAG = ExplorerFragment.class.getSimpleName();
 
     protected Unbinder mUnbinder;
     @BindView(R.id.explorer_list_fragment)
@@ -32,11 +31,6 @@ public class ExplorerFragment extends BaseFragment {
         mUnbinder = ButterKnife.bind(this, view);
         init();
         return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

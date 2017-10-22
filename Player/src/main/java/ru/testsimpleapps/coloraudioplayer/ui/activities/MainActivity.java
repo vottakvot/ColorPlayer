@@ -14,13 +14,13 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Shader;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -33,12 +33,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.ui.adapters.ConfigAdapter;
-import ru.testsimpleapps.coloraudioplayer.PlayerApplication;
+import ru.testsimpleapps.coloraudioplayer.control.receivers.ViewUpdaterReceiver;
 import ru.testsimpleapps.coloraudioplayer.ui.MainPages;
 import ru.testsimpleapps.coloraudioplayer.ui.PlayerControl;
-import ru.testsimpleapps.coloraudioplayer.control.receivers.ViewUpdaterReceiver;
+import ru.testsimpleapps.coloraudioplayer.ui.adapters.ConfigAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.fragments.PagerFragment;
 
 public class MainActivity extends BaseActivity {
@@ -77,7 +77,7 @@ public class MainActivity extends BaseActivity {
         Log.i(MainActivity.LOG_ACTIVITY, this.getClass().getName().toString() + " - onCreate");
 
         mViewUpdaterReceiver = new ViewUpdaterReceiver(this);
-        PlayerApplication.getPlayerApplication().setCustomTheme(this);
+        App.getAppContext().setCustomTheme(this);
         getPermissionMarshmallow();
         super.onCreate(savedInstanceState);
 //        startService(new Intent(this, PlayerService.class));
@@ -98,8 +98,8 @@ public class MainActivity extends BaseActivity {
 //        setTimerButton();
     }
 
-    private void getPermissionMarshmallow(){
-        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+    private void getPermissionMarshmallow() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Log.i(MainActivity.LOG_ACTIVITY, MainActivity.class + "- getPermissionMarshmallow");
 
             // For work with SD_CARD
@@ -108,7 +108,7 @@ public class MainActivity extends BaseActivity {
             }
 
             // For work with visualizer
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_PERMISSIONS_RECORD);
             }
         }
@@ -118,13 +118,13 @@ public class MainActivity extends BaseActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Log.i(MainActivity.LOG_ACTIVITY, MainActivity.class + "- onRequestPermissionsResult - " + requestCode);
-        switch (requestCode){
+        switch (requestCode) {
             case REQUEST_PERMISSIONS_WRITE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     MainActivity.restartActivity();
                 } else {
-                        Toast.makeText(MainActivity.this, getResources().getString(R.string.permissions_write_warning), Toast.LENGTH_LONG).show();
-                    }
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.permissions_write_warning), Toast.LENGTH_LONG).show();
+                }
 
                 break;
             }
@@ -133,8 +133,8 @@ public class MainActivity extends BaseActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //PlayerService.visualizerInit();
                 } else {
-                        Toast.makeText(MainActivity.this, getResources().getString(R.string.permissions_record_warning), Toast.LENGTH_LONG).show();
-                    }
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.permissions_record_warning), Toast.LENGTH_LONG).show();
+                }
 
                 break;
             }
@@ -169,13 +169,13 @@ public class MainActivity extends BaseActivity {
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
-            if ( v.getId() == R.id.searchTrackInput) {
+            if (v.getId() == R.id.searchTrackInput) {
                 Rect outRectButton = new Rect();
                 findViewById(R.id.searchTrackButton).getGlobalVisibleRect(outRectButton);
                 Rect outRectEdit = new Rect();
                 v.getGlobalVisibleRect(outRectEdit);
-                if (!outRectEdit.contains((int)event.getRawX(), (int)event.getRawY()) &&
-                    !outRectButton.contains((int)event.getRawX(), (int)event.getRawY())) {
+                if (!outRectEdit.contains((int) event.getRawX(), (int) event.getRawY()) &&
+                        !outRectButton.contains((int) event.getRawX(), (int) event.getRawY())) {
                     v.clearFocus();
                     v.setVisibility(View.INVISIBLE);
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -186,15 +186,15 @@ public class MainActivity extends BaseActivity {
         return super.dispatchTouchEvent(event);
     }
 
-    public static float[] getActivitySize(){
-        if(context != null){
+    public static float[] getActivitySize() {
+        if (context != null) {
             int resolution[] = getActivitySizeInt();
-            if(resolution != null){
-                float density  = ((Activity)context).getResources().getDisplayMetrics().density;
+            if (resolution != null) {
+                float density = ((Activity) context).getResources().getDisplayMetrics().density;
                 float dpHeight = resolution[0] / density;
-                float dpWidth  = resolution[1] / density;
+                float dpWidth = resolution[1] / density;
 
-                return new float[] {dpHeight, dpWidth};
+                return new float[]{dpHeight, dpWidth};
             }
         }
 
@@ -202,24 +202,24 @@ public class MainActivity extends BaseActivity {
     }
 
     public static int[] getActivitySizeInt() {
-        if(context != null){
-            Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
-            DisplayMetrics outMetrics = new DisplayMetrics ();
+        if (context != null) {
+            Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+            DisplayMetrics outMetrics = new DisplayMetrics();
             display.getMetrics(outMetrics);
-            return new int[] {outMetrics.heightPixels, outMetrics.widthPixels};
+            return new int[]{outMetrics.heightPixels, outMetrics.widthPixels};
         }
 
         return null;
     }
 
-    public static boolean getOrientation(){
+    public static boolean getOrientation() {
         int displaySize[] = getActivitySizeInt();
-        if(displaySize != null)
-            return displaySize[0] > displaySize[1]? true : false;
+        if (displaySize != null)
+            return displaySize[0] > displaySize[1] ? true : false;
         return true;
     }
 
-    public static float getTextWidth(String text){
+    public static float getTextWidth(String text) {
         return new Paint().measureText(text);
     }
 
@@ -262,9 +262,9 @@ public class MainActivity extends BaseActivity {
         drawerLayout.setDrawerListener(drawerToggle);
     }
 
-    private void setTimerButton(){
+    private void setTimerButton() {
         timerButton = (Button) findViewById(R.id.action_bar_timer);
-        //setTimerButton(PlayerApplication.getPlayerApplication().getViewDataTimer());
+        //setTimerButton(App.getAppContext().getViewDataTimer());
 
         timerButton.setOnClickListener(new Button.OnClickListener() {
 
@@ -275,11 +275,11 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void setFontsSizeAndGradient(){
+    private void setFontsSizeAndGradient() {
         // Change text size programmatically
         // Instead this use various layouts and values
         int screenSize[] = getActivitySizeInt();
-        float coefficient = (float)(screenSize[0] + screenSize[1]) / 1000.0f;
+        float coefficient = (float) (screenSize[0] + screenSize[1]) / 1000.0f;
         TextView actionBarColor = (TextView) findViewById(R.id.action_bar_name_color);
         actionBarColor.setTextSize(actionBarColor.getTextSize() * coefficient);
         TextView actionBarAudio = (TextView) findViewById(R.id.action_bar_name_audio);
@@ -290,14 +290,14 @@ public class MainActivity extends BaseActivity {
         // Gradient set for text
         TextView textView = (TextView) findViewById(R.id.action_bar_name_color);
         textView.measure(0, 0);
-        Shader textShader = new LinearGradient(0, 0, (float)textView.getMeasuredWidth() / 2.0f, 0,
+        Shader textShader = new LinearGradient(0, 0, (float) textView.getMeasuredWidth() / 2.0f, 0,
                 new int[]{Color.RED, Color.GREEN, Color.BLUE},
                 null, Shader.TileMode.MIRROR);
         textView.getPaint().setShader(textShader);
     }
 
     public static void setTimerButton(Bundle viewData) {
-        if(timerButton != null){
+        if (timerButton != null) {
 //            timerButton.setText("Type: " + viewData.getString(PlayerService.SUB_ACTION_TIMER_TYPE) + "\n" +
 //                    String.format("%02d", viewData.getInt(PlayerService.SUB_ACTION_TIME) / 60) +
 //                    ":" + String.format("%02d", viewData.getInt(PlayerService.SUB_ACTION_TIME) % 60));
@@ -311,15 +311,15 @@ public class MainActivity extends BaseActivity {
     }
 
     public static void stopActivity() {
-        if(context != null){
+        if (context != null) {
             Log.i(MainActivity.LOG_ACTIVITY, MainActivity.class + "- stopActivity");
-            ((Activity)MainActivity.context).finish();
+            ((Activity) MainActivity.context).finish();
             infoMessage = null;
             context = null;
         }
     }
 
-    public static void restartActivity(){
+    public static void restartActivity() {
         Intent mStartActivity = new Intent(context, MainActivity.class);
         int mPendingIntentId = 20032016;
         PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -329,7 +329,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public static void showInfoMessage(String message) {
-        if(infoMessage != null){
+        if (infoMessage != null) {
             infoMessage.setText(message);
             infoMessage.show();
         }
@@ -347,7 +347,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void customizeActionBar(){
+    private void customizeActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);

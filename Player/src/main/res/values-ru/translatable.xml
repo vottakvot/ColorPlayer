@@ -101,13 +101,13 @@
     <string name="acra_crush_ok">Отправить отчет письмом.</string>
 
     <string-array name="config_drawer_items">
-      <item>Создать плейлист</item>
-      <item>Выбрать плейлист</item>
-      <item>Эквалайзер</item>
-      <item>Таймер</item>
-      <item>Настройки</item>
-      <item>Выбрать цвет темы</item>
-      <item>Выход</item>
+        <item>Создать плейлист</item>
+        <item>Выбрать плейлист</item>
+        <item>Эквалайзер</item>
+        <item>Таймер</item>
+        <item>Настройки</item>
+        <item>Выбрать цвет темы</item>
+        <item>Выход</item>
     </string-array>
 
     <string name="preferences_visualizer_title">Визуализатор</string>

@@ -16,11 +16,11 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.model.FileDataItem;
-import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 import ru.testsimpleapps.coloraudioplayer.control.explorer.FindMedia;
 import ru.testsimpleapps.coloraudioplayer.control.explorer.FoldersArrayList;
 import ru.testsimpleapps.coloraudioplayer.control.tools.FileTool;
+import ru.testsimpleapps.coloraudioplayer.model.FileDataItem;
+import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 
 /*
@@ -53,12 +53,12 @@ public class MediaFilesAdapter
 
     @Override
     public int getCount() {
-        return (files != null && files.size() > 0)? files.size() : 0;
+        return (files != null && files.size() > 0) ? files.size() : 0;
     }
 
     @Override
     public Object getItem(int position) {
-        return (files != null && files.size() > position)? files.get(position) : null;
+        return (files != null && files.size() > position) ? files.get(position) : null;
     }
 
     @Override
@@ -80,9 +80,9 @@ public class MediaFilesAdapter
             viewHolder.checkFile = (CheckBox) view.findViewById(R.id.noteFiles);
             view.setTag(viewHolder);
         } else {
-                view = convertView;
-                viewHolder = (ViewHolder) view.getTag();
-            }
+            view = convertView;
+            viewHolder = (ViewHolder) view.getTag();
+        }
 
         FileDataItem fileDataItem = files.get(position);
 
@@ -90,7 +90,7 @@ public class MediaFilesAdapter
         viewHolder.nameFile.setText(fileDataItem.getName());
 
         String duration = FindMedia.getDuration(fileDataItem.getDuration());
-        if(duration.length() > 5){
+        if (duration.length() > 5) {
             duration = duration.substring(0, 1) + "H:" + duration.substring(2, 4);
         }
 
@@ -99,11 +99,11 @@ public class MediaFilesAdapter
         viewHolder.checkFile.setOnCheckedChangeListener(checkFile);
         viewHolder.checkFile.setChecked(fileDataItem.isChecked());
 
-        if(fileDataItem.isChecked()){
+        if (fileDataItem.isChecked()) {
             view.setBackgroundResource(R.drawable.drawable_listview_item_explorer);
         } else {
-                view.setBackgroundColor(Color.WHITE);
-            }
+            view.setBackgroundColor(Color.WHITE);
+        }
 
         return view;
     }
@@ -146,16 +146,16 @@ public class MediaFilesAdapter
 
         @Override
         public int compare(FileDataItem lhs, FileDataItem rhs) {
-            return ((Long)lhs.getDuration()).compareTo((Long)rhs.getDuration());
+            return ((Long) lhs.getDuration()).compareTo((Long) rhs.getDuration());
         }
     }
 
-    public void setSortByName(){
+    public void setSortByName() {
         Collections.sort(files, new CompareFilesName(files));
         notifyDataSetChanged();
     }
 
-    public void setSortByLength(){
+    public void setSortByLength() {
         Collections.sort(files, new CompareFilesLength(files));
         notifyDataSetChanged();
     }

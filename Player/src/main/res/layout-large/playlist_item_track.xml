@@ -1,37 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        style="@style/PlayerPlaylistItemLayout">
+    <RelativeLayout style="@style/PlayerPlaylistItemLayout">
 
         <!-- 1 view track -->
         <ImageView
             style="@style/PlayerImageViewCommon"
             android:id="@+id/imageTrack"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true" />
 
         <!-- 2 view number of track -->
         <TextView
             style="@style/PlayerTextCommon"
             android:id="@+id/numberTrack"
             android:layout_alignLeft="@id/imageTrack"
-            android:layout_marginLeft="0dp"/>
+            android:layout_marginLeft="0dp" />
 
         <!-- 4 view duration of track -->
         <TextView
             style="@style/PlayerPlaylistItemTextTextMains"
             android:id="@+id/durationTrack"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true" />
 
         <!-- 3 view name of track -->
         <TextView
             style="@style/PlayerPlaylistItemTextName"
             android:id="@+id/nameTrack"
             android:layout_toRightOf="@id/imageTrack"
-            android:layout_toLeftOf="@id/durationTrack"/>
+            android:layout_toLeftOf="@id/durationTrack" />
 
         <!-- Additional information-->
         <!-- 5 view -->
@@ -43,48 +41,54 @@
             android:layout_toLeftOf="@id/durationTrack"
             android:layout_marginLeft="@dimen/playlist_item_left_margin_into"
             android:orientation="vertical">
-            <LinearLayout
-                style="@style/PlayerPlaylistItemLayoutDescriptions">
+
+            <LinearLayout style="@style/PlayerPlaylistItemLayoutDescriptions">
+
                 <TextView
                     style="@style/PlayerPlaylistItemTextDescription"
                     android:layout_weight="@integer/playlist_item_first_weight_description"
-                    android:text="@string/playlist_item_artists"/>
+                    android:text="@string/playlist_item_artists" />
+
                 <TextView
                     style="@style/PlayerPlaylistItemTextDescription"
                     android:id="@+id/artistTrack"
-                    android:layout_weight="@integer/playlist_item_second_weight_description"/>
+                    android:layout_weight="@integer/playlist_item_second_weight_description" />
             </LinearLayout>
-            <LinearLayout
-                style="@style/PlayerPlaylistItemLayoutDescriptions">
+
+            <LinearLayout style="@style/PlayerPlaylistItemLayoutDescriptions">
+
                 <TextView
                     style="@style/PlayerPlaylistItemTextDescription"
                     android:layout_weight="@integer/playlist_item_first_weight_description"
-                    android:text="@string/playlist_item_album"/>
+                    android:text="@string/playlist_item_album" />
+
                 <TextView
                     style="@style/PlayerPlaylistItemTextDescription"
                     android:id="@+id/albumTrack"
-                    android:layout_weight="@integer/playlist_item_second_weight_description"/>
+                    android:layout_weight="@integer/playlist_item_second_weight_description" />
             </LinearLayout>
-            <LinearLayout
-                style="@style/PlayerPlaylistItemLayoutDescriptions">
+
+            <LinearLayout style="@style/PlayerPlaylistItemLayoutDescriptions">
+
                 <TextView
                     style="@style/PlayerPlaylistItemTextDescription"
                     android:layout_weight="@integer/playlist_item_first_weight_description"
                     android:text="@string/playlist_item_date"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
+
                 <TextView
                     style="@style/PlayerPlaylistItemTextDescription"
                     android:id="@+id/dateTrack"
-                    android:layout_weight="@integer/playlist_item_second_weight_description"/>
+                    android:layout_weight="@integer/playlist_item_second_weight_description" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 
     <!-- Visualizer -->
-    <ru.testsimpleapps.coloraudioplayer.ui.views.PlayerVisualizer
+    <ru.testsimpleapps.coloraudioplayer.ui.views.VisualizerView
         android:id="@+id/visualizerTrack"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/playlist_item_outer_layout_margin"
-        android:background="@color/common_transparent"/>
+        android:background="@color/common_transparent" />
 </FrameLayout>

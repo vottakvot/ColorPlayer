@@ -6,11 +6,11 @@ import android.os.Bundle;
 import ru.testsimpleapps.coloraudioplayer.R;
 
 public class AboutDialog
-        extends AbstractDialog {
+        extends BaseDialog {
 
     private final Context context;
 
-    public AboutDialog(Context context){
+    public AboutDialog(Context context) {
         super(context);
         this.context = context;
     }

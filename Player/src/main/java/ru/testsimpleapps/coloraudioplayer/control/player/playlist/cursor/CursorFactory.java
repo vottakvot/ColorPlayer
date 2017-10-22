@@ -8,7 +8,8 @@ public class CursorFactory {
     private static CursorPlaylist sCursorPlaylist = null;
     private static CursorPlaylist sCursorPlaylistForView = null;
 
-    private CursorFactory(){}
+    private CursorFactory() {
+    }
 
     public static CursorPlaylist setCursorPlaylist(@NonNull final Context context, final long playlistId, final String sort) {
         if (sCursorPlaylist == null)

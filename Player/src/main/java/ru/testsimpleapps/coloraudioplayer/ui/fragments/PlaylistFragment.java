@@ -15,7 +15,7 @@ import ru.testsimpleapps.coloraudioplayer.R;
 
 public class PlaylistFragment extends BaseFragment {
 
-    public static final String TAG_FRAGMENT = PlaylistFragment.class.getSimpleName();
+    public static final String TAG = PlaylistFragment.class.getSimpleName();
 
     protected Unbinder mUnbinder;
     @BindView(R.id.playlist_list_fragment)

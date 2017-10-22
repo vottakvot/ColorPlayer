@@ -7,10 +7,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
-import ru.testsimpleapps.coloraudioplayer.PlayerApplication;
+import ru.testsimpleapps.coloraudioplayer.App;
+import ru.testsimpleapps.coloraudioplayer.control.player.AudioPlayer;
 import ru.testsimpleapps.coloraudioplayer.ui.PlayerControl;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
-import ru.testsimpleapps.coloraudioplayer.control.player.AudioPlayer;
 
 public class ViewUpdaterReceiver extends BroadcastReceiver {
 
@@ -21,14 +21,14 @@ public class ViewUpdaterReceiver extends BroadcastReceiver {
 
     private final MainActivity mAppCompatActivity;
 
-    public ViewUpdaterReceiver(MainActivity appCompatActivity){
+    public ViewUpdaterReceiver(MainActivity appCompatActivity) {
         mAppCompatActivity = appCompatActivity;
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(PlayerApplication.TAG_APP, getClass().getSimpleName() + " - onReceive()");
-        if(intent != null && intent.getAction() != null) {
+        Log.d(App.TAG_APP, getClass().getSimpleName() + " - onReceive()");
+        if (intent != null && intent.getAction() != null) {
             String command = intent.getAction();
 
             if (command.equals(UPDATE_ACTIVITY_EXIT)) {
@@ -54,7 +54,7 @@ public class ViewUpdaterReceiver extends BroadcastReceiver {
         }
     }
 
-    public static IntentFilter getIntentFilter(){
+    public static IntentFilter getIntentFilter() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(UPDATE_PLAY_BUTTON);
         intentFilter.addAction(UPDATE_SEEK_BAR);

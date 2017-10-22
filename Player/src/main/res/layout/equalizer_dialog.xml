@@ -12,13 +12,13 @@
         android:id="@+id/equalizerChooseMode"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginRight="10dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:clickable="false"
-        android:focusable="false"/>
+        android:focusable="false" />
 
     <ListView
         android:id="@+id/equalizerSettings"
@@ -32,6 +32,6 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:clickable="false"
-        android:focusable="false"/>
+        android:focusable="false" />
 
 </LinearLayout>

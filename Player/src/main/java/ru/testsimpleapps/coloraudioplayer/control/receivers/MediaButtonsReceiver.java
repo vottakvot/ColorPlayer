@@ -7,7 +7,7 @@ import android.media.AudioManager;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import ru.testsimpleapps.coloraudioplayer.PlayerApplication;
+import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.PlayerService;
 
 public class MediaButtonsReceiver extends BroadcastReceiver {
@@ -21,9 +21,9 @@ public class MediaButtonsReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(intent != null && intent.getAction() != null){
-            Log.d(PlayerApplication.TAG_APP, getClass().getSimpleName() + " - MediaButtonsReceiver - action - " + intent.getAction());
-            KeyEvent event = (KeyEvent)intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+        if (intent != null && intent.getAction() != null) {
+            Log.d(App.TAG_APP, getClass().getSimpleName() + " - MediaButtonsReceiver - action - " + intent.getAction());
+            KeyEvent event = (KeyEvent) intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
 
             // If this headset on/off
             if (Intent.ACTION_HEADSET_PLUG.equals(intent.getAction())) {
@@ -43,41 +43,41 @@ public class MediaButtonsReceiver extends BroadcastReceiver {
 
             // If this media button
             if (Intent.ACTION_MEDIA_BUTTON.equals(intent.getAction())) {
-                if(!mediaKeyPress(context, event)){
+                if (!mediaKeyPress(context, event)) {
                     abortBroadcast();
                 }
             }
         }
     }
 
-    private boolean mediaKeyPress(Context context, KeyEvent event){
+    private boolean mediaKeyPress(Context context, KeyEvent event) {
         int action = event.getAction();
-        switch(event.getKeyCode()){
+        switch (event.getKeyCode()) {
             case KeyEvent.KEYCODE_HEADSETHOOK:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-                    if (action == KeyEvent.ACTION_DOWN) {
-                        if (System.currentTimeMillis() - sIntervalHandset < INTERVAL_ACTION) {
-                            context.startService(new Intent(PlayerService.ACTION_NEXT)
-                                    .setPackage(context.getPackageName()));
-                        } else {
-                            context.startService(new Intent(PlayerService.ACTION_PLAY)
-                                    .putExtra(PlayerService.KEY_PLAY_PAUSE, PlayerService.KEY_PLAY_PAUSE)
-                                    .setPackage(context.getPackageName()));
-                        }
-
-                        sIntervalHandset = System.currentTimeMillis();
+                if (action == KeyEvent.ACTION_DOWN) {
+                    if (System.currentTimeMillis() - sIntervalHandset < INTERVAL_ACTION) {
+                        context.startService(new Intent(PlayerService.ACTION_NEXT)
+                                .setPackage(context.getPackageName()));
+                    } else {
+                        context.startService(new Intent(PlayerService.ACTION_PLAY)
+                                .putExtra(PlayerService.KEY_PLAY_PAUSE, PlayerService.KEY_PLAY_PAUSE)
+                                .setPackage(context.getPackageName()));
                     }
+
+                    sIntervalHandset = System.currentTimeMillis();
+                }
                 break;
 
             case KeyEvent.KEYCODE_MEDIA_NEXT:
-                if (action == KeyEvent.ACTION_DOWN){
+                if (action == KeyEvent.ACTION_DOWN) {
                     context.startService(new Intent(PlayerService.ACTION_NEXT)
                             .setPackage(context.getPackageName()));
                 }
                 break;
 
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-                if (action == KeyEvent.ACTION_DOWN){
+                if (action == KeyEvent.ACTION_DOWN) {
                     context.startService(new Intent(PlayerService.ACTION_PREVIOUS)
                             .setPackage(context.getPackageName()));
                 }
@@ -85,7 +85,7 @@ public class MediaButtonsReceiver extends BroadcastReceiver {
 
             case KeyEvent.KEYCODE_MEDIA_PLAY:
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
-                if (action == KeyEvent.ACTION_DOWN){
+                if (action == KeyEvent.ACTION_DOWN) {
                     context.startService(new Intent(PlayerService.ACTION_PLAY)
                             .putExtra(PlayerService.KEY_PLAY_PAUSE, PlayerService.KEY_PLAY_PAUSE)
                             .setPackage(context.getPackageName()));
@@ -99,8 +99,8 @@ public class MediaButtonsReceiver extends BroadcastReceiver {
         return true;
     }
 
-    private void headsetPlugAutoPlay(Context context, Intent intent){
-//        if(PlayerApplication.getPlayerApplication().isPlayHeadsetOn()){
+    private void headsetPlugAutoPlay(Context context, Intent intent) {
+//        if(App.getPlayerApplication().isPlayHeadsetOn()){
 //            if(intent.hasExtra(STATE)){
 //                context.startService(new Intent(PlayerService.ACTION_PLAY)
 //                        .putExtra(PlayerService.KEY_PLAY_NEW, PlayerService.KEY_PLAY_NEW)
@@ -112,8 +112,8 @@ public class MediaButtonsReceiver extends BroadcastReceiver {
 //        }
     }
 
-    private void noisyPause(Context context){
-//        if(PlayerApplication.getPlayerApplication().isPlayHeadsetOn()){
+    private void noisyPause(Context context) {
+//        if(App.getPlayerApplication().isPlayHeadsetOn()){
 //            context.startService(new Intent(PlayerService.ACTION_PLAY)
 //                    .putExtra(PlayerService.KEY_PLAY_NEW, PlayerService.KEY_PLAY_NEW)
 //                    .setPackage(context.getPackageName()));
@@ -121,8 +121,8 @@ public class MediaButtonsReceiver extends BroadcastReceiver {
 //        }
     }
 
-    private void doublePowerButton(Context context, Intent intent){
-//        if(PlayerApplication.getPlayerApplication().isPowerButton()){
+    private void doublePowerButton(Context context, Intent intent) {
+//        if(App.getPlayerApplication().isPowerButton()){
 //            if(System.currentTimeMillis() - sIntervalPower < INTERVAL_ACTION){
 //                context.startService(new Intent(PlayerService.ACTION_PLAY)
 //                        .putExtra(PlayerService.KEY_PLAY_PAUSE, PlayerService.KEY_PLAY_PAUSE)

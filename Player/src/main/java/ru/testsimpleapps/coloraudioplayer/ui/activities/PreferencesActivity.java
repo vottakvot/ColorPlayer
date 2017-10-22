@@ -8,7 +8,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
-import ru.testsimpleapps.coloraudioplayer.PlayerApplication;
+import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.AboutDialog;
 
@@ -18,7 +18,7 @@ public class PreferencesActivity
 
     private static AboutDialog aboutDialog;
     private static Preference aboutPref;
-    private static final Preference.OnPreferenceClickListener onPreferenceClickListener = new Preference.OnPreferenceClickListener(){
+    private static final Preference.OnPreferenceClickListener onPreferenceClickListener = new Preference.OnPreferenceClickListener() {
         @Override
         public boolean onPreferenceClick(Preference preference) {
             aboutDialog.show();
@@ -28,7 +28,7 @@ public class PreferencesActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PlayerApplication.getPlayerApplication().setCustomTheme(this);
+        App.getAppContext().setCustomTheme(this);
         super.onCreate(savedInstanceState);
         aboutDialog = new AboutDialog(this);
 
@@ -45,24 +45,24 @@ public class PreferencesActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-        if(key.equals(getString(R.string.ButtonsReceive))){
-            //PlayerApplication.getPlayerApplication().setIsActiveOnBoot(sharedPreferences.getBoolean(key, false));
+        if (key.equals(getString(R.string.ButtonsReceive))) {
+            //App.getAppContext().setIsActiveOnBoot(sharedPreferences.getBoolean(key, false));
         }
 
-        if(key.equals(getString(R.string.LastTrackPosition))){
-           // PlayerApplication.getPlayerApplication().setIsSavePosition(sharedPreferences.getBoolean(key, false));
+        if (key.equals(getString(R.string.LastTrackPosition))) {
+            // App.getAppContext().setIsSavePosition(sharedPreferences.getBoolean(key, false));
         }
 
 //        if(key.equals(getString(R.string.HeadsetPlug))){
-//            PlayerApplication.getPlayerApplication().setIsPlayHeadsetOn(sharedPreferences.getBoolean(key, false));
+//            App.getAppContext().setIsPlayHeadsetOn(sharedPreferences.getBoolean(key, false));
 //        }
 //
 //        if(key.equals(getString(R.string.DoublePower))){
-//            PlayerApplication.getPlayerApplication().setIsPowerButton(sharedPreferences.getBoolean(key, false));
+//            App.getAppContext().setIsPowerButton(sharedPreferences.getBoolean(key, false));
 //        }
 
 //        if(key.equals(getString(R.string.Visualizer))){
-//            PlayerApplication.getPlayerApplication().setNumberVisualizer(Integer.parseInt(sharedPreferences.getString(key, Integer.toString(PlayerApplication.VISUALIZER_LINE))));
+//            App.getAppContext().setNumberVisualizer(Integer.parseInt(sharedPreferences.getString(key, Integer.toString(App.VISUALIZER_LINE))));
 //        }
     }
 
@@ -92,7 +92,7 @@ public class PreferencesActivity
             getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
         }
 
-        public PlayerPreferenceFragment setListeners(SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener){
+        public PlayerPreferenceFragment setListeners(SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener) {
             this.sharedPreferenceChangeListener = sharedPreferenceChangeListener;
             return this;
         }

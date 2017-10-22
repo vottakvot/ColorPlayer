@@ -6,6 +6,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 
 import java.io.File;
+
 import ru.testsimpleapps.coloraudioplayer.control.player.playlist.IPlaylist;
 
 public class CursorPlaylist implements IPlaylist {
@@ -24,37 +25,37 @@ public class CursorPlaylist implements IPlaylist {
 
     @Override
     public boolean toFirst() {
-        return mPlaylist != null? mPlaylist.moveToFirst() : false;
+        return mPlaylist != null ? mPlaylist.moveToFirst() : false;
     }
 
     @Override
     public boolean toLast() {
-        return mPlaylist != null? mPlaylist.moveToLast() : false;
+        return mPlaylist != null ? mPlaylist.moveToLast() : false;
     }
 
     @Override
     public boolean goTo(int position) {
-        return mPlaylist != null? mPlaylist.moveToPosition(position) : false;
+        return mPlaylist != null ? mPlaylist.moveToPosition(position) : false;
     }
 
     @Override
     public boolean toNext() {
-        return mPlaylist != null? mPlaylist.moveToNext() : false;
+        return mPlaylist != null ? mPlaylist.moveToNext() : false;
     }
 
     @Override
     public boolean toPrevious() {
-        return mPlaylist != null? mPlaylist.moveToPrevious() : false;
+        return mPlaylist != null ? mPlaylist.moveToPrevious() : false;
     }
 
     @Override
     public long size() {
-        return mPlaylist != null? mPlaylist.getCount() : NOT_INIT;
+        return mPlaylist != null ? mPlaylist.getCount() : NOT_INIT;
     }
 
     @Override
     public long position() {
-        return mPlaylist != null? mPlaylist.getPosition() : NOT_INIT;
+        return mPlaylist != null ? mPlaylist.getPosition() : NOT_INIT;
     }
 
     @Override
@@ -64,12 +65,12 @@ public class CursorPlaylist implements IPlaylist {
 
     @Override
     public long getTrackId() {
-        return mPlaylist != null? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media._ID)) : NOT_INIT;
+        return mPlaylist != null ? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media._ID)) : NOT_INIT;
     }
 
     @Override
     public String getTrackPath() {
-        return mPlaylist != null? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DATA)) : "";
+        return mPlaylist != null ? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DATA)) : "";
     }
 
     @Override
@@ -79,37 +80,37 @@ public class CursorPlaylist implements IPlaylist {
 
     @Override
     public String getTrackArtist() {
-        return mPlaylist != null? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.ARTIST)) : "";
+        return mPlaylist != null ? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.ARTIST)) : "";
     }
 
     @Override
     public String getTrackTitle() {
-        return mPlaylist != null? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.TITLE)) : "";
+        return mPlaylist != null ? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.TITLE)) : "";
     }
 
     @Override
     public String getTrackAlbum() {
-        return mPlaylist != null? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.ALBUM)) : "";
+        return mPlaylist != null ? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.ALBUM)) : "";
     }
 
     @Override
     public long getTrackDuration() {
-        return mPlaylist != null? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DURATION)) : NOT_INIT;
+        return mPlaylist != null ? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DURATION)) : NOT_INIT;
     }
 
     @Override
     public long getTrackDateModified() {
-        return mPlaylist != null? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED)) * 1000L : NOT_INIT;
+        return mPlaylist != null ? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED)) * 1000L : NOT_INIT;
     }
 
     @Override
     public long find(final int position, final String name) {
-        if(name != null && !name.equals("")){
-            if(goTo(position)){
+        if (name != null && !name.equals("")) {
+            if (goTo(position)) {
                 do {
-                    if(getTrackName().matches("(?i).*(" + name + ").*"))
+                    if (getTrackName().matches("(?i).*(" + name + ").*"))
                         return position();
-                } while(toNext());
+                } while (toNext());
             }
         }
 
@@ -130,7 +131,7 @@ public class CursorPlaylist implements IPlaylist {
     }
 
     public IPlaylist setCursor(final long playlistId, final String sortBy) {
-        if(playlistId > -1) {
+        if (playlistId > -1) {
             mPlaylistId = playlistId;
             mSortBy = sortBy;
             Cursor activePlaylist = CursorTool.getTracksFromPlaylist(mContext.getContentResolver(), mPlaylistId, sortBy);
@@ -145,7 +146,7 @@ public class CursorPlaylist implements IPlaylist {
     }
 
     public void closeCursor() {
-        if(mPlaylist != null && !mPlaylist.isClosed())
+        if (mPlaylist != null && !mPlaylist.isClosed())
             mPlaylist.close();
     }
 

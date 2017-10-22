@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <shape
-            android:shape="rectangle">
-            <corners
-                android:radius="10dp"/>
+        <shape android:shape="rectangle">
+            <corners android:radius="10dp" />
             <gradient
                 android:angle="90"
                 android:endColor="@color/common_item_drawable_background_gradient_begin"
                 android:centerColor="@color/common_item_drawable_background_gradient_end"
                 android:startColor="@color/common_item_drawable_background_gradient_begin"
-                android:type="linear"/>
+                android:type="linear" />
         </shape>
     </item>
     <item
@@ -18,16 +16,14 @@
         android:left="2dp"
         android:right="2dp"
         android:top="2dp">
-        <shape
-            android:shape="rectangle">
-            <corners
-                android:radius="10dp"/>
+        <shape android:shape="rectangle">
+            <corners android:radius="10dp" />
             <gradient
                 android:angle="90"
                 android:endColor="@color/common_item_drawable_background_gradient_end"
                 android:centerColor="@color/common_item_drawable_background_gradient_begin"
                 android:startColor="@color/common_item_drawable_background_gradient_end"
-                android:type="linear"/>
+                android:type="linear" />
         </shape>
     </item>
 </layer-list>

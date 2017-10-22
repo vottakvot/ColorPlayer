@@ -14,15 +14,15 @@ public class BugReportDialog {
     private final AlertDialog alertDialog;
     private final String fullMessage;
 
-    public BugReportDialog(final Context context, final String message){
+    public BugReportDialog(final Context context, final String message) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setTitle(context.getResources().getString(R.string.crush_title));
         alertDialogBuilder.setMessage(context.getResources().getString(R.string.crush_message));
         alertDialogBuilder.setCancelable(true);
 
-        fullMessage =   "Version:_" + Build.VERSION.RELEASE.replace(" ", "_") + "\n" +
-                        "Manufacturer:_" + Build.MANUFACTURER.replace(" ", "_") + "\n" +
-                        "Model:_" + Build.MODEL.replace(" ", "_") + "\n" + message.replace(" ", "_");
+        fullMessage = "Version:_" + Build.VERSION.RELEASE.replace(" ", "_") + "\n" +
+                "Manufacturer:_" + Build.MANUFACTURER.replace(" ", "_") + "\n" +
+                "Model:_" + Build.MODEL.replace(" ", "_") + "\n" + message.replace(" ", "_");
 
         alertDialogBuilder.setPositiveButton(context.getResources().getString(R.string.crush_button_send), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
@@ -39,7 +39,7 @@ public class BugReportDialog {
         alertDialog = alertDialogBuilder.create();
     }
 
-    public static void sendEmail(Context context, String to, String subject, String body){
+    public static void sendEmail(Context context, String to, String subject, String body) {
         StringBuilder builder = new StringBuilder("mailto:" + Uri.encode(to));
         if (subject != null) {
             builder.append("?subject=" + Uri.encode(Uri.encode(subject)));
@@ -50,7 +50,7 @@ public class BugReportDialog {
         context.startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(builder.toString())));
     }
 
-    public void show(){
+    public void show() {
         alertDialog.show();
     }
 }

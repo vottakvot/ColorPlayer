@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import ru.testsimpleapps.coloraudioplayer.PlayerApplication;
+import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 public class ColorsDialog
-        extends AbstractDialog
+        extends BaseDialog
         implements View.OnClickListener {
 
     private final Context context;
@@ -18,10 +18,11 @@ public class ColorsDialog
     private Button redButton;
     private Button blueButton;
 
-    public ColorsDialog(Context context){
+    public ColorsDialog(Context context) {
         super(context);
         this.context = context;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,24 +38,24 @@ public class ColorsDialog
 
     @Override
     public void onClick(View v) {
-        int current = PlayerApplication.getPlayerApplication().getNumberTheme();
+        int current = App.getAppContext().getNumberTheme();
         int select = 0;
         switch (v.getId()) {
             case R.id.colors_blue:
-                select = PlayerApplication.getPlayerApplication().setNumberTheme(PlayerApplication.THEME_BLUE);
+                select = App.getAppContext().setNumberTheme(App.THEME_BLUE);
                 break;
             case R.id.colors_green:
-                select = PlayerApplication.getPlayerApplication().setNumberTheme(PlayerApplication.THEME_GREEN);
+                select = App.getAppContext().setNumberTheme(App.THEME_GREEN);
                 break;
             case R.id.colors_red:
-                select = PlayerApplication.getPlayerApplication().setNumberTheme(PlayerApplication.THEME_RED);
+                select = App.getAppContext().setNumberTheme(App.THEME_RED);
                 break;
         }
 
-        //PlayerApplication.getPlayerApplication().savePreferences();
+        //App.getAppContext().savePreferences();
         dismiss();
 
-        if(current != select){
+        if (current != select) {
             MainActivity.restartActivity();
         }
     }

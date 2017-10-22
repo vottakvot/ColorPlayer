@@ -23,18 +23,18 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import ru.testsimpleapps.coloraudioplayer.PlayerApplication;
+import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.ui.adapters.PlaylistAdapter;
+import ru.testsimpleapps.coloraudioplayer.control.explorer.FoldersArrayList;
 import ru.testsimpleapps.coloraudioplayer.control.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.control.player.playlist.IPlaylist;
 import ru.testsimpleapps.coloraudioplayer.control.player.playlist.cursor.CursorPlaylist;
 import ru.testsimpleapps.coloraudioplayer.control.player.playlist.cursor.CursorTool;
-import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
-import ru.testsimpleapps.coloraudioplayer.ui.dialogs.PlaylistRenameDialog;
 import ru.testsimpleapps.coloraudioplayer.model.FileDataItem;
-import ru.testsimpleapps.coloraudioplayer.control.explorer.FoldersArrayList;
+import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.MediaFoldersAdapter;
+import ru.testsimpleapps.coloraudioplayer.ui.adapters.PlaylistAdapter;
+import ru.testsimpleapps.coloraudioplayer.ui.dialogs.PlaylistRenameDialog;
 
 public class MainPages {
 
@@ -72,7 +72,7 @@ public class MainPages {
         this.fragmentManager = fragmentManager;
         this.tabsAdapter = new AdapterForPages(fragmentManager);
 
-        mPlayerConfig = PlayerApplication.getPlayerApplication().getPlayerConfig();
+        mPlayerConfig = App.getAppContext().getPlayerConfig();
         viewPager.setAdapter(tabsAdapter);
     }
 
@@ -93,10 +93,10 @@ public class MainPages {
             return pageFragment;
         }
 
-        static public void changePlaylistBackground(){
-            if(playlistView != null && playlistAdapter != null){
-                if(playlistAdapter.getItemCount() <= 0){
-                    if(MainActivity.getOrientation()){
+        static public void changePlaylistBackground() {
+            if (playlistView != null && playlistAdapter != null) {
+                if (playlistAdapter.getItemCount() <= 0) {
+                    if (MainActivity.getOrientation()) {
                         playlistView.setBackgroundResource(R.drawable.hints_vertical_playlist);
                     } else {
                         playlistView.setBackgroundResource(R.drawable.hints_horizontal_playlist);
@@ -107,10 +107,10 @@ public class MainPages {
             }
         }
 
-        static public void changeExplorerBackground(){
-            if(explorerListView != null && folderlistAdapter != null){
-                if(folderlistAdapter.getCount() <= 0){
-                    if(MainActivity.getOrientation()){
+        static public void changeExplorerBackground() {
+            if (explorerListView != null && folderlistAdapter != null) {
+                if (folderlistAdapter.getCount() <= 0) {
+                    if (MainActivity.getOrientation()) {
                         explorerListView.setBackgroundResource(R.drawable.hints_vertical_explorer);
                     } else {
                         explorerListView.setBackgroundResource(R.drawable.hints_horizontal_explorer);
@@ -132,9 +132,9 @@ public class MainPages {
                                  ViewGroup container,
                                  Bundle savedInstanceState) {
 
-            switch(pageNumber){
+            switch (pageNumber) {
                 // First page with playlist
-                case 0 : {
+                case 0: {
                     view = inflater.inflate(R.layout.playlist_list_tracks, null);
                     playlistView = (RecyclerView) view.findViewById(R.id.playlist_list_fragment);
                     playlistAdapter = new PlaylistAdapter(context);
@@ -147,7 +147,7 @@ public class MainPages {
                         }
                     });
 
-                    textPlaylistHeader = (TextView)playlistHeader.findViewById(R.id.playlist_header);
+                    textPlaylistHeader = (TextView) playlistHeader.findViewById(R.id.playlist_header);
                     textPlaylistHeader.setText(CursorTool.getPlaylistNameById(context.getContentResolver(), mPlayerConfig.getPlaylistId()));
 
                     playlistRenameDialog = new PlaylistRenameDialog(context);
@@ -175,7 +175,7 @@ public class MainPages {
                                 playlistSearchInput.setVisibility(EditText.VISIBLE);
                                 playlistSearchInput.requestFocus();
                             } else {
-                                try{
+                                try {
                                     if (!playlistSearchInput.getText().toString().trim().equals("")) {
                                         // If is number, then to to position
 //                                        if (playlistSearchInput.getText().toString().trim().matches("^\\d+$") &&
@@ -193,10 +193,10 @@ public class MainPages {
 //                                            }
 //                                        }
                                     } else {
-                                            MainActivity.showInfoMessage(context.getResources().getString(R.string.playlist_search_empty));
-                                        }
+                                        MainActivity.showInfoMessage(context.getResources().getString(R.string.playlist_search_empty));
+                                    }
 
-                            } catch (RuntimeException e){
+                                } catch (RuntimeException e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -223,7 +223,7 @@ public class MainPages {
                     break;
                 }
                 // Second page with explorer
-                case 1 : {
+                case 1: {
                     view = inflater.inflate(R.layout.fragment_explorer, null);
 
                     // Button back
@@ -255,9 +255,9 @@ public class MainPages {
                                     // Now we're in root
                                     folderlistAdapter.setIsFolder(true);
                                 }
-                            } catch(RuntimeException e){
-                                    e.printStackTrace();
-                                }
+                            } catch (RuntimeException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
 
@@ -273,7 +273,7 @@ public class MainPages {
                                 IPlaylist playlist = mPlayerConfig.getPlaylist();
                                 if (playlist.getPlaylistId() == -1) {
                                     long idPlaylist = CursorTool.getPlaylistIdByName(context.getContentResolver(), context.getResources().getString(R.string.temp_playlist));
-                                    if(idPlaylist == -1)
+                                    if (idPlaylist == -1)
                                         idPlaylist = CursorTool.createPlaylist(context.getContentResolver(), context.getResources().getString(R.string.temp_playlist));
 
                                     ((CursorPlaylist) playlist).setCursor(idPlaylist, CursorTool.SORT_NONE);
@@ -322,15 +322,15 @@ public class MainPages {
                                 // Update textview with count tracks
                                 PlayerControl.setCountTracks();
 
-                                if (totalAddTrack != 0){
+                                if (totalAddTrack != 0) {
                                     playlistView.setBackgroundResource(R.drawable.drawable_playlist_background);
                                     MainActivity.showInfoMessage(context.getResources().getString(R.string.explorer_add_to_playlist) + " " + totalAddTrack);
                                 } else
                                     MainActivity.showInfoMessage(context.getResources().getString(R.string.explorer_add_to_playlist_nothing));
 
-                            } catch (RuntimeException e){
-                                    e.printStackTrace();
-                                }
+                            } catch (RuntimeException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
 
@@ -340,9 +340,9 @@ public class MainPages {
                             try {
                                 clearCheck();
                                 MainActivity.showInfoMessage(context.getResources().getString(R.string.explorer_clear_check));
-                            } catch (RuntimeException e){
-                                    e.printStackTrace();
-                                }
+                            } catch (RuntimeException e) {
+                                e.printStackTrace();
+                            }
 
                             return true;
                         }
@@ -352,7 +352,7 @@ public class MainPages {
                     explorerListView = (ListView) view.findViewById(R.id.explorer_list_fragment);
                     folderlistAdapter = new MediaFoldersAdapter(context, explorerListView, explorerButtonBack);
                     explorerHeader = folderlistAdapter.getListHeader();
-                    textExplorerHeader = (TextView)explorerHeader.findViewById(R.id.explorer_list_header);
+                    textExplorerHeader = (TextView) explorerHeader.findViewById(R.id.explorer_list_header);
                     explorerListView.addHeaderView(explorerHeader);
                     explorerListView.setAdapter(folderlistAdapter);
                     explorerListView.setOnItemClickListener(folderlistAdapter);
@@ -366,7 +366,7 @@ public class MainPages {
             return view;
         }
 
-        private void clearCheck() throws RuntimeException{
+        private void clearCheck() throws RuntimeException {
             if (folderlistAdapter.isFolder()) {
                 for (LinkedHashMap.Entry<String, FoldersArrayList<FileDataItem>> folder : folderlistAdapter.getMediaTree().entrySet()) {
                     folder.getValue().setChecked(false);
@@ -379,24 +379,24 @@ public class MainPages {
                 folderlistAdapter.getCurrentMediaFilesAdapter().notifyDataSetInvalidated();
             }
 
-            if(explorerListView != null){
+            if (explorerListView != null) {
                 explorerListView.setSelection(0);
             }
         }
 
         @Override
-        public void onResume(){
+        public void onResume() {
             super.onResume();
-            //PlayerControl.setPlayPauseImage(PlayerApplication.getPlayerApplication().isPlay());
+            //PlayerControl.setPlayPauseImage(App.getAppContext().isPlay());
             PlayerControl.setCountTracks();
         }
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             super.onCreateContextMenu(menu, v, menuInfo);
-            switch(v.getId()){
+            switch (v.getId()) {
                 case R.id.explorer_list_fragment:
-                    if(folderlistAdapter.isFolder()){
+                    if (folderlistAdapter.isFolder()) {
                         getActivity().getMenuInflater().inflate(R.menu.explorer_popup_menu_folders, menu);
                     } else {
                         getActivity().getMenuInflater().inflate(R.menu.explorer_popup_menu_files, menu);
@@ -466,9 +466,9 @@ public class MainPages {
                         return true;
                 }
 
-            } catch (RuntimeException e){
-                    e.printStackTrace();
-                }
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
 
             return super.onContextItemSelected(item);
         }
@@ -479,9 +479,9 @@ public class MainPages {
         return playlistAdapter;
     }
 
-    public static void setPlaylistPosition() throws RuntimeException{
-        IPlaylist playlist = PlayerApplication.getPlayerApplication().getPlayerConfig().getPlaylist();
-        if(playlistView != null && playlist != null && playlist.position() != -1){
+    public static void setPlaylistPosition() throws RuntimeException {
+        IPlaylist playlist = App.getAppContext().getPlayerConfig().getPlaylist();
+        if (playlistView != null && playlist != null && playlist.position() != -1) {
             playlistAdapter.notifyDataSetChanged();
 //            playlistView.setSelection((int)playlist.position());
         }
@@ -495,7 +495,7 @@ public class MainPages {
         final int firstListItemPosition = listView.getFirstVisiblePosition();
         final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
 
-        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+        if (pos < firstListItemPosition || pos > lastListItemPosition) {
             return listView.getAdapter().getView(pos, null, listView);
         } else {
             final int childIndex = pos - firstListItemPosition;
@@ -515,9 +515,11 @@ public class MainPages {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch(position) {
-                case 0 : return context.getResources().getString(R.string.pagePlaylist);
-                case 1 : return context.getResources().getString(R.string.pageExplorer);
+            switch (position) {
+                case 0:
+                    return context.getResources().getString(R.string.pagePlaylist);
+                case 1:
+                    return context.getResources().getString(R.string.pageExplorer);
             }
 
             return "Not_named_№" + position;

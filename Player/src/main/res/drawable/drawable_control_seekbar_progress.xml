@@ -1,27 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@android:id/background">
-        <shape
-            android:shape="rectangle">
-            <size
-                android:height="10dp"/>
-            <corners
-                android:radius="10dp" />
-            <solid
-                android:color="@color/common_white_background"/>
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <size android:height="10dp" />
+            <corners android:radius="10dp" />
+            <solid android:color="@color/common_white_background" />
         </shape>
     </item>
 
-    <item
-        android:id="@android:id/progress">
+    <item android:id="@android:id/progress">
         <clip>
-            <shape
-                android:shape="rectangle">
-                <corners
-                    android:radius="10dp"/>
-                <solid
-                    android:color="@color/common_seekbar_progress"/>
+            <shape android:shape="rectangle">
+                <corners android:radius="10dp" />
+                <solid android:color="@color/common_seekbar_progress" />
             </shape>
         </clip>
     </item>

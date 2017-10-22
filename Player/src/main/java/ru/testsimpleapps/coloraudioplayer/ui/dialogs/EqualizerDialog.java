@@ -26,9 +26,9 @@ import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 public class EqualizerDialog
-        extends AbstractDialog
+        extends BaseDialog
         implements SeekBar.OnSeekBarChangeListener,
-                    Spinner.OnItemSelectedListener {
+        Spinner.OnItemSelectedListener {
 
     public static final int NORMAL_PRIORITY = 0;
     private final int MAX_RANGE = 20;
@@ -61,22 +61,22 @@ public class EqualizerDialog
         chooseMode = (Spinner) equalizerView.findViewById(R.id.equalizerChooseMode);
     }
 
-    public void getAudioObjects(){
+    public void getAudioObjects() {
         this.equalizer = PlayerService.getAudioService().getEqualizer();
         this.bassBoost = PlayerService.getAudioService().getBassBoost();
     }
 
-    private void initMinMaxLevel(){
-        if(equalizer != null){
-            minLevel = (equalizer.getBandLevelRange()[0] != 0)? equalizer.getBandLevelRange()[0] : 1;
-            maxLevel = (equalizer.getBandLevelRange()[1] != 0)? equalizer.getBandLevelRange()[1] : 1;
+    private void initMinMaxLevel() {
+        if (equalizer != null) {
+            minLevel = (equalizer.getBandLevelRange()[0] != 0) ? equalizer.getBandLevelRange()[0] : 1;
+            maxLevel = (equalizer.getBandLevelRange()[1] != 0) ? equalizer.getBandLevelRange()[1] : 1;
         }
     }
 
-    private void initSpinner(){
-        if(equalizer != null && equalizer.getNumberOfPresets() > 0){
+    private void initSpinner() {
+        if (equalizer != null && equalizer.getNumberOfPresets() > 0) {
             defaultModes = new HashMap<>();
-            for(Short i = 0; i < equalizer.getNumberOfPresets(); i++){
+            for (Short i = 0; i < equalizer.getNumberOfPresets(); i++) {
                 defaultModes.put(i, equalizer.getPresetName(i));
             }
 
@@ -88,15 +88,15 @@ public class EqualizerDialog
             chooseMode.setAdapter(adapter);
             chooseMode.setOnItemSelectedListener(this);
 
-//            if(PlayerApplication.getPlayerApplication().getEqualizerPresent() != -1){
-//                chooseMode.setSelection(PlayerApplication.getPlayerApplication().getEqualizerPresent());
+//            if(App.getAppContext().getEqualizerPresent() != -1){
+//                chooseMode.setSelection(App.getAppContext().getEqualizerPresent());
 //            } else {
 //                    chooseMode.setSelection(equalizer.getNumberOfPresets());
 //                }
         }
     }
 
-    private String milliHzToString (int milliHz){
+    private String milliHzToString(int milliHz) {
         if (milliHz < 1000)
             return "";
         if (milliHz < 1000000)
@@ -105,8 +105,8 @@ public class EqualizerDialog
             return "" + (milliHz / 1000000) + "kHz";
     }
 
-    private short getBandPosition(int position){
-        return (short)((bassBoost != null)? (position - 1) : position);
+    private short getBandPosition(int position) {
+        return (short) ((bassBoost != null) ? (position - 1) : position);
     }
 
     @Override
@@ -140,12 +140,12 @@ public class EqualizerDialog
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         Log.i(MainActivity.LOG_ACTIVITY, this.getClass().getName().toString() + "onStopTrackingTouch - tag: " + seekBar.getTag());
-        if(bassBoost != null && (int)seekBar.getTag() == 0){
-            bassBoost.setStrength((short)(seekBar.getProgress() * 50));
-//            PlayerApplication.getPlayerApplication().setBassBoostStrength(bassBoost.getRoundedStrength());
+        if (bassBoost != null && (int) seekBar.getTag() == 0) {
+            bassBoost.setStrength((short) (seekBar.getProgress() * 50));
+//            App.getAppContext().setBassBoostStrength(bassBoost.getRoundedStrength());
         } else if (equalizer != null) {
-            short newLevel = (short)(minLevel + (maxLevel - minLevel) * seekBar.getProgress() / seekBar.getMax());
-            short newBand = getBandPosition((int)seekBar.getTag());
+            short newLevel = (short) (minLevel + (maxLevel - minLevel) * seekBar.getProgress() / seekBar.getMax());
+            short newBand = getBandPosition((int) seekBar.getTag());
             equalizer.setBandLevel(newBand, newLevel);
         }
     }
@@ -155,14 +155,14 @@ public class EqualizerDialog
     * */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(defaultModes != null && equalizer != null){
+        if (defaultModes != null && equalizer != null) {
 //            if(position < equalizer.getNumberOfPresets()) {
 //                equalizer.usePreset((short) position);
-//                PlayerApplication.getPlayerApplication().setEqualizerPresent((short) position);
-//            } else if(PlayerApplication.getPlayerApplication().getEqualizerBands() != null &&
-//                    PlayerApplication.getPlayerApplication().getEqualizerBands().length == equalizer.getNumberOfBands()){
+//                App.getAppContext().setEqualizerPresent((short) position);
+//            } else if(App.getAppContext().getEqualizerBands() != null &&
+//                    App.getAppContext().getEqualizerBands().length == equalizer.getNumberOfBands()){
 //                for(int i = 0; i < equalizer.getNumberOfBands(); i++){
-//                    equalizer.setBandLevel((short)i, (short) PlayerApplication.getPlayerApplication().getEqualizerBands()[i]);
+//                    equalizer.setBandLevel((short)i, (short) App.getAppContext().getEqualizerBands()[i]);
 //                }
 //            }
 //
@@ -185,11 +185,11 @@ public class EqualizerDialog
         public int getCount() {
             int count = 0;
 
-            if(bassBoost != null){
+            if (bassBoost != null) {
                 ++count;
             }
 
-            if(equalizer != null && equalizer.getNumberOfBands() > 0){
+            if (equalizer != null && equalizer.getNumberOfBands() > 0) {
                 count += equalizer.getNumberOfBands();
             }
 
@@ -226,20 +226,20 @@ public class EqualizerDialog
                 viewHolder = (ViewHolder) view.getTag();
             }
 
-            if(position == 0 && bassBoost != null){
+            if (position == 0 && bassBoost != null) {
                 viewHolder.bassBoost.setVisibility(TextView.VISIBLE);
                 viewHolder.bassBoost.setText("BassBoost");
                 viewHolder.equalizerSeek.setProgress(bassBoost.getRoundedStrength() / 50);
                 viewHolder.minText.setText("0");
                 viewHolder.zeroText.setText("");
                 viewHolder.maxText.setText(INFINITY);
-            } else if(equalizer != null) {
+            } else if (equalizer != null) {
                 viewHolder.bassBoost.setVisibility(TextView.GONE);
                 Equalizer.Settings settings = equalizer.getProperties();
-                short [] bands = settings.bandLevels;
+                short[] bands = settings.bandLevels;
                 int progress = bands[getBandPosition(position)] / ((maxLevel - minLevel) / viewHolder.equalizerSeek.getMax()) + MAX_RANGE / 2;
                 viewHolder.equalizerSeek.setProgress(progress);
-                int [] range = equalizer.getBandFreqRange(getBandPosition(position));
+                int[] range = equalizer.getBandFreqRange(getBandPosition(position));
                 viewHolder.minText.setText(milliHzToString(range[0]));
                 viewHolder.zeroText.setText(ZERO);
                 viewHolder.maxText.setText(milliHzToString(range[1]));

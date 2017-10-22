@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="0dp"
@@ -11,7 +10,7 @@
         style="@style/PlayerListCommon"
         android:id="@+id/playlist_list_fragment"
         android:divider="@color/common_transparent"
-        android:background="@drawable/drawable_playlist_background"/>
+        android:background="@drawable/drawable_playlist_background" />
 
     <include layout="@layout/playlist_search_track" />
 

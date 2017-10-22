@@ -1,19 +1,17 @@
 package ru.testsimpleapps.coloraudioplayer.ui.fragments;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import ru.testsimpleapps.coloraudioplayer.R;
+
 
 public abstract class BaseFragment extends Fragment {
 
-    public static final String NAME_EXTRAS = "NAME_EXTRAS";
-    public static final String INTENT_TYPE_MESSAGE = "text/plain";
-    public static final String INTENT_TYPE_MAIL = "message/rfc822";
-
+    public static final String TAG = BaseFragment.class.getSimpleName();
     protected FragmentManager mFragmentManager;
     protected FragmentManager mParentFragmentManager;
 
@@ -39,16 +37,16 @@ public abstract class BaseFragment extends Fragment {
                                 boolean isAdd) {
         if (fragment != null) {
             final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//            fragmentTransaction.setCustomAnimations(R.anim.open_fragment,
-//                    R.anim.close_fragment,
-//                    R.anim.open_fragment,
-//                    R.anim.close_fragment);
-//
-//            if (isAdd) {
-//                fragmentTransaction.add(R.id.frame_container, fragment);
-//            } else {
-//                fragmentTransaction.replace(R.id.frame_container, fragment);
-//            }
+            fragmentTransaction.setCustomAnimations(R.anim.fragment_open,
+                    R.anim.fragment_close,
+                    R.anim.fragment_open,
+                    R.anim.fragment_close);
+
+            if (isAdd) {
+                fragmentTransaction.add(R.id.frame_container, fragment);
+            } else {
+                fragmentTransaction.replace(R.id.frame_container, fragment);
+            }
 
             if (tag != null) {
                 fragmentTransaction.addToBackStack(tag);
@@ -58,31 +56,5 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-//    protected void sendIntentText(final String body, @Nullable final String pkg) {
-//        if (body != null) {
-//            final Intent intent = new Intent(Intent.ACTION_SEND);
-//            intent.setType(INTENT_TYPE_MESSAGE);
-//
-//            // Set specific package
-//            if (pkg != null) {
-//                intent.setPackage(pkg);
-//            }
-//
-//            // Set text for send
-//            intent.putExtra(android.content.Intent.EXTRA_TEXT, body);
-//            startActivity(Intent.createChooser(intent, getString(R.string.detail_share_header)));
-//        }
-//    }
-//
-//    protected void sendIntentMail(final String to, final String subject, final String body) {
-//        if (body != null) {
-//            final Intent intent = new Intent(Intent.ACTION_SEND);
-//            intent.setType(INTENT_TYPE_MAIL);
-//            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{to});
-//            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-//            intent.putExtra(android.content.Intent.EXTRA_TEXT, body);
-//            startActivity(Intent.createChooser(intent, getString(R.string.detail_share_header)));
-//        }
-//    }
 
 }

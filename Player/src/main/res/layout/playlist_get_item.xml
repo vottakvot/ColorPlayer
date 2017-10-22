@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/common_transparent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal">
 
     <TextView
         style="@style/PlayerTextCommon"
         android:id="@+id/playlistGet_item"
         android:layout_width="match_parent"
         android:gravity="left"
-        android:textColor="@color/common_text_playlists"/>
+        android:textColor="@color/common_text_playlists" />
 
 </LinearLayout>

@@ -5,7 +5,7 @@ public class DrawerDataItem {
     private int image;
     private String name;
 
-    public DrawerDataItem(int image, String name){
+    public DrawerDataItem(int image, String name) {
         this.image = image;
         this.name = name;
     }

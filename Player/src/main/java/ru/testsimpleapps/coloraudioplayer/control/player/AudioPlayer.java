@@ -8,16 +8,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import ru.testsimpleapps.coloraudioplayer.PlayerApplication;
+import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.control.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.control.player.data.RandomSet;
 import ru.testsimpleapps.coloraudioplayer.control.player.data.StrictQueue;
 import ru.testsimpleapps.coloraudioplayer.control.player.playlist.IPlaylist;
 
 public class AudioPlayer
-            implements  IAudioPlayer,
-                        MediaPlayer.OnCompletionListener,
-                        AudioManager.OnAudioFocusChangeListener {
+        implements IAudioPlayer,
+        MediaPlayer.OnCompletionListener,
+        AudioManager.OnAudioFocusChangeListener {
 
 
     /*
@@ -69,7 +69,7 @@ public class AudioPlayer
     * */
     private boolean isAudioFocusLoss = false;
 
-    public AudioPlayer(@NonNull Context context, @Nullable AudioManager audioManager, @Nullable PlayerConfig playerConfig){
+    public AudioPlayer(@NonNull Context context, @Nullable AudioManager audioManager, @Nullable PlayerConfig playerConfig) {
         mContext = context;
         mPlayerConfig = playerConfig;
         mListenedTracks = new StrictQueue<>();
@@ -77,7 +77,7 @@ public class AudioPlayer
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setOnCompletionListener(this);
 
-        if(audioManager == null)
+        if (audioManager == null)
             this.mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         else
             this.mAudioManager = audioManager;
@@ -90,13 +90,13 @@ public class AudioPlayer
     public void onAudioFocusChange(int focusChange) {
         switch (focusChange) {
             case AudioManager.AUDIOFOCUS_LOSS:
-                if(mState == State.PLAY){
+                if (mState == State.PLAY) {
                     isAudioFocusLoss = true;
                     pause();
                 }
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                if(mState == State.PLAY){
+                if (mState == State.PLAY) {
                     isAudioFocusLoss = true;
                     pause();
                 }
@@ -105,7 +105,7 @@ public class AudioPlayer
                 mMediaPlayer.setVolume(0.5f, 0.5f);
                 break;
             case AudioManager.AUDIOFOCUS_GAIN:
-                if (mState != State.PLAY && isAudioFocusLoss){
+                if (mState != State.PLAY && isAudioFocusLoss) {
                     play();
                 }
                 mMediaPlayer.setVolume(1.0f, 1.0f);
@@ -117,7 +117,8 @@ public class AudioPlayer
     * MediaPlayer.OnCompletionListener
     * */
     @Override
-    public void onCompletion(MediaPlayer mp) {;
+    public void onCompletion(MediaPlayer mp) {
+        ;
         mAudioManager.abandonAudioFocus(this);
         next();
     }
@@ -127,10 +128,10 @@ public class AudioPlayer
     * */
     @Override
     public boolean play() {
-        if(mState != State.RELEASE){
+        if (mState != State.RELEASE) {
             try {
                 // Prepare player
-                if(mState != State.PAUSE){
+                if (mState != State.PAUSE) {
                     mMediaPlayer.setDataSource(mPlayerConfig.getTrackPath());
                     mMediaPlayer.prepare();
                     mMediaPlayer.seekTo(mPlayerConfig.getLastSeekPosition());
@@ -146,7 +147,7 @@ public class AudioPlayer
                 mState = State.PLAY;
                 return true;
             } catch (Exception e) { // Path not found or bad file or bad path. Add log.
-                Log.d(PlayerApplication.TAG_APP, getClass().getSimpleName() + " - play() - " + e.getMessage());
+                Log.d(App.TAG_APP, getClass().getSimpleName() + " - play() - " + e.getMessage());
                 mMediaPlayer.reset();
             }
         }
@@ -156,7 +157,7 @@ public class AudioPlayer
 
     @Override
     public boolean pause() {
-        if(mState == State.PLAY){
+        if (mState == State.PLAY) {
             mMediaPlayer.pause();
             mAudioManager.abandonAudioFocus(this);
             mState = State.PAUSE;
@@ -168,7 +169,7 @@ public class AudioPlayer
 
     @Override
     public boolean stop() {
-        if(mState == State.PLAY || mState == State.PAUSE){
+        if (mState == State.PLAY || mState == State.PAUSE) {
             mMediaPlayer.stop();
             mMediaPlayer.reset();
             mAudioManager.abandonAudioFocus(this);
@@ -180,24 +181,24 @@ public class AudioPlayer
     }
 
     @Override
-    public boolean next(){
-        if(mState != State.RELEASE)
-            if(nextInPlaylist())
+    public boolean next() {
+        if (mState != State.RELEASE)
+            if (nextInPlaylist())
                 return playNew();
         return false;
     }
 
     @Override
-    public boolean previous(){
-        if(mState != State.RELEASE)
-            if(previousInPlaylist())
+    public boolean previous() {
+        if (mState != State.RELEASE)
+            if (previousInPlaylist())
                 return playNew();
         return false;
     }
 
     @Override
     public boolean seek(@IntRange(from = MIN_SEEK_POSITION, to = MAX_SEEK_POSITION) int position) {
-        if((mState == State.PLAY || mState == State.PAUSE) && (position >= 0 && position <= MAX_SEEK_POSITION)){
+        if ((mState == State.PLAY || mState == State.PAUSE) && (position >= 0 && position <= MAX_SEEK_POSITION)) {
             final int duration = mMediaPlayer.getDuration();
             final int step = duration / MAX_SEEK_POSITION;
             mMediaPlayer.seekTo(step * position);
@@ -209,7 +210,7 @@ public class AudioPlayer
 
     @Override
     public void release() {
-        if(mState != State.RELEASE){
+        if (mState != State.RELEASE) {
             mMediaPlayer.release();
             mState = State.RELEASE;
         }
@@ -223,9 +224,9 @@ public class AudioPlayer
     @Override
     public PlayerConfig getConfig() {
         int position = MIN_SEEK_POSITION;
-        if(mState == State.PLAY ||  mState == State.PAUSE) {
+        if (mState == State.PLAY || mState == State.PAUSE) {
             final float part = (float) mMediaPlayer.getCurrentPosition() / (float) mMediaPlayer.getDuration();
-            position =  (int)(part * MAX_SEEK_POSITION);
+            position = (int) (part * MAX_SEEK_POSITION);
         }
 
         mPlayerConfig.setLastSeekPosition(position);
@@ -238,11 +239,11 @@ public class AudioPlayer
         return playNew();
     }
 
-    public boolean playPause(){
+    public boolean playPause() {
         return mState == State.PLAY ? pause() : play();
     }
 
-    public boolean playNew(){
+    public boolean playNew() {
         stop();
         return play();
     }
@@ -257,7 +258,7 @@ public class AudioPlayer
                 final Integer nextRandomTrack = mTracksId.getNextRandom();
                 if (nextRandomTrack != null && playlist.goTo(nextRandomTrack))
                     mPlayerConfig.setTrackPathFromPlaylist();
-                    return true;
+                return true;
             }
 
             // If not random
@@ -285,11 +286,11 @@ public class AudioPlayer
         return isHasNext;
     }
 
-    private  boolean previousInPlaylist(){
+    private boolean previousInPlaylist() {
         boolean isHasPrevious = false;
         final IPlaylist playlist = mPlayerConfig.getPlaylist();
         final Integer previousPosition = mListenedTracks.pop();
-        if(previousPosition != null && playlist.goTo(previousPosition)){
+        if (previousPosition != null && playlist.goTo(previousPosition)) {
             isHasPrevious = true;
             mPlayerConfig.setTrackPathFromPlaylist();
         }
@@ -297,11 +298,11 @@ public class AudioPlayer
         return isHasPrevious;
     }
 
-    public boolean isPlaying(){
+    public boolean isPlaying() {
         return mState == State.PLAY;
     }
 
-    public int getAudioSessionId(){
+    public int getAudioSessionId() {
         return mMediaPlayer.getAudioSessionId();
     }
 }

@@ -11,9 +11,9 @@ import android.widget.RelativeLayout;
 
 import java.util.Random;
 
-import ru.testsimpleapps.coloraudioplayer.PlayerApplication;
+import ru.testsimpleapps.coloraudioplayer.App;
 
-public class PlayerVisualizer
+public class VisualizerView
         extends View {
 
     private static final int MAX_RADIUS = 10;
@@ -28,17 +28,17 @@ public class PlayerVisualizer
     private Rect rect = new Rect();
     private Paint forePaint = new Paint();
 
-    public PlayerVisualizer(Context context) {
+    public VisualizerView(Context context) {
         super(context);
         init();
     }
 
-    public PlayerVisualizer(Context context, AttributeSet attrs) {
+    public VisualizerView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public PlayerVisualizer(Context context, AttributeSet attrs, int defStyleAttr) {
+    public VisualizerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -61,12 +61,12 @@ public class PlayerVisualizer
     /**
      * Draw visualizer with lines
      */
-    private void drawLineEqualizer(Canvas canvas){
+    private void drawLineEqualizer(Canvas canvas) {
         if (bytes == null) {
             return;
         }
 
-        if(System.currentTimeMillis() - previousTime > FREQUENCY && isPlaying) {
+        if (System.currentTimeMillis() - previousTime > FREQUENCY && isPlaying) {
             if (points == null || points.length < bytes.length * 4) {
                 points = new float[bytes.length * 4];
             }
@@ -79,8 +79,8 @@ public class PlayerVisualizer
                 points[i * 4 + 3] = middle + ((byte) (bytes[i + 1] + 128)) * middle / 128;
             }
 
-            PlayerApplication.getPlayerApplication().getNumberTheme();
-            forePaint.setColor(PlayerApplication.getPlayerApplication().getColorTheme(70, 0, 0, 0));
+            App.getAppContext().getNumberTheme();
+            forePaint.setColor(App.getAppContext().getColorTheme(70, 0, 0, 0));
             canvas.drawLines(points, forePaint);
             previousTime = System.currentTimeMillis();
         }
@@ -89,30 +89,30 @@ public class PlayerVisualizer
     /**
      * Draw visualizer with points
      */
-    private void drawPointEqualizer(Canvas canvas){
+    private void drawPointEqualizer(Canvas canvas) {
         if (bytes == null) {
             return;
         }
 
-        if(System.currentTimeMillis() - previousTime > FREQUENCY && isPlaying){
+        if (System.currentTimeMillis() - previousTime > FREQUENCY && isPlaying) {
             rect.set(0, 0, getWidth(), getHeight());
-            float middle = (float)rect.height() / 2.0f;
+            float middle = (float) rect.height() / 2.0f;
             float x = 0.0f;
             float y = 0.0f;
             float r = 0.0f;
             for (int i = 0; i < bytes.length - 2; i++) {
-                if(i % 16 == 0){
-                    x = (float)rect.width() * i / bytes.length;
-                    y = (float)rect.height() * (bytes[i] + 128) / 256;
-                    r = (float)random.nextInt(rect.height() / 10);
+                if (i % 16 == 0) {
+                    x = (float) rect.width() * i / bytes.length;
+                    y = (float) rect.height() * (bytes[i] + 128) / 256;
+                    r = (float) random.nextInt(rect.height() / 10);
 
-                    if(y < middle){
+                    if (y < middle) {
                         y += 2 * r;
                     } else {
-                            y -= 2 * r;
-                        }
+                        y -= 2 * r;
+                    }
 
-                    forePaint.setColor(PlayerApplication.getPlayerApplication().getColorTheme(100, random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+                    forePaint.setColor(App.getAppContext().getColorTheme(100, random.nextInt(255), random.nextInt(255), random.nextInt(255)));
                     canvas.drawCircle(x, y, r, forePaint);
                 }
             }
@@ -124,30 +124,30 @@ public class PlayerVisualizer
     /**
      * Draw visualizer with rectangles
      */
-    private void drawRectEqualizer(Canvas canvas){
+    private void drawRectEqualizer(Canvas canvas) {
         if (bytes == null) {
             return;
         }
 
-        if(System.currentTimeMillis() - previousTime > FREQUENCY && isPlaying){
+        if (System.currentTimeMillis() - previousTime > FREQUENCY && isPlaying) {
             rect.set(0, 0, getWidth(), getHeight());
             final int numberDraw = bytes.length / (DEPENDENCE_RECT_COUNT * 2);
             final float border = 2.0f;
-            final float widthRect = (float)rect.width() / (float)DEPENDENCE_RECT_COUNT;
-            final float deltaAmplitude = (float)rect.height() / 256.0f;
-            final float middle = (float)rect.height() / 2.0f;
+            final float widthRect = (float) rect.width() / (float) DEPENDENCE_RECT_COUNT;
+            final float deltaAmplitude = (float) rect.height() / 256.0f;
+            final float middle = (float) rect.height() / 2.0f;
             int j = 0;
             float y = 0.0f;
             float average = 0.0f;
-            for(int i = 0; i < bytes.length; i++){
-                if((i + 1) % numberDraw == 0){
+            for (int i = 0; i < bytes.length; i++) {
+                if ((i + 1) % numberDraw == 0) {
                     y = deltaAmplitude * average * 2.0f / numberDraw;
                     average = 0.0f;
-                    forePaint.setColor(PlayerApplication.getPlayerApplication().getColorTheme(50, 0, 0, 0));
-                    canvas.drawRect((float)j * widthRect + border, middle - y, (float)j * widthRect + widthRect, middle + y, forePaint);
+                    forePaint.setColor(App.getAppContext().getColorTheme(50, 0, 0, 0));
+                    canvas.drawRect((float) j * widthRect + border, middle - y, (float) j * widthRect + widthRect, middle + y, forePaint);
                     j++;
                 } else {
-                    average += (float)(128 - Math.abs(bytes[i]));
+                    average += (float) (128 - Math.abs(bytes[i]));
                 }
             }
             previousTime = System.currentTimeMillis();
@@ -158,16 +158,16 @@ public class PlayerVisualizer
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        switch(PlayerApplication.getPlayerApplication().getNumberVisualizer()){
-//            case PlayerApplication.VISUALIZER_NONE:
+        switch (App.getAppContext().getNumberVisualizer()) {
+//            case App.VISUALIZER_NONE:
 //                break;
-//            case PlayerApplication.VISUALIZER_LINE:
+//            case App.VISUALIZER_LINE:
 //                drawLineEqualizer(canvas);
 //                break;
-//            case PlayerApplication.VISUALIZER_CIRCLE:
+//            case App.VISUALIZER_CIRCLE:
 //                drawPointEqualizer(canvas);
 //                break;
-//            case PlayerApplication.VISUALIZER_RECT:
+//            case App.VISUALIZER_RECT:
 //                drawRectEqualizer(canvas);
 //                break;
         }

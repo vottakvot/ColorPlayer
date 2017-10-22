@@ -8,18 +8,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.Map;
 import java.util.TreeMap;
 
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.control.player.playlist.cursor.CursorTool;
-import ru.testsimpleapps.coloraudioplayer.ui.MainPages;
-import ru.testsimpleapps.coloraudioplayer.ui.PlayerControl;
 
 public class PlaylistChooseDialog
-        extends AbstractDialog {
+        extends BaseDialog {
 
     private final Context context;
     private final View playlistView;
@@ -28,7 +25,7 @@ public class PlaylistChooseDialog
     private Map<Long, String> playlistMap;
     private final PlaylistDialogAdapter playlistDialogAdapter;
 
-    public PlaylistChooseDialog(Context context){
+    public PlaylistChooseDialog(Context context) {
         super(context);
         this.context = context;
         updatePlaylistList();
@@ -55,9 +52,9 @@ public class PlaylistChooseDialog
         setContentView(playlistView);
     }
 
-    public void updatePlaylistList(){
+    public void updatePlaylistList() {
         playlistMap = CursorTool.getPlaylists(context.getContentResolver());
-        if(playlistMap == null){
+        if (playlistMap == null) {
             playlistMap = new TreeMap<>();
             playlistMap.put(-1L, context.getResources().getString(R.string.playlist_get_empty));
         }
@@ -68,8 +65,8 @@ public class PlaylistChooseDialog
     * */
     private class PlaylistDialogAdapter
             extends BaseAdapter
-            implements  ListView.OnItemClickListener,
-                        ListView.OnItemLongClickListener {
+            implements ListView.OnItemClickListener,
+            ListView.OnItemLongClickListener {
 
         @Override
         public int getCount() {
@@ -105,18 +102,18 @@ public class PlaylistChooseDialog
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //            if(MainPages.getPlaylistAdapter() != null && FindMedia.getMapMediaPosition(playlistMap, position) != -1){
-//                //PlayerApplication.getPlayerApplication().setPlaylistId(FindMedia.getMapMediaPosition(playlistMap, position));
+//                //App.getAppContext().setPlaylistId(FindMedia.getMapMediaPosition(playlistMap, position));
 //                MainPages.getPlaylistAdapter().refreshPlaylist(CursorTool.SORT_NONE);
 //                MainPages.getTextPlaylistHeader().setText(playlistMap.get(FindMedia.getMapMediaPosition(playlistMap, position)));
 //                MainPages.PageFragment.changePlaylistBackground();
 //                PlayerControl.setCountTracks();
 //                dismiss();
-//                //MainActivity.showInfoMessage(context.getResources().getString(R.string.playlist_get_chose) + " " + playlistMap.get(PlayerApplication.getPlayerApplication().getPlaylistId()));
+//                //MainActivity.showInfoMessage(context.getResources().getString(R.string.playlist_get_chose) + " " + playlistMap.get(App.getAppContext().getPlaylistId()));
 //            }
         }
 
-         @Override
-         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 //                if(FindMedia.getMapMediaPosition(playlistMap, position) != -1){
 //                    CursorTool.deletePlaylist(context.getContentResolver(), FindMedia.getMapMediaPosition(playlistMap, position));
 //                    playlistMap.remove(FindMedia.getMapMediaPosition(playlistMap, position));
@@ -124,7 +121,7 @@ public class PlaylistChooseDialog
 //                    return true;
 //                }
 
-                return false;
+            return false;
         }
     }
 }

@@ -16,21 +16,21 @@ import java.util.ArrayList;
 
 import ru.testsimpleapps.coloraudioplayer.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.R;
+import ru.testsimpleapps.coloraudioplayer.model.DrawerDataItem;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.PreferencesActivity;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.ColorsDialog;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.EqualizerDialog;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.PlaylistChooseDialog;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.PlaylistCreateDialog;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.TimerDialog;
-import ru.testsimpleapps.coloraudioplayer.model.DrawerDataItem;
 
 
 /*
 * http://habrahabr.ru/post/133575/
 * */
 public class ConfigAdapter
-            extends BaseAdapter
-            implements  ListView.OnItemClickListener {
+        extends BaseAdapter
+        implements ListView.OnItemClickListener {
 
     private final Context context;
     private final LayoutInflater inflater;
@@ -38,7 +38,7 @@ public class ConfigAdapter
     /*
     * Name items of config
     * */
-    private String [] nameItems;
+    private String[] nameItems;
     private ArrayList<DrawerDataItem> configList;
     private final PlaylistCreateDialog createPlaylistDialog;
     private final EqualizerDialog equalizerDialog;
@@ -113,15 +113,31 @@ public class ConfigAdapter
     * */
     private void setConfigItems() {
         for (int i = 0; i < nameItems.length; i++) {
-            switch(i){
-                case 0: configList.add(new DrawerDataItem(R.drawable.add_playlist, nameItems[i])); break;
-                case 1: configList.add(new DrawerDataItem(R.drawable.choose_playlist, nameItems[i])); break;
-                case 2: configList.add(new DrawerDataItem(R.drawable.equalizer, nameItems[i])); break;
-                case 3: configList.add(new DrawerDataItem(R.drawable.timer, nameItems[i])); break;
-                case 4: configList.add(new DrawerDataItem(R.drawable.preference, nameItems[i])); break;
-                case 5: configList.add(new DrawerDataItem(R.drawable.color, nameItems[i])); break;
-                case 6: configList.add(new DrawerDataItem(R.drawable.door, nameItems[i])); break;
-                default : configList.add(new DrawerDataItem(R.drawable.door, nameItems[i])); break;
+            switch (i) {
+                case 0:
+                    configList.add(new DrawerDataItem(R.drawable.add_playlist, nameItems[i]));
+                    break;
+                case 1:
+                    configList.add(new DrawerDataItem(R.drawable.choose_playlist, nameItems[i]));
+                    break;
+                case 2:
+                    configList.add(new DrawerDataItem(R.drawable.equalizer, nameItems[i]));
+                    break;
+                case 3:
+                    configList.add(new DrawerDataItem(R.drawable.timer, nameItems[i]));
+                    break;
+                case 4:
+                    configList.add(new DrawerDataItem(R.drawable.preference, nameItems[i]));
+                    break;
+                case 5:
+                    configList.add(new DrawerDataItem(R.drawable.color, nameItems[i]));
+                    break;
+                case 6:
+                    configList.add(new DrawerDataItem(R.drawable.door, nameItems[i]));
+                    break;
+                default:
+                    configList.add(new DrawerDataItem(R.drawable.door, nameItems[i]));
+                    break;
             }
         }
     }
@@ -130,8 +146,8 @@ public class ConfigAdapter
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         drawerLayout.closeDrawers();
-        switch(position){
-            case 0 :
+        switch (position) {
+            case 0:
                 createPlaylistDialog.show();
                 break;
             case 1:
@@ -152,9 +168,10 @@ public class ConfigAdapter
                 break;
             case 6:
                 context.startService(new Intent(PlayerService.ACTION_EXIT)
-                                            .setPackage(context.getPackageName()));
+                        .setPackage(context.getPackageName()));
                 break;
-            default : break;
+            default:
+                break;
         }
     }
 

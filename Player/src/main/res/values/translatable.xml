@@ -1,128 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">Color audio player</string>
-	<string name="app_name_action_bar_color">COLOR</string>
-	<string name="app_name_action_bar_audio">AUDIO</string>
-	<string name="app_name_action_bar_player">PLAYER</string>
-	<string name="pagePlaylist">Playlist ►</string>
-	<string name="pageExplorer">Add music</string>
+    <string name="app_name">Color audio player</string>
+    <string name="app_name_action_bar_color">COLOR</string>
+    <string name="app_name_action_bar_audio">AUDIO</string>
+    <string name="app_name_action_bar_player">PLAYER</string>
+    <string name="pagePlaylist">Playlist ►</string>
+    <string name="pageExplorer">Add music</string>
 
-	<string name="drawer_open">Drawer open</string>
-	<string name="drawer_close">Drawer close</string>
+    <string name="drawer_open">Drawer open</string>
+    <string name="drawer_close">Drawer close</string>
 
-	<string name="explorer_list_header">List of music</string>
-	<string name="explorer_root_message">You are in root!</string>
-	<string name="explorer_add_to_playlist">Added to playlist:</string>
-	<string name="explorer_add_to_playlist_nothing">Nothing to add!</string>
-	<string name="explorer_sort_header">Sort type</string>
-	<string name="explorer_sort_by_folders">Folders</string>
-	<string name="explorer_sort_by_artists">Artists</string>
-	<string name="explorer_sort_by_albums">Albums</string>
-	<string name="explorer_sort_by_AZ">A-Z</string>
-	<string name="explorer_sort_by_size">Size</string>
-	<string name="explorer_clear_check">All check cleared!</string>
-	<string name="explorer_sort_by_name">Names</string>
-	<string name="explorer_sort_by_duration">Track duration</string>
-	<string name="explorer_update_music">Update music list</string>
+    <string name="explorer_list_header">List of music</string>
+    <string name="explorer_root_message">You are in root!</string>
+    <string name="explorer_add_to_playlist">Added to playlist:</string>
+    <string name="explorer_add_to_playlist_nothing">Nothing to add!</string>
+    <string name="explorer_sort_header">Sort type</string>
+    <string name="explorer_sort_by_folders">Folders</string>
+    <string name="explorer_sort_by_artists">Artists</string>
+    <string name="explorer_sort_by_albums">Albums</string>
+    <string name="explorer_sort_by_AZ">A-Z</string>
+    <string name="explorer_sort_by_size">Size</string>
+    <string name="explorer_clear_check">All check cleared!</string>
+    <string name="explorer_sort_by_name">Names</string>
+    <string name="explorer_sort_by_duration">Track duration</string>
+    <string name="explorer_update_music">Update music list</string>
 
-	<string name="playlist_create_header">Input playlist name</string>
-	<string name="playlist_create_create">Create</string>
-	<string name="playlist_create_cancel">Cancel</string>
-	<string name="playlist_create_done">Playlist created!</string>
-	<string name="playlist_create_wrong_name">Input name!</string>
-	<string name="playlist_create_hint">Input playlist name...</string>
-	<string name="playlist_get_header">Choose or delete</string>
-	<string name="playlist_get_chose">Chosen playlist:</string>
-	<string name="playlist_get_empty">No playlists found</string>
-	<string name="playlist_get_no_choice">Not choosen playlist! Use playlist for temp...</string>
-	<string name="playlist_sort_by_name">Names</string>
-	<string name="playlist_sort_by_duration">Track duration</string>
-	<string name="playlist_sort_by_modify">Track added</string>
-	<string name="playlist_delete_track">Delete track</string>
-	<string name="playlist_search_empty">Input text for search</string>
-	<string name="playlist_search_first_position">Move to first</string>
-	<string name="playlist_search_no_match">No matches</string>
-	<string name="playlist_search_hint">Input value for search...</string>
-	<string name="playlist_header">Choose or create playlist!</string>
-	<string name="playlist_rename_change">Change</string>
-	<string name="playlist_rename_header">Rename playlist</string>
-	<string name="playlist_rename_done">Playlist renamed!</string>
-	<string name="playlist_rename_wrong_name">Input new name!</string>
-	<string name="playlist_rename_hint">Input new playlist name...</string>
+    <string name="playlist_create_header">Input playlist name</string>
+    <string name="playlist_create_create">Create</string>
+    <string name="playlist_create_cancel">Cancel</string>
+    <string name="playlist_create_done">Playlist created!</string>
+    <string name="playlist_create_wrong_name">Input name!</string>
+    <string name="playlist_create_hint">Input playlist name...</string>
+    <string name="playlist_get_header">Choose or delete</string>
+    <string name="playlist_get_chose">Chosen playlist:</string>
+    <string name="playlist_get_empty">No playlists found</string>
+    <string name="playlist_get_no_choice">Not choosen playlist! Use playlist for temp...</string>
+    <string name="playlist_sort_by_name">Names</string>
+    <string name="playlist_sort_by_duration">Track duration</string>
+    <string name="playlist_sort_by_modify">Track added</string>
+    <string name="playlist_delete_track">Delete track</string>
+    <string name="playlist_search_empty">Input text for search</string>
+    <string name="playlist_search_first_position">Move to first</string>
+    <string name="playlist_search_no_match">No matches</string>
+    <string name="playlist_search_hint">Input value for search...</string>
+    <string name="playlist_header">Choose or create playlist!</string>
+    <string name="playlist_rename_change">Change</string>
+    <string name="playlist_rename_header">Rename playlist</string>
+    <string name="playlist_rename_done">Playlist renamed!</string>
+    <string name="playlist_rename_wrong_name">Input new name!</string>
+    <string name="playlist_rename_hint">Input new playlist name...</string>
 
-	<string name="playlist_item_artists">Artists:</string>
-	<string name="playlist_item_album">Album:</string>
-	<string name="playlist_item_title">Title:</string>
-	<string name="playlist_item_date">File date:</string>
+    <string name="playlist_item_artists">Artists:</string>
+    <string name="playlist_item_album">Album:</string>
+    <string name="playlist_item_title">Title:</string>
+    <string name="playlist_item_date">File date:</string>
 
-	<string name="notification_header">Player service message</string>
-	<string name="notification_message">Play music...</string>
+    <string name="notification_header">Player service message</string>
+    <string name="notification_message">Play music...</string>
 
-	<string name="equalizer_custom">User config</string>
+    <string name="equalizer_custom">User config</string>
 
-	<string name="timer_message">Timer done!</string>
-	<string name="timer_zero">Set time!</string>
-	<string name="timer_header">Timer</string>
-	<string name="timer_create">Create</string>
-	<string name="timer_reset">Reset</string>
-	<string name="timer_cancel">Cancel</string>
-	<string name="timer_type_wake">Play in time</string>
-	<string name="timer_type_pause">Pause after time</string>
-	<string name="timer_type_play">Play after time</string>
+    <string name="timer_message">Timer done!</string>
+    <string name="timer_zero">Set time!</string>
+    <string name="timer_header">Timer</string>
+    <string name="timer_create">Create</string>
+    <string name="timer_reset">Reset</string>
+    <string name="timer_cancel">Cancel</string>
+    <string name="timer_type_wake">Play in time</string>
+    <string name="timer_type_pause">Pause after time</string>
+    <string name="timer_type_play">Play after time</string>
 
-	<string name="preferences_main_preferences">Preferences</string>
-	<string name="preferences_button_receive_title">Receive always</string>
-	<string name="preferences_button_receive_summary">Receive commands from buttons always...</string>
-	<string name="preferences_track_position_title">Last position</string>
-	<string name="preferences_track_position_summary">Set last track position always...</string>
-	<string name="preferences_headset_plug_title">Headset plug on</string>
-	<string name="preferences_headset_plug_summary">Start play music or continue when head set plug...</string>
-	<string name="preferences_double_power_title">Double power</string>
-	<string name="preferences_double_power_summary">Use double click on power button to play/pause...</string>
-	<string name="preferences_common_info">Info</string>
-	<string name="preferences_common_info_about_app_title">About app</string>
-	<string name="preferences_common_info_about_app_summary">Click to view about this application</string>
-	<string name="preferences_common_info_about_media_title">Media buttons</string>
-	<string name="preferences_common_info_about_media_summary">Use hardware buttons "Play", "Next", "Previous" and handset button (one click - play/pause, double click - next) for control player...</string>
-	<string name="preferences_common_info_about_long_tap_title">Long tap</string>
-	<string name="preferences_common_info_about_long_tap_summary">
+    <string name="preferences_main_preferences">Preferences</string>
+    <string name="preferences_button_receive_title">Receive always</string>
+    <string name="preferences_button_receive_summary">Receive commands from buttons always...</string>
+    <string name="preferences_track_position_title">Last position</string>
+    <string name="preferences_track_position_summary">Set last track position always...</string>
+    <string name="preferences_headset_plug_title">Headset plug on</string>
+    <string name="preferences_headset_plug_summary">Start play music or continue when head set plug...</string>
+    <string name="preferences_double_power_title">Double power</string>
+    <string name="preferences_double_power_summary">Use double click on power button to play/pause...</string>
+    <string name="preferences_common_info">Info</string>
+    <string name="preferences_common_info_about_app_title">About app</string>
+    <string name="preferences_common_info_about_app_summary">Click to view about this application</string>
+    <string name="preferences_common_info_about_media_title">Media buttons</string>
+    <string name="preferences_common_info_about_media_summary">Use hardware buttons "Play", "Next", "Previous" and handset button (one click - play/pause, double click - next) for control player...</string>
+    <string name="preferences_common_info_about_long_tap_title">Long tap</string>
+    <string name="preferences_common_info_about_long_tap_summary">
 		Long press on "Search" button - move to first position of playlist.
 		Long press on "Add" button - clear all checks and move to first position.
 		Long press on running text or play/pause, previous, next - move to current position...
 	</string>
 
-	<string name="colors_header">Choose theme color</string>
+    <string name="colors_header">Choose theme color</string>
 
-	<string name="crush_title">Internal application error.</string>
-	<string name="crush_message">If you want, you can send the crash report to the developer :)</string>
-	<string name="crush_button_send">Send</string>
-	<string name="crush_button_cancel">Cancel</string>
+    <string name="crush_title">Internal application error.</string>
+    <string name="crush_message">If you want, you can send the crash report to the developer :)</string>
+    <string name="crush_button_send">Send</string>
+    <string name="crush_button_cancel">Cancel</string>
 
-	<string name="acra_crush_title">Color audio player. Internal application error.</string>
-	<string name="acra_crush_message_text">If you want, you can send the crash report to the developer by email.</string>
-	<string name="acra_crush_message_comment">Additional information.</string>
-	<string name="acra_crush_ok">Send crash report by email.</string>
+    <string name="acra_crush_title">Color audio player. Internal application error.</string>
+    <string name="acra_crush_message_text">If you want, you can send the crash report to the developer by email.</string>
+    <string name="acra_crush_message_comment">Additional information.</string>
+    <string name="acra_crush_ok">Send crash report by email.</string>
 
-	<string-array name="config_drawer_items">
-		<item>Create playlist</item>
-		<item>Get playlist</item>
-		<item>Equalizer</item>
-		<item>Timer</item>
-		<item>Settings</item>
-		<item>Choose theme color</item>
-		<item>Exit</item>
-	</string-array>
+    <string-array name="config_drawer_items">
+        <item>Create playlist</item>
+        <item>Get playlist</item>
+        <item>Equalizer</item>
+        <item>Timer</item>
+        <item>Settings</item>
+        <item>Choose theme color</item>
+        <item>Exit</item>
+    </string-array>
 
-	<string name="preferences_visualizer_title">Visualizer</string>
-	<string name="preferences_visualizer_summary">Choose visualizer for background of active playing song...</string>
-	<string name="permissions_write_warning">For work with playlist - you need allow write permission...</string>
-	<string name="permissions_record_warning">For visualizer work - you need allow record audio permission...</string>
+    <string name="preferences_visualizer_title">Visualizer</string>
+    <string name="preferences_visualizer_summary">Choose visualizer for background of active playing song...</string>
+    <string name="permissions_write_warning">For work with playlist - you need allow write permission...</string>
+    <string name="permissions_record_warning">For visualizer work - you need allow record audio permission...</string>
 
-	<string-array name="visualizer_items">
-		<item>None</item>
-		<item>Lines</item>
-		<item>Bubbles</item>
-		<item>Rectangles</item>
-	</string-array>
+    <string-array name="visualizer_items">
+        <item>None</item>
+        <item>Lines</item>
+        <item>Bubbles</item>
+        <item>Rectangles</item>
+    </string-array>
 
 </resources>

@@ -9,28 +9,28 @@ import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
-import ru.testsimpleapps.coloraudioplayer.control.tools.FileTool;
-import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 import ru.testsimpleapps.coloraudioplayer.control.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.control.player.playlist.cursor.CursorFactory;
+import ru.testsimpleapps.coloraudioplayer.control.tools.FileTool;
 import ru.testsimpleapps.coloraudioplayer.control.tools.SerializableTool;
+import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 import static org.acra.ReportField.ANDROID_VERSION;
 import static org.acra.ReportField.APP_VERSION_CODE;
 import static org.acra.ReportField.PHONE_MODEL;
 import static org.acra.ReportField.STACK_TRACE;
 
-@ReportsCrashes(customReportContent = { APP_VERSION_CODE, ANDROID_VERSION, PHONE_MODEL, STACK_TRACE },
-                mailTo = "testsimpleapps@gmail.com",
-                mode = ReportingInteractionMode.DIALOG,
-                resToastText = R.string.acra_crush_title,
-                resDialogText = R.string.acra_crush_message_text,
-                resDialogIcon = android.R.drawable.ic_dialog_info,
-                resDialogTitle = R.string.acra_crush_title,
-                resDialogCommentPrompt = R.string.acra_crush_message_comment,
-                resDialogOkToast = R.string.acra_crush_ok)
+@ReportsCrashes(customReportContent = {APP_VERSION_CODE, ANDROID_VERSION, PHONE_MODEL, STACK_TRACE},
+        mailTo = "testsimpleapps@gmail.com",
+        mode = ReportingInteractionMode.DIALOG,
+        resToastText = R.string.acra_crush_title,
+        resDialogText = R.string.acra_crush_message_text,
+        resDialogIcon = android.R.drawable.ic_dialog_info,
+        resDialogTitle = R.string.acra_crush_title,
+        resDialogCommentPrompt = R.string.acra_crush_message_comment,
+        resDialogOkToast = R.string.acra_crush_ok)
 
-public class PlayerApplication extends Application {
+public class App extends Application {
 
     public static final String TAG_APP = "TAG_APP";
     public static final String PLAYER_SETTINGS = "PLAYER_SETTINGS";
@@ -39,7 +39,7 @@ public class PlayerApplication extends Application {
     public static final int THEME_GREEN = 1;
     public static final int THEME_RED = 2;
 
-    public static PlayerApplication sPlayerApplication;
+    public static App sPlayerApplication;
     public static int SELECTION_ITEM_COLOR = Color.WHITE;
 
     private int numberTheme = 0;
@@ -51,7 +51,8 @@ public class PlayerApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG_APP, getClass().getSimpleName() + " - onCreate()");
-        ACRA.init(this);
+//        ACRA.init(this);
+
         sPlayerApplication = this;
 //        loadSettings();
     }
@@ -63,7 +64,7 @@ public class PlayerApplication extends Application {
         CursorFactory.closeCursorsPlaylist();
     }
 
-    public static PlayerApplication getPlayerApplication() {
+    public static App getAppContext() {
         return sPlayerApplication;
     }
 
@@ -71,40 +72,44 @@ public class PlayerApplication extends Application {
         return mPlayerConfig;
     }
 
-    public void setCustomTheme(Context context){
-        switch (PlayerApplication.getPlayerApplication().getNumberTheme()){
-            case PlayerApplication.THEME_BLUE:
+    public void setCustomTheme(Context context) {
+        switch (App.getAppContext().getNumberTheme()) {
+            case App.THEME_BLUE:
                 context.setTheme(R.style.BlueTheme);
                 SELECTION_ITEM_COLOR = MainActivity.getColor(this, R.color.blueHints);
                 break;
-            case PlayerApplication.THEME_GREEN:
+            case App.THEME_GREEN:
                 context.setTheme(R.style.GreenTheme);
                 SELECTION_ITEM_COLOR = MainActivity.getColor(this, R.color.greenHints);
                 break;
-            case PlayerApplication.THEME_RED:
+            case App.THEME_RED:
                 context.setTheme(R.style.RedTheme);
                 SELECTION_ITEM_COLOR = MainActivity.getColor(this, R.color.redHints);
                 break;
         }
     }
 
-    public int getColorTheme(int alpha, int red, int green, int blue){
-        switch (PlayerApplication.getPlayerApplication().getNumberTheme()){
-            case PlayerApplication.THEME_BLUE: return Color.argb(alpha, red, green, 255);
-            case PlayerApplication.THEME_GREEN: return Color.argb(alpha, red, 255, blue);
-            case PlayerApplication.THEME_RED: return Color.argb(alpha, 255, green, blue);
-            default: return Color.argb(alpha, red, 255, blue);
+    public int getColorTheme(int alpha, int red, int green, int blue) {
+        switch (App.getAppContext().getNumberTheme()) {
+            case App.THEME_BLUE:
+                return Color.argb(alpha, red, green, 255);
+            case App.THEME_GREEN:
+                return Color.argb(alpha, red, 255, blue);
+            case App.THEME_RED:
+                return Color.argb(alpha, 255, green, blue);
+            default:
+                return Color.argb(alpha, red, 255, blue);
         }
     }
 
-    public boolean saveSettings(){
+    public boolean saveSettings() {
         return SerializableTool.objectToFile(FileTool.getAppPath(this) + PLAYER_SETTINGS, mPlayerConfig);
     }
 
-    public void loadSettings(){
+    public void loadSettings() {
         mPlayerConfig = (PlayerConfig) SerializableTool.fileToObject(FileTool.getAppPath(this) + PLAYER_SETTINGS);
-        if(mPlayerConfig == null)
-            mPlayerConfig = new PlayerConfig(false, PlayerConfig.Repeat.ALL, PlayerConfig.DEFAULT_SEEK_POSITION, null, null, (short)0, null, (short)0, null);
+        if (mPlayerConfig == null)
+            mPlayerConfig = new PlayerConfig(false, PlayerConfig.Repeat.ALL, PlayerConfig.DEFAULT_SEEK_POSITION, null, null, (short) 0, null, (short) 0, null);
         mPlayerConfig.setPlaylist(CursorFactory.setCursorPlaylist(this, mPlayerConfig.getPlaylistId(), mPlayerConfig.getPlaylistSort()));
     }
 

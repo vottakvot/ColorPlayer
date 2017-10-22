@@ -2,6 +2,7 @@ package ru.testsimpleapps.coloraudioplayer.ui.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
 import java.util.ArrayList;
 import java.util.List;
 

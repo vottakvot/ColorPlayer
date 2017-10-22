@@ -1,41 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="@string/preferences_main_preferences">
+    <PreferenceCategory android:title="@string/preferences_main_preferences">
 
         <CheckBoxPreference
             android:key="@string/ButtonsReceive"
             android:title="@string/preferences_button_receive_title"
-            android:summary="@string/preferences_button_receive_summary"/>
+            android:summary="@string/preferences_button_receive_summary" />
 
         <CheckBoxPreference
             android:key="@string/LastTrackPosition"
             android:title="@string/preferences_track_position_title"
-            android:summary="@string/preferences_track_position_summary"/>
+            android:summary="@string/preferences_track_position_summary" />
 
         <CheckBoxPreference
             android:key="@string/HeadsetPlug"
             android:title="@string/preferences_headset_plug_title"
-            android:summary="@string/preferences_headset_plug_summary"/>
+            android:summary="@string/preferences_headset_plug_summary" />
 
         <CheckBoxPreference
             android:key="@string/DoublePower"
             android:title="@string/preferences_double_power_title"
-            android:summary="@string/preferences_double_power_summary"/>
+            android:summary="@string/preferences_double_power_summary" />
 
         <ListPreference
             android:key="@string/Visualizer"
             android:title="@string/preferences_visualizer_title"
             android:summary="@string/preferences_visualizer_summary"
             android:entries="@array/visualizer_items"
-            android:entryValues="@array/visualizer_value"/>
+            android:entryValues="@array/visualizer_value" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/preferences_common_info">
+    <PreferenceCategory android:title="@string/preferences_common_info">
 
         <Preference
             android:selectable="false"

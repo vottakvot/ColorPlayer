@@ -7,13 +7,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.control.player.playlist.cursor.CursorTool;
-import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 import ru.testsimpleapps.coloraudioplayer.ui.MainPages;
 import ru.testsimpleapps.coloraudioplayer.ui.PlayerControl;
+import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 public class PlaylistCreateDialog
-        extends AbstractDialog
+        extends BaseDialog
         implements View.OnClickListener {
 
     private final Context context;
@@ -21,10 +20,11 @@ public class PlaylistCreateDialog
     private Button cancelButton;
     private EditText editText;
 
-    public PlaylistCreateDialog(Context context){
+    public PlaylistCreateDialog(Context context) {
         super(context);
         this.context = context;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +41,8 @@ public class PlaylistCreateDialog
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.playlistCreate_create:
-                if( !editText.getText().toString().trim().equals("")){
-                    //PlayerApplication.getPlayerApplication().setPlaylistId(CursorTool.createPlaylist(context.getContentResolver(), editText.getText().toString().trim()));
+                if (!editText.getText().toString().trim().equals("")) {
+                    //App.getAppContext().setPlaylistId(CursorTool.createPlaylist(context.getContentResolver(), editText.getText().toString().trim()));
 //                    MainPages.getPlaylistAdapter().refreshPlaylist(CursorTool.SORT_NONE);
                     MainPages.getTextPlaylistHeader().setText(editText.getText().toString().trim());
                     dismiss();

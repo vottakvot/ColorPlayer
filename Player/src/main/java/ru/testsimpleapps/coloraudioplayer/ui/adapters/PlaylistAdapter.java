@@ -6,20 +6,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import ru.testsimpleapps.coloraudioplayer.PlayerApplication;
+import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
-import ru.testsimpleapps.coloraudioplayer.ui.views.PlayerVisualizer;
 import ru.testsimpleapps.coloraudioplayer.control.player.playlist.IPlaylist;
 import ru.testsimpleapps.coloraudioplayer.control.player.playlist.cursor.CursorFactory;
 import ru.testsimpleapps.coloraudioplayer.control.player.playlist.cursor.CursorTool;
 import ru.testsimpleapps.coloraudioplayer.control.tools.DateTimeTool;
+import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
+import ru.testsimpleapps.coloraudioplayer.ui.views.VisualizerView;
 
 
 /*
@@ -30,7 +28,7 @@ public class PlaylistAdapter extends BaseAdapter {
     private final Context context;
     private final LayoutInflater inflater;
 
-    private static PlayerVisualizer playerVisualizer;
+    private static VisualizerView playerVisualizer;
     private IPlaylist mPlaylist;
     private String currentSortBy = CursorTool.SORT_NONE;
 
@@ -47,7 +45,7 @@ public class PlaylistAdapter extends BaseAdapter {
     }
 
     public static boolean updateVisualizer(byte[] bytes, boolean isPlaying) {
-        if(playerVisualizer != null){
+        if (playerVisualizer != null) {
             playerVisualizer.updateVisualizer(bytes, isPlaying);
             return true;
         }
@@ -55,22 +53,22 @@ public class PlaylistAdapter extends BaseAdapter {
         return false;
     }
 
-    public void sortByName(){
+    public void sortByName() {
         currentSortBy = CursorTool.SORT_NAME + CursorTool.SORT_ASC;
         refreshPlaylist();
     }
 
-    public void sortByDuration(){
+    public void sortByDuration() {
         currentSortBy = CursorTool.SORT_DURATION + CursorTool.SORT_ASC;
         refreshPlaylist();
     }
 
-    public void sortByModify(){
+    public void sortByModify() {
         currentSortBy = CursorTool.SORT_MODIFY + CursorTool.SORT_ASC;
         refreshPlaylist();
     }
 
-    public void refreshPlaylist(){
+    public void refreshPlaylist() {
         mPlaylist = CursorFactory.getCursorPlaylistForView();
         notifyDataSetChanged();
     }
@@ -80,10 +78,10 @@ public class PlaylistAdapter extends BaseAdapter {
     }
 
     public void deleteTrack(int position) {
-//        if(PlayerApplication.getPlayerApplication().getPlaylistId() != -1) {
+//        if(App.getAppContext().getPlaylistId() != -1) {
 //            mPlaylist.goTo(position);
 //            Long trackId = mPlaylist.getTrackId();
-//            CursorTool.deleteTrackFromPlaylist(context.getContentResolver(), PlayerApplication.getPlayerApplication().getPlaylistId(), trackId);
+//            CursorTool.deleteTrackFromPlaylist(context.getContentResolver(), App.getAppContext().getPlaylistId(), trackId);
 //            refreshPlaylist(currentSortBy);
 //        }
     }
@@ -125,40 +123,40 @@ public class PlaylistAdapter extends BaseAdapter {
         viewHolder.durationTrack.setText(DateTimeTool.getDuration(mPlaylist.getTrackDuration()));
         viewHolder.durationTrack.bringToFront();
 
-        if(viewHolder.artistTrack != null){
+        if (viewHolder.artistTrack != null) {
             viewHolder.artistTrack.setText(mPlaylist.getTrackArtist());
             viewHolder.artistTrack.bringToFront();
         }
 
-        if(viewHolder.albumTrack != null){
+        if (viewHolder.albumTrack != null) {
             viewHolder.albumTrack.setText(mPlaylist.getTrackAlbum());
             viewHolder.albumTrack.bringToFront();
         }
 
-        if(viewHolder.titleTrack != null){
+        if (viewHolder.titleTrack != null) {
             viewHolder.titleTrack.setText(mPlaylist.getTrackTitle());
             viewHolder.titleTrack.bringToFront();
         }
 
-        if(viewHolder.dateTrack != null){
+        if (viewHolder.dateTrack != null) {
             viewHolder.dateTrack.setText(DateTimeTool.getDateTime(mPlaylist.getTrackDateModified()));
             viewHolder.dateTrack.bringToFront();
         }
 
         // For select playing position. If cursor doesn't init, select first position.
-//        long sonID = PlayerApplication.getPlayerApplication().getSongId();
+//        long sonID = App.getAppContext().getSongId();
 //        if(sonID == -1){
-//            IPlaylist mainActivePlaylist = PlayerApplication.getPlayerApplication().getPlayerConfig().refreshPlaylist();
+//            IPlaylist mainActivePlaylist = App.getAppContext().getPlayerConfig().refreshPlaylist();
 //            if(mainActivePlaylist.position() == -1){
 //                mainActivePlaylist.toFirst();
-//                PlayerApplication.getPlayerApplication().setSongId(mainActivePlaylist.getTrackId());
+//                App.getAppContext().setSongId(mainActivePlaylist.getTrackId());
 //            }
 //            sonID = mainActivePlaylist.getTrackId();
 //        }
 
 //        if(sonID == mPlaylist.getTrackId()){
 //            view.setBackgroundResource(R.drawable.drawable_listview_item_selection);
-//            ((GradientDrawable)view.getBackground()).setColor(PlayerApplication.getSelectionItemColor());
+//            ((GradientDrawable)view.getBackground()).setColor(App.getSelectionItemColor());
 //            viewHolder.visualizerTrack.setVisibility(View.VISIBLE);
 //            playerVisualizer = viewHolder.visualizerTrack;
 //        } else {
@@ -168,7 +166,7 @@ public class PlaylistAdapter extends BaseAdapter {
 //
 //        // For custom search selection
 //        if( searchPosition == position && searchPosition != -1 &&
-//            searchPosition != PlayerApplication.getPlayerApplication().getPlayerConfig().refreshPlaylist().position()){
+//            searchPosition != App.getAppContext().getPlayerConfig().refreshPlaylist().position()){
 //            view.setBackgroundResource(R.drawable.drawable_listview_item_find);
 //        } else if(sonID != mPlaylist.getTrackId()){
 //                view.setBackgroundColor(Color.TRANSPARENT);
@@ -182,7 +180,7 @@ public class PlaylistAdapter extends BaseAdapter {
 
 
     private class AdapterViewHolder extends RecyclerView.ViewHolder {
-        public PlayerVisualizer visualizerTrack;
+        public VisualizerView visualizerTrack;
         public ImageView imageTrack;
         public TextView numberTrack;
         public TextView nameTrack;
@@ -195,7 +193,7 @@ public class PlaylistAdapter extends BaseAdapter {
 
         public AdapterViewHolder(final View view) {
             super(view);
-            visualizerTrack = (PlayerVisualizer) view.findViewById(R.id.visualizerTrack);
+            visualizerTrack = (VisualizerView) view.findViewById(R.id.visualizerTrack);
             imageTrack = (ImageView) view.findViewById(R.id.imageTrack);
             numberTrack = (TextView) view.findViewById(R.id.numberTrack);
             nameTrack = (TextView) view.findViewById(R.id.nameTrack);
@@ -217,14 +215,14 @@ public class PlaylistAdapter extends BaseAdapter {
     }
 
     public void onItemClick(final View view, final int position) {
-        IPlaylist mainActivePlaylist = PlayerApplication.getPlayerApplication().getPlayerConfig().getPlaylist();
+        IPlaylist mainActivePlaylist = App.getAppContext().getPlayerConfig().getPlaylist();
         mainActivePlaylist.goTo(position - 1);
-        PlayerApplication.getPlayerApplication().getPlayerConfig().setTrackPathFromPlaylist();
+        App.getAppContext().getPlayerConfig().setTrackPathFromPlaylist();
         context.startService(new Intent(PlayerService.ACTION_PLAY)
                 .putExtra(PlayerService.KEY_PLAY_NEW, PlayerService.KEY_PLAY_NEW)
                 .setPackage(context.getPackageName()));
         // Save current track id for select item view
-        //PlayerApplication.getPlayerApplication().setSongId(mainActivePlaylist.getTrackId());
+        //App.getAppContext().setSongId(mainActivePlaylist.getTrackId());
         view.setBackgroundColor(MainActivity.getColor(context, R.color.common_select_list_item));
         notifyDataSetChanged();
     }

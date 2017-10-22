@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/common_transparent">
@@ -10,12 +9,12 @@
         style="@style/PlayerImageViewCommon"
         android:id="@+id/imageConfig"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="10dp" />
 
     <!-- 2 view name drawer-->
     <TextView
         style="@style/PlayerTextCommon"
         android:id="@+id/nameConfig"
         android:layout_toRightOf="@id/imageConfig"
-        android:textColor="@color/common_text_drawer"/>
+        android:textColor="@color/common_text_drawer" />
 </RelativeLayout>

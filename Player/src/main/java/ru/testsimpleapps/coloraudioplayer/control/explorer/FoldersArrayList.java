@@ -6,11 +6,11 @@ public class FoldersArrayList<T> extends ArrayList<T> {
 
     private boolean isChecked = false;
 
-    public FoldersArrayList(){
+    public FoldersArrayList() {
         super();
     }
 
-    public FoldersArrayList(int capacity){
+    public FoldersArrayList(int capacity) {
         super(capacity);
     }
 

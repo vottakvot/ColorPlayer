@@ -20,26 +20,29 @@
                 android:id="@+id/timer_header"
                 android:text="@string/timer_header"
                 android:gravity="center"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <RadioGroup
                 android:id="@+id/timer_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical">
+
                 <RadioButton
                     style="@style/PlayerRadioButtonCommon"
                     android:id="@+id/timer_type_wake"
                     android:text="@string/timer_type_wake"
-                    android:checked="true"/>
+                    android:checked="true" />
+
                 <RadioButton
                     style="@style/PlayerRadioButtonCommon"
                     android:id="@+id/timer_type_pause"
                     android:text="@string/timer_type_pause" />
+
                 <RadioButton
                     style="@style/PlayerRadioButtonCommon"
                     android:id="@+id/timer_type_play"
-                    android:text="@string/timer_type_play"/>
+                    android:text="@string/timer_type_play" />
             </RadioGroup>
 
             <TimePicker
@@ -48,19 +51,21 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:verticalScrollbarPosition="defaultPosition"
-                android:layout_margin="20dp"/>
+                android:layout_margin="20dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     style="@style/PlayerButtonTimerDialog"
                     android:id="@+id/timer_create"
                     android:layout_weight="1"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="20dp"
-                    android:text="@string/timer_create"/>
+                    android:text="@string/timer_create" />
+
                 <Button
                     style="@style/PlayerButtonTimerDialog"
                     android:id="@+id/timer_reset"
@@ -68,21 +73,22 @@
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:text="@string/timer_reset"/>
+                    android:text="@string/timer_reset" />
+
                 <Button
                     style="@style/PlayerButtonTimerDialog"
                     android:id="@+id/timer_cancel"
                     android:layout_weight="1"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"
-                    android:text="@string/timer_cancel"/>
+                    android:text="@string/timer_cancel" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:clickable="false"
-                android:focusable="false"/>
+                android:focusable="false" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

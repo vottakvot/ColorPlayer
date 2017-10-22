@@ -11,11 +11,10 @@ import android.widget.TimePicker;
 
 import ru.testsimpleapps.coloraudioplayer.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.R;
-
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 public class TimerDialog
-        extends AbstractDialog
+        extends BaseDialog
         implements View.OnClickListener {
 
     private final Context context;
@@ -27,7 +26,7 @@ public class TimerDialog
     private RadioButton radioButtonPause;
     private TimePicker timePicker;
 
-    public TimerDialog(Context context){
+    public TimerDialog(Context context) {
         super(context);
         this.context = context;
     }
@@ -49,17 +48,17 @@ public class TimerDialog
         timePicker = (TimePicker) findViewById(R.id.timer_edit);
         timePicker.setIs24HourView(true);
 
-        if( android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1 &&
-            android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
-                timePicker.setBackground(context.getResources().getDrawable(R.drawable.drawable_common_time_picker));
-            }
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1 &&
+                android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            timePicker.setBackground(context.getResources().getDrawable(R.drawable.drawable_common_time_picker));
+        }
 
         resetPicker();
     }
 
-    private void resetPicker(){
+    private void resetPicker() {
         // Set timer to 0
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             timePicker.setMinute(0);
             timePicker.setHour(0);
         } else {
@@ -75,24 +74,24 @@ public class TimerDialog
                 String typeTimer = PlayerService.TIMER_TYPE_NONE;
 
                 // Get timer type
-                if(radioButtonWake.isChecked()){
+                if (radioButtonWake.isChecked()) {
                     typeTimer = PlayerService.TIMER_TYPE_WAKE;
-                } else if(radioButtonPlay.isChecked()){
-                            typeTimer = PlayerService.TIMER_TYPE_PLAY;
-                        } else if(radioButtonPause.isChecked()){
-                                typeTimer = PlayerService.TIMER_TYPE_PAUSE;
-                            }
+                } else if (radioButtonPlay.isChecked()) {
+                    typeTimer = PlayerService.TIMER_TYPE_PLAY;
+                } else if (radioButtonPause.isChecked()) {
+                    typeTimer = PlayerService.TIMER_TYPE_PAUSE;
+                }
 
                 int minutes = -1;
                 // Get time in minutes
-                if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                     minutes = timePicker.getHour() * 60 + timePicker.getMinute();
                 } else {
-                        minutes = timePicker.getCurrentHour() * 60 + timePicker.getCurrentMinute();
-                    }
+                    minutes = timePicker.getCurrentHour() * 60 + timePicker.getCurrentMinute();
+                }
 
                 // Check time
-                if(!typeTimer.equals(PlayerService.TIMER_TYPE_WAKE) && minutes <= 0){
+                if (!typeTimer.equals(PlayerService.TIMER_TYPE_WAKE) && minutes <= 0) {
                     MainActivity.showInfoMessage(context.getResources().getString(R.string.timer_zero));
                     break;
                 }
@@ -105,9 +104,9 @@ public class TimerDialog
                 break;
             case R.id.timer_reset:
                 resetPicker();
-                //MainActivity.setTimerButton(PlayerApplication.getPlayerApplication().initDefaultViewDataTimer());
+                //MainActivity.setTimerButton(App.getAppContext().initDefaultViewDataTimer());
                 context.startService(new Intent(PlayerService.ACTION_TIMER_RESET)
-                                            .setPackage(context.getPackageName()));
+                        .setPackage(context.getPackageName()));
                 break;
 
             case R.id.timer_cancel:

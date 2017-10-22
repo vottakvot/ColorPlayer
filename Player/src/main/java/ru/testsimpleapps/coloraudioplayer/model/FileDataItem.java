@@ -7,7 +7,7 @@ public class FileDataItem {
     private long id;
     private long duration;
 
-    public FileDataItem(boolean isChecked, String name, long id, long duration){
+    public FileDataItem(boolean isChecked, String name, long id, long duration) {
         this.isChecked = isChecked;
         this.name = name;
         this.id = id;
