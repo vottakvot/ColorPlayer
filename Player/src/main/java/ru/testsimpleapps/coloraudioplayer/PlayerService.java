@@ -29,10 +29,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import ru.testsimpleapps.coloraudioplayer.control.player.AudioPlayer;
-import ru.testsimpleapps.coloraudioplayer.control.player.data.PlayerConfig;
-import ru.testsimpleapps.coloraudioplayer.control.receivers.MediaButtonsReceiver;
-import ru.testsimpleapps.coloraudioplayer.control.receivers.ViewUpdaterReceiver;
+import ru.testsimpleapps.coloraudioplayer.managers.player.AudioPlayer;
+import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
+import ru.testsimpleapps.coloraudioplayer.managers.receivers.MediaButtonsReceiver;
+import ru.testsimpleapps.coloraudioplayer.managers.receivers.ViewUpdaterReceiver;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.PlaylistAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.EqualizerDialog;

@@ -12,10 +12,10 @@ import android.widget.TextView;
 import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.control.player.playlist.IPlaylist;
-import ru.testsimpleapps.coloraudioplayer.control.player.playlist.cursor.CursorFactory;
-import ru.testsimpleapps.coloraudioplayer.control.player.playlist.cursor.CursorTool;
-import ru.testsimpleapps.coloraudioplayer.control.tools.DateTimeTool;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorTool;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.DateTimeTool;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 import ru.testsimpleapps.coloraudioplayer.ui.views.VisualizerView;
 

@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer.control.player.playlist.cursor;
+package ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 
 import java.io.File;
 
-import ru.testsimpleapps.coloraudioplayer.control.player.playlist.IPlaylist;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 
 public class CursorPlaylist implements IPlaylist {
 

@@ -7,8 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.ui.MainPages;
-import ru.testsimpleapps.coloraudioplayer.ui.PlayerControl;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 public class PlaylistCreateDialog
@@ -43,11 +41,8 @@ public class PlaylistCreateDialog
             case R.id.playlistCreate_create:
                 if (!editText.getText().toString().trim().equals("")) {
                     //App.getAppContext().setPlaylistId(CursorTool.createPlaylist(context.getContentResolver(), editText.getText().toString().trim()));
-//                    MainPages.getPlaylistAdapter().refreshPlaylist(CursorTool.SORT_NONE);
-                    MainPages.getTextPlaylistHeader().setText(editText.getText().toString().trim());
                     dismiss();
                     MainActivity.showInfoMessage(context.getResources().getString(R.string.playlist_create_done));
-                    PlayerControl.setCountTracks();
                 } else
                     MainActivity.showInfoMessage(context.getResources().getString(R.string.playlist_create_wrong_name));
                 break;

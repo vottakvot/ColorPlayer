@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer.model;
+package ru.testsimpleapps.coloraudioplayer.data;
 
 public class DrawerDataItem {
 

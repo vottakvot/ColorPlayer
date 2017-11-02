@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer.control.receivers;
+package ru.testsimpleapps.coloraudioplayer.managers.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -11,7 +11,6 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Shader;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,9 +24,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,9 +32,7 @@ import android.widget.Toast;
 
 import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.control.receivers.ViewUpdaterReceiver;
-import ru.testsimpleapps.coloraudioplayer.ui.MainPages;
-import ru.testsimpleapps.coloraudioplayer.ui.PlayerControl;
+import ru.testsimpleapps.coloraudioplayer.managers.receivers.ViewUpdaterReceiver;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ConfigAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.fragments.PagerFragment;
 
@@ -48,12 +43,10 @@ public class MainActivity extends BaseActivity {
     public static final int REQUEST_PERMISSIONS_RECORD = 2;
 
     private static Context context;
-    public MainPages mainPages;
 
     private DrawerLayout drawerLayout;
     private ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
-    private PlayerControl playerControl;
     private ConfigAdapter configAdapter;
 
     private static Toast infoMessage;
@@ -91,7 +84,6 @@ public class MainActivity extends BaseActivity {
 
         infoMessage = Toast.makeText(this, "", Toast.LENGTH_SHORT);
 //        mainPages = new MainPages(MainActivity.this, (ViewPager)findViewById(R.id.pager_fragment), getSupportFragmentManager());
-//        playerControl = new PlayerControl(MainActivity.this);
 
         setActionBarActionDrawer();
         customizeActionBar();
@@ -165,27 +157,6 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (v.getId() == R.id.searchTrackInput) {
-                Rect outRectButton = new Rect();
-                findViewById(R.id.searchTrackButton).getGlobalVisibleRect(outRectButton);
-                Rect outRectEdit = new Rect();
-                v.getGlobalVisibleRect(outRectEdit);
-                if (!outRectEdit.contains((int) event.getRawX(), (int) event.getRawY()) &&
-                        !outRectButton.contains((int) event.getRawX(), (int) event.getRawY())) {
-                    v.clearFocus();
-                    v.setVisibility(View.INVISIBLE);
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-            }
-        }
-        return super.dispatchTouchEvent(event);
-    }
-
     public static float[] getActivitySize() {
         if (context != null) {
             int resolution[] = getActivitySizeInt();
@@ -199,6 +170,9 @@ public class MainActivity extends BaseActivity {
         }
 
         return null;
+
+
+
     }
 
     public static int[] getActivitySizeInt() {
@@ -355,11 +329,4 @@ public class MainActivity extends BaseActivity {
         actionBar.setCustomView(R.layout.action_bar);
     }
 
-    public PlayerControl getPlayerControl() {
-        return playerControl;
-    }
-
-    public ConfigAdapter getConfigAdapter() {
-        return configAdapter;
-    }
 }

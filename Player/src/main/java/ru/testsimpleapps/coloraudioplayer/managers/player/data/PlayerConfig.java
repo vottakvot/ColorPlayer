@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer.control.player.data;
+package ru.testsimpleapps.coloraudioplayer.managers.player.data;
 
 import android.os.Parcel;
 import android.support.annotation.IntRange;
@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 
 import java.io.Serializable;
 
-import ru.testsimpleapps.coloraudioplayer.control.player.playlist.IPlaylist;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 
 public final class PlayerConfig implements Serializable {
 

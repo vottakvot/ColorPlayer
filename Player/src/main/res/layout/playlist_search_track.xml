@@ -10,7 +10,7 @@
 
     <ImageButton
         style="@style/PlayerImageButtonCommon"
-        android:id="@+id/searchTrackButton"
+        android:id="@+id/search_track_button"
         android:layout_alignParentLeft="true"
         android:maxHeight="35dp"
         android:minHeight="35dp"
@@ -21,9 +21,10 @@
 
     <EditText
         style="@style/PlayerEditCommon"
-        android:id="@+id/searchTrackInput"
+        android:id="@+id/search_track_input"
         android:background="@drawable/drawable_common_search_edit"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/searchTrackButton"
+        android:layout_toRightOf="@id/search_track_button"
         android:hint="@string/playlist_search_hint" />
+
 </RelativeLayout>

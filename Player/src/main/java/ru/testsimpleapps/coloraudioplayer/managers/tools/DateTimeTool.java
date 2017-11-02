@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer.control.tools;
+package ru.testsimpleapps.coloraudioplayer.managers.tools;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -6,18 +6,22 @@ import java.util.Date;
 
 public class DateTimeTool {
 
+    private static final String DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
+    private static final String DATE_FORMAT = "dd/MM/yyyy";
+    private static final String TIME_FORMAT = "HH:mm:ss";
+
     public static String getDateTime(long ms) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_FORMAT);
         return formatter.format(new Date(ms));
     }
 
     public static String getDate(long ms) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         return formatter.format(new Date(ms));
     }
 
     public static String getTime(long ms) {
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat(TIME_FORMAT);
         return formatter.format(new Date(ms));
     }
 

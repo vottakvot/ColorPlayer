@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer.control.player.playlist.cursor;
+package ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

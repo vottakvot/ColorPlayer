@@ -9,9 +9,9 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/current_track_name"
+        android:id="@+id/track_name_control"
         android:gravity="left|center_vertical"
-        android:maxLines="1"
+        android:singleLine="true"
         android:textStyle="bold"
         android:textSize="@dimen/player_controls_track_name_textsize"
         android:ellipsize="marquee"
@@ -35,7 +35,7 @@
     <SeekBar
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/seek_play_position"
+        android:id="@+id/seek_position_control"
         android:minHeight="@dimen/player_controls_seek_height"
         android:maxHeight="@dimen/player_controls_seek_height"
         android:background="@color/common_transparent"
@@ -46,7 +46,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/current_track_name"
+        app:layout_constraintTop_toBottomOf="@+id/track_name_control"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -59,26 +59,26 @@
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/seek_play_position"
+        app:layout_constraintTop_toBottomOf="@+id/seek_position_control"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent">
 
         <TextView
             style="@style/PlayerControlTrackInfo"
-            android:id="@+id/time_position_track"
+            android:id="@+id/position_time_control"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="20dp"
             android:text="00:00" />
 
         <TextView
             style="@style/PlayerControlTrackInfo"
-            android:id="@+id/number_track_total"
+            android:id="@+id/number_tracks_control"
             android:layout_centerInParent="true"
             android:text="0000/0000" />
 
         <TextView
             style="@style/PlayerControlTrackInfo"
-            android:id="@+id/total_track_time"
+            android:id="@+id/total_time_control"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:text="00:00" />

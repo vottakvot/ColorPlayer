@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer.control.player.data;
+package ru.testsimpleapps.coloraudioplayer.managers.player.data;
 
 import java.util.HashSet;
 import java.util.Random;

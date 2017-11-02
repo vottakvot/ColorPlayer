@@ -1,11 +1,12 @@
 package ru.testsimpleapps.coloraudioplayer.ui.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -13,13 +14,18 @@ import butterknife.Unbinder;
 import ru.testsimpleapps.coloraudioplayer.R;
 
 
-public class PlaylistFragment extends BaseFragment {
+public class PlaylistFragment extends BaseFragment implements View.OnClickListener {
 
     public static final String TAG = PlaylistFragment.class.getSimpleName();
 
     protected Unbinder mUnbinder;
+
+    @BindView(R.id.search_track_button)
+    protected ImageButton mSearchTrackButton;
+    @BindView(R.id.search_track_input)
+    protected EditText mInputTrackEdit;
     @BindView(R.id.playlist_list_fragment)
-    protected RecyclerView mRecyclerView;
+    protected RecyclerView mPlaylistRecyclerView;
 
     public static PlaylistFragment newInstance() {
         PlaylistFragment fragment = new PlaylistFragment();
@@ -35,18 +41,31 @@ public class PlaylistFragment extends BaseFragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
+        removeButtonsCallback();
         mUnbinder.unbind();
     }
 
-    private void init() {
-        // TODO: 17.09.17
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.search_track_button:
+                break;
+        }
     }
+
+    private void init() {
+        setButtonsCallback();
+    }
+
+    private void setButtonsCallback() {
+        mSearchTrackButton.setOnClickListener(this);
+    }
+
+    private void removeButtonsCallback() {
+        mSearchTrackButton.setOnClickListener(null);
+    }
+
 
 }

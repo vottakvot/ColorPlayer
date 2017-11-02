@@ -1,6 +1,6 @@
-package ru.testsimpleapps.coloraudioplayer.control.player;
+package ru.testsimpleapps.coloraudioplayer.managers.player;
 
-import ru.testsimpleapps.coloraudioplayer.control.player.data.PlayerConfig;
+import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 
 public interface IAudioPlayer {
 

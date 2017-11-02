@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.control.player.playlist.cursor.CursorTool;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorTool;
 
 public class PlaylistChooseDialog
         extends BaseDialog {

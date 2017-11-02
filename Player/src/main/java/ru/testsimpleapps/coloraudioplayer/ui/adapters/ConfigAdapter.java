@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 import ru.testsimpleapps.coloraudioplayer.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.model.DrawerDataItem;
+import ru.testsimpleapps.coloraudioplayer.data.DrawerDataItem;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.PreferencesActivity;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.ColorsDialog;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.EqualizerDialog;
@@ -28,9 +28,7 @@ import ru.testsimpleapps.coloraudioplayer.ui.dialogs.TimerDialog;
 /*
 * http://habrahabr.ru/post/133575/
 * */
-public class ConfigAdapter
-        extends BaseAdapter
-        implements ListView.OnItemClickListener {
+public class ConfigAdapter extends BaseAdapter implements ListView.OnItemClickListener {
 
     private final Context context;
     private final LayoutInflater inflater;

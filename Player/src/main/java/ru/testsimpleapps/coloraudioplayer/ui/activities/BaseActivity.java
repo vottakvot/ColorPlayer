@@ -34,17 +34,4 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void showRetainFragment(@Nullable Fragment fragment, @NonNull final String tag) {
-        if (mFragmentManager == null) {
-            mFragmentManager = getSupportFragmentManager();
-        }
-
-        final Fragment retainFragment = mFragmentManager.findFragmentByTag(tag);
-        if (retainFragment != null) {
-            fragment = retainFragment;
-        }
-
-        showFragment(fragment, null);
-    }
-
 }

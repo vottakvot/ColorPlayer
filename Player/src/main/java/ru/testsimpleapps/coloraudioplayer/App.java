@@ -5,14 +5,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 
-import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
-import ru.testsimpleapps.coloraudioplayer.control.player.data.PlayerConfig;
-import ru.testsimpleapps.coloraudioplayer.control.player.playlist.cursor.CursorFactory;
-import ru.testsimpleapps.coloraudioplayer.control.tools.FileTool;
-import ru.testsimpleapps.coloraudioplayer.control.tools.SerializableTool;
+import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.FileTool;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.SerializableTool;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 import static org.acra.ReportField.ANDROID_VERSION;

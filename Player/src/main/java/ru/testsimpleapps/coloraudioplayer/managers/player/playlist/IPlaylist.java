@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer.control.player.playlist;
+package ru.testsimpleapps.coloraudioplayer.managers.player.playlist;
 
 
 public interface IPlaylist extends Cloneable {

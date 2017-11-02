@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.ui.MainPages;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 public class PlaylistRenameDialog
@@ -42,9 +41,7 @@ public class PlaylistRenameDialog
             case R.id.playlistRename_create:
                 if (!editText.getText().toString().trim().equals("")) {
                     //CursorTool.renamePlaylist(context.getContentResolver(), App.getAppContext().getPlaylistId(), editText.getText().toString());
-                    if (MainPages.getTextPlaylistHeader() != null) {
-                        //MainPages.getTextPlaylistHeader().setText(CursorTool.getPlaylistNameById(context.getContentResolver(), App.getAppContext().getPlaylistId()));
-                    }
+
                     dismiss();
                     MainActivity.showInfoMessage(context.getResources().getString(R.string.playlist_rename_done));
                 } else

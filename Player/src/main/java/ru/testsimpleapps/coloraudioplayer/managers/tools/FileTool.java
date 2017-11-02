@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer.control.tools;
+package ru.testsimpleapps.coloraudioplayer.managers.tools;
 
 import android.content.Context;
 import android.net.Uri;

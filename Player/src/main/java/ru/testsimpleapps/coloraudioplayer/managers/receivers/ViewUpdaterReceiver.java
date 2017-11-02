@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer.control.receivers;
+package ru.testsimpleapps.coloraudioplayer.managers.receivers;
 
 
 import android.content.BroadcastReceiver;
@@ -8,8 +8,6 @@ import android.content.IntentFilter;
 import android.util.Log;
 
 import ru.testsimpleapps.coloraudioplayer.App;
-import ru.testsimpleapps.coloraudioplayer.control.player.AudioPlayer;
-import ru.testsimpleapps.coloraudioplayer.ui.PlayerControl;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 public class ViewUpdaterReceiver extends BroadcastReceiver {
@@ -36,13 +34,11 @@ public class ViewUpdaterReceiver extends BroadcastReceiver {
             }
 
             if (command.equals(UPDATE_PLAY_BUTTON)) {
-                PlayerControl playerControl = mAppCompatActivity.getPlayerControl();
-                playerControl.setPlayPauseImage(intent.getBooleanExtra(UPDATE_PLAY_BUTTON, false));
+
             }
 
             if (command.equals(UPDATE_SEEK_BAR)) {
-                PlayerControl playerControl = mAppCompatActivity.getPlayerControl();
-                playerControl.setViewsPosition(intent.getIntExtra(UPDATE_SEEK_BAR, AudioPlayer.MIN_SEEK_POSITION));
+
             }
 
             if (command.equals(UPDATE_EQUALIZER_DIALOG)) {

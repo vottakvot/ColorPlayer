@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer.control.player;
+package ru.testsimpleapps.coloraudioplayer.managers.player;
 
 import android.content.Context;
 import android.media.AudioManager;
@@ -9,10 +9,10 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import ru.testsimpleapps.coloraudioplayer.App;
-import ru.testsimpleapps.coloraudioplayer.control.player.data.PlayerConfig;
-import ru.testsimpleapps.coloraudioplayer.control.player.data.RandomSet;
-import ru.testsimpleapps.coloraudioplayer.control.player.data.StrictQueue;
-import ru.testsimpleapps.coloraudioplayer.control.player.playlist.IPlaylist;
+import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
+import ru.testsimpleapps.coloraudioplayer.managers.player.data.RandomSet;
+import ru.testsimpleapps.coloraudioplayer.managers.player.data.StrictQueue;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 
 public class AudioPlayer
         implements IAudioPlayer,
