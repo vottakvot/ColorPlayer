@@ -245,8 +245,4 @@ public class MediaExplorer {
         return ((value + 5) / 10) * 10;
     }
 
-    public LinkedHashMap<String, DataContainer<DataItem>> getArtists() {
-        return mArtistMediaList;
-    }
-
 }
