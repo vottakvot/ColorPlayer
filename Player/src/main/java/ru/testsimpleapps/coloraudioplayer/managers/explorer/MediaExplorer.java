@@ -10,7 +10,6 @@ import android.util.Log;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,23 +120,6 @@ public class MediaExplorer {
     }
 
     /**
-     * This method use for get string time from long
-     *
-     * @param ms - time in ms.
-     * @return A - return string time
-     */
-    @Deprecated
-    public static String getDuration(long ms) {
-        return ((ms / (1000 * 60 * 60)) != 0 ? String.format("%01d", (ms / (1000 * 60 * 60))) + ":" : "") +
-                String.format("%02d", (ms / (1000 * 60)) % 60) + ":" +
-                String.format("%02d", (ms / 1000) % 60);
-    }
-
-    public static String getDuration2(final long time) {
-        return mSimpleDateFormat.format(new Date(time));
-    }
-
-    /**
      * If this is a simple name, like as "1 or CD3" - concat with previous folder.
      *
      * @param path - path to media file
@@ -217,7 +199,7 @@ public class MediaExplorer {
                         // For artist grouping
                         DataContainer<DataItem> artistsContainer = mArtistMediaList.get(artist);
                         if (artistsContainer == null) {
-                            artistsContainer = new DataContainer<>();
+                            artistsContainer = new DataContainer<>(artist);
                             mArtistMediaList.put(artist, artistsContainer);
                         }
                         artistsContainer.add(dataItem);
@@ -225,7 +207,7 @@ public class MediaExplorer {
                         // For albums grouping
                         DataContainer<DataItem> albumsContainer = mAlbumsMediaList.get(album);
                         if (albumsContainer == null) {
-                            albumsContainer = new DataContainer<>();
+                            albumsContainer = new DataContainer<>(album);
                             mAlbumsMediaList.put(album, albumsContainer);
                         }
                         albumsContainer.add(dataItem);
@@ -233,7 +215,7 @@ public class MediaExplorer {
                         // For folder grouping
                         DataContainer<DataItem> foldersContainer = mFoldersMediaList.get(folder);
                         if (foldersContainer == null) {
-                            foldersContainer = new DataContainer<>();
+                            foldersContainer = new DataContainer<>(folder);
                             mFoldersMediaList.put(folder, foldersContainer);
                         }
                         foldersContainer.add(dataItem);

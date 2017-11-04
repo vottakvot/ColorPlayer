@@ -15,14 +15,10 @@ import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorTool;
-import ru.testsimpleapps.coloraudioplayer.managers.tools.DateTimeTool;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.TimeTool;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 import ru.testsimpleapps.coloraudioplayer.ui.views.VisualizerView;
 
-
-/*
-* http://habrahabr.ru/post/133575/
-* */
 public class PlaylistAdapter extends BaseAdapter {
 
     private final Context context;
@@ -120,7 +116,7 @@ public class PlaylistAdapter extends BaseAdapter {
         viewHolder.numberTrack.bringToFront();
         viewHolder.nameTrack.setText(mPlaylist.getTrackName());
         viewHolder.nameTrack.bringToFront();
-        viewHolder.durationTrack.setText(DateTimeTool.getDuration(mPlaylist.getTrackDuration()));
+        viewHolder.durationTrack.setText(TimeTool.getDuration(mPlaylist.getTrackDuration()));
         viewHolder.durationTrack.bringToFront();
 
         if (viewHolder.artistTrack != null) {
@@ -139,7 +135,7 @@ public class PlaylistAdapter extends BaseAdapter {
         }
 
         if (viewHolder.dateTrack != null) {
-            viewHolder.dateTrack.setText(DateTimeTool.getDateTime(mPlaylist.getTrackDateModified()));
+            viewHolder.dateTrack.setText(TimeTool.getDateTime(mPlaylist.getTrackDateModified()));
             viewHolder.dateTrack.bringToFront();
         }
 

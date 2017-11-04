@@ -19,13 +19,13 @@ import ru.testsimpleapps.coloraudioplayer.managers.explorer.DataContainer;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.DataItem;
 
 
-public class ExplorerAdapter extends BaseAdapter {
+public class ExplorerFolderAdapter extends BaseAdapter {
 
     private final Context mContext;
     private final OnItemClickListener mOnItemClickListener;
     private LinkedHashMap<String, DataContainer<DataItem>> mDataList;
 
-    public ExplorerAdapter(@NonNull Context context, @Nullable OnItemClickListener onItemClickListener) {
+    public ExplorerFolderAdapter(@NonNull Context context, @Nullable OnItemClickListener onItemClickListener) {
         super();
         mContext = context;
         mOnItemClickListener = onItemClickListener;
