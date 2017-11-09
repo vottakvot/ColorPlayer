@@ -30,7 +30,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.managers.receivers.ViewUpdaterReceiver;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ConfigAdapter;
@@ -67,27 +66,18 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Log.i(MainActivity.LOG_ACTIVITY, this.getClass().getName().toString() + " - onCreate");
 
-        mViewUpdaterReceiver = new ViewUpdaterReceiver(this);
-        App.getAppContext().setCustomTheme(this);
-        getPermissionMarshmallow();
-        super.onCreate(savedInstanceState);
-//        startService(new Intent(this, PlayerService.class));
-
-        context = this;
         setContentView(R.layout.activity_main);
+        getPermissionMarshmallow();
 
         if (savedInstanceState == null) {
             showFragment(PagerFragment.newInstance(), null);
         }
 
-        infoMessage = Toast.makeText(this, "", Toast.LENGTH_SHORT);
-//        mainPages = new MainPages(MainActivity.this, (ViewPager)findViewById(R.id.pager_fragment), getSupportFragmentManager());
-
         setActionBarActionDrawer();
         customizeActionBar();
-//        setTimerButton();
     }
 
     private void getPermissionMarshmallow() {
@@ -238,7 +228,7 @@ public class MainActivity extends BaseActivity {
 
     private void setTimerButton() {
         timerButton = (Button) findViewById(R.id.action_bar_timer);
-        //setTimerButton(App.getAppContext().getViewDataTimer());
+        //setTimerButton(App.getContext().getViewDataTimer());
 
         timerButton.setOnClickListener(new Button.OnClickListener() {
 

@@ -63,7 +63,7 @@ public class App extends Application {
         CursorFactory.closeCursorsPlaylist();
     }
 
-    public static App getAppContext() {
+    public static App getContext() {
         return sPlayerApplication;
     }
 
@@ -72,7 +72,7 @@ public class App extends Application {
     }
 
     public void setCustomTheme(Context context) {
-        switch (App.getAppContext().getNumberTheme()) {
+        switch (App.getContext().getNumberTheme()) {
             case App.THEME_BLUE:
                 context.setTheme(R.style.BlueTheme);
                 SELECTION_ITEM_COLOR = MainActivity.getColor(this, R.color.blueHints);
@@ -89,7 +89,7 @@ public class App extends Application {
     }
 
     public int getColorTheme(int alpha, int red, int green, int blue) {
-        switch (App.getAppContext().getNumberTheme()) {
+        switch (App.getContext().getNumberTheme()) {
             case App.THEME_BLUE:
                 return Color.argb(alpha, red, green, 255);
             case App.THEME_GREEN:

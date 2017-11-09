@@ -1,15 +1,22 @@
 package ru.testsimpleapps.coloraudioplayer.ui.fragments;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.testsimpleapps.coloraudioplayer.R;
+import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.FolderData;
+import ru.testsimpleapps.coloraudioplayer.managers.explorer.MediaExplorerManager;
+import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFilesAdapter;
+import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFolderAdapter;
 
 
 public class ExplorerFragment extends BaseFragment {
@@ -17,8 +24,12 @@ public class ExplorerFragment extends BaseFragment {
     public static final String TAG = ExplorerFragment.class.getSimpleName();
 
     protected Unbinder mUnbinder;
-    @BindView(R.id.explorer_list_fragment)
+    @BindView(R.id.explorer_list)
     protected RecyclerView mRecyclerView;
+
+    private ExplorerFilesAdapter mExplorerFilesAdapter;
+    private ExplorerFolderAdapter mExplorerFolderAdapter;
+    private List<FolderData> mFolderData;
 
     public static ExplorerFragment newInstance() {
         ExplorerFragment fragment = new ExplorerFragment();
@@ -40,7 +51,15 @@ public class ExplorerFragment extends BaseFragment {
     }
 
     private void init() {
-        // TODO: 17.09.17
+        mExplorerFilesAdapter = new ExplorerFilesAdapter(getContext());
+        mExplorerFolderAdapter = new ExplorerFolderAdapter(getContext());
+
+        MediaExplorerManager.getInstance().findMedia();
+        mFolderData = MediaExplorerManager.getInstance().getAlbums();
+        mExplorerFolderAdapter.setItems(mFolderData);
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(mExplorerFolderAdapter);
     }
 
 }

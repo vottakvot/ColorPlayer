@@ -130,7 +130,7 @@ public class PlayerService
         queueHandler = new Handler(playerLooper, this);
 
         // Player initialisation
-        mPlayerConfig = App.getAppContext().getPlayerConfig();
+        mPlayerConfig = App.getContext().getPlayerConfig();
         mMediaPlayer = new AudioPlayer(getApplicationContext(), null, mPlayerConfig);
         mSeekBarUpdater = new SeekBarUpdater();
         mSeekBarUpdater.execute();
@@ -159,7 +159,7 @@ public class PlayerService
         stopForeground(true);
         stopTimer();
 
-        App.getAppContext().saveSettings();
+        App.getContext().saveSettings();
 
         // Receiver for media buttons
         //unregisterMediaButtonsReceiver();
@@ -169,7 +169,7 @@ public class PlayerService
     public void onLowMemory() {
         super.onLowMemory();
         Log.d(App.TAG_APP, getClass().getSimpleName() + " - onLowMemory()");
-        App.getAppContext().saveSettings();
+        App.getContext().saveSettings();
     }
 
     @Nullable
@@ -491,7 +491,7 @@ public class PlayerService
 //                    int timeToPause = time;
 //                    String typeTimer = timerType;
 //                    Calendar calendar = null;
-//                    Bundle viewData =  App.getAppContext().getViewDataTimer();
+//                    Bundle viewData =  App.getContext().getViewDataTimer();
 //                    viewData.putString(SUB_ACTION_TIMER_TYPE, typeTimer);
 //                    viewData.putInt(SUB_ACTION_TIMER_VISIBILITY, View.VISIBLE);
 //
@@ -527,7 +527,7 @@ public class PlayerService
 //                    } catch (Exception e){
 //                            e.printStackTrace();
 //                        }   finally {
-//                                App.getAppContext().initDefaultViewDataTimer();
+//                                App.getContext().initDefaultViewDataTimer();
 //                                updaterViewsHandler.sendEmptyMessage(UPDATE_TIMER);
 //                            }
 //            }

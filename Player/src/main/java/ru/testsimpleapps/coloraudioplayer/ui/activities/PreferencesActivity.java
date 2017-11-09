@@ -28,7 +28,7 @@ public class PreferencesActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        App.getAppContext().setCustomTheme(this);
+        App.getContext().setCustomTheme(this);
         super.onCreate(savedInstanceState);
         aboutDialog = new AboutDialog(this);
 
@@ -46,23 +46,23 @@ public class PreferencesActivity
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
         if (key.equals(getString(R.string.ButtonsReceive))) {
-            //App.getAppContext().setIsActiveOnBoot(sharedPreferences.getBoolean(key, false));
+            //App.getContext().setIsActiveOnBoot(sharedPreferences.getBoolean(key, false));
         }
 
         if (key.equals(getString(R.string.LastTrackPosition))) {
-            // App.getAppContext().setIsSavePosition(sharedPreferences.getBoolean(key, false));
+            // App.getContext().setIsSavePosition(sharedPreferences.getBoolean(key, false));
         }
 
 //        if(key.equals(getString(R.string.HeadsetPlug))){
-//            App.getAppContext().setIsPlayHeadsetOn(sharedPreferences.getBoolean(key, false));
+//            App.getContext().setIsPlayHeadsetOn(sharedPreferences.getBoolean(key, false));
 //        }
 //
 //        if(key.equals(getString(R.string.DoublePower))){
-//            App.getAppContext().setIsPowerButton(sharedPreferences.getBoolean(key, false));
+//            App.getContext().setIsPowerButton(sharedPreferences.getBoolean(key, false));
 //        }
 
 //        if(key.equals(getString(R.string.Visualizer))){
-//            App.getAppContext().setNumberVisualizer(Integer.parseInt(sharedPreferences.getString(key, Integer.toString(App.VISUALIZER_LINE))));
+//            App.getContext().setNumberVisualizer(Integer.parseInt(sharedPreferences.getString(key, Integer.toString(App.VISUALIZER_LINE))));
 //        }
     }
 

@@ -14,7 +14,7 @@ import android.widget.TextView;
 /*
 * http://habrahabr.ru/post/133575/
 * */
-public class MediaFilesAdapter
+public class ExplorerFilesAdapter
         extends BaseAdapter {
 
     private Context context;
@@ -25,7 +25,7 @@ public class MediaFilesAdapter
     * */
 //    private FoldersArrayList<FileDataItem> files;
 
-    public MediaFilesAdapter(Context context) {
+    public ExplorerFilesAdapter(Context context) {
         super();
         this.context = context;
 //        this.files = files;
@@ -121,7 +121,7 @@ public class MediaFilesAdapter
 //
 //        @Override
 //        public int compare(FileDataItem lhs, FileDataItem rhs) {
-//            return FileTool.getName(lhs.getName()).compareTo(FileTool.getName(rhs.getName()));
+//            return MediaExplorerManager.getName(lhs.getName()).compareTo(MediaExplorerManager.getName(rhs.getName()));
 //        }
 //    }
 //

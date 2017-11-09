@@ -79,8 +79,8 @@ public class VisualizerView
                 points[i * 4 + 3] = middle + ((byte) (bytes[i + 1] + 128)) * middle / 128;
             }
 
-            App.getAppContext().getNumberTheme();
-            forePaint.setColor(App.getAppContext().getColorTheme(70, 0, 0, 0));
+            App.getContext().getNumberTheme();
+            forePaint.setColor(App.getContext().getColorTheme(70, 0, 0, 0));
             canvas.drawLines(points, forePaint);
             previousTime = System.currentTimeMillis();
         }
@@ -112,7 +112,7 @@ public class VisualizerView
                         y -= 2 * r;
                     }
 
-                    forePaint.setColor(App.getAppContext().getColorTheme(100, random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+                    forePaint.setColor(App.getContext().getColorTheme(100, random.nextInt(255), random.nextInt(255), random.nextInt(255)));
                     canvas.drawCircle(x, y, r, forePaint);
                 }
             }
@@ -143,7 +143,7 @@ public class VisualizerView
                 if ((i + 1) % numberDraw == 0) {
                     y = deltaAmplitude * average * 2.0f / numberDraw;
                     average = 0.0f;
-                    forePaint.setColor(App.getAppContext().getColorTheme(50, 0, 0, 0));
+                    forePaint.setColor(App.getContext().getColorTheme(50, 0, 0, 0));
                     canvas.drawRect((float) j * widthRect + border, middle - y, (float) j * widthRect + widthRect, middle + y, forePaint);
                     j++;
                 } else {
@@ -158,7 +158,7 @@ public class VisualizerView
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        switch (App.getAppContext().getNumberVisualizer()) {
+        switch (App.getContext().getNumberVisualizer()) {
 //            case App.VISUALIZER_NONE:
 //                break;
 //            case App.VISUALIZER_LINE:

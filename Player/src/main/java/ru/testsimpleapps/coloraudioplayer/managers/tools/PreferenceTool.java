@@ -25,7 +25,7 @@ public class PreferenceTool {
 
     public static PreferenceTool getInstance() {
         if (sPreferenceTool == null) {
-            sPreferenceTool = new PreferenceTool(App.getAppContext());
+            sPreferenceTool = new PreferenceTool(App.getContext());
         }
 
         return sPreferenceTool;

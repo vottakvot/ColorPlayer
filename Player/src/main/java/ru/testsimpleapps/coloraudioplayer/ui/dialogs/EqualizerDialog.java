@@ -88,8 +88,8 @@ public class EqualizerDialog
             chooseMode.setAdapter(adapter);
             chooseMode.setOnItemSelectedListener(this);
 
-//            if(App.getAppContext().getEqualizerPresent() != -1){
-//                chooseMode.setSelection(App.getAppContext().getEqualizerPresent());
+//            if(App.getContext().getEqualizerPresent() != -1){
+//                chooseMode.setSelection(App.getContext().getEqualizerPresent());
 //            } else {
 //                    chooseMode.setSelection(equalizer.getNumberOfPresets());
 //                }
@@ -142,7 +142,7 @@ public class EqualizerDialog
         Log.i(MainActivity.LOG_ACTIVITY, this.getClass().getName().toString() + "onStopTrackingTouch - tag: " + seekBar.getTag());
         if (bassBoost != null && (int) seekBar.getTag() == 0) {
             bassBoost.setStrength((short) (seekBar.getProgress() * 50));
-//            App.getAppContext().setBassBoostStrength(bassBoost.getRoundedStrength());
+//            App.getContext().setBassBoostStrength(bassBoost.getRoundedStrength());
         } else if (equalizer != null) {
             short newLevel = (short) (minLevel + (maxLevel - minLevel) * seekBar.getProgress() / seekBar.getMax());
             short newBand = getBandPosition((int) seekBar.getTag());
@@ -158,11 +158,11 @@ public class EqualizerDialog
         if (defaultModes != null && equalizer != null) {
 //            if(position < equalizer.getNumberOfPresets()) {
 //                equalizer.usePreset((short) position);
-//                App.getAppContext().setEqualizerPresent((short) position);
-//            } else if(App.getAppContext().getEqualizerBands() != null &&
-//                    App.getAppContext().getEqualizerBands().length == equalizer.getNumberOfBands()){
+//                App.getContext().setEqualizerPresent((short) position);
+//            } else if(App.getContext().getEqualizerBands() != null &&
+//                    App.getContext().getEqualizerBands().length == equalizer.getNumberOfBands()){
 //                for(int i = 0; i < equalizer.getNumberOfBands(); i++){
-//                    equalizer.setBandLevel((short)i, (short) App.getAppContext().getEqualizerBands()[i]);
+//                    equalizer.setBandLevel((short)i, (short) App.getContext().getEqualizerBands()[i]);
 //                }
 //            }
 //

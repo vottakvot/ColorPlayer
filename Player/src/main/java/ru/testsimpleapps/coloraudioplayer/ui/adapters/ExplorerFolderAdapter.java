@@ -2,7 +2,6 @@ package ru.testsimpleapps.coloraudioplayer.ui.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,27 +9,20 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import java.util.LinkedHashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.managers.explorer.DataContainer;
-import ru.testsimpleapps.coloraudioplayer.managers.explorer.DataItem;
+import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.FolderData;
 
 
-public class ExplorerFolderAdapter extends BaseAdapter {
+public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
 
     private final Context mContext;
-    private final OnItemClickListener mOnItemClickListener;
-    private LinkedHashMap<String, DataContainer<DataItem>> mDataList;
 
-    public ExplorerFolderAdapter(@NonNull Context context, @Nullable OnItemClickListener onItemClickListener) {
+    public ExplorerFolderAdapter(@NonNull Context context) {
         super();
         mContext = context;
-        mOnItemClickListener = onItemClickListener;
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -41,7 +33,10 @@ public class ExplorerFolderAdapter extends BaseAdapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
         final ViewHolderItem mViewHolder = (ViewHolderItem) viewHolder;
-
+        final FolderData folderData = getItem(i);
+        mViewHolder.mCheckFolder.setChecked(folderData.isChecked());
+        mViewHolder.mCountInFolder.setText(String.valueOf(folderData.size()));
+        mViewHolder.mNameFolder.setText(folderData.getName());
     }
 
     @Override

@@ -40,7 +40,7 @@ public class PlaylistCreateDialog
         switch (v.getId()) {
             case R.id.playlistCreate_create:
                 if (!editText.getText().toString().trim().equals("")) {
-                    //App.getAppContext().setPlaylistId(CursorTool.createPlaylist(context.getContentResolver(), editText.getText().toString().trim()));
+                    //App.getContext().setPlaylistId(CursorTool.createPlaylist(context.getContentResolver(), editText.getText().toString().trim()));
                     dismiss();
                     MainActivity.showInfoMessage(context.getResources().getString(R.string.playlist_create_done));
                 } else

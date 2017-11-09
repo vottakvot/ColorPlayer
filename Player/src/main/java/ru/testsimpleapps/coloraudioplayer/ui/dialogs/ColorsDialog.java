@@ -38,21 +38,21 @@ public class ColorsDialog
 
     @Override
     public void onClick(View v) {
-        int current = App.getAppContext().getNumberTheme();
+        int current = App.getContext().getNumberTheme();
         int select = 0;
         switch (v.getId()) {
             case R.id.colors_blue:
-                select = App.getAppContext().setNumberTheme(App.THEME_BLUE);
+                select = App.getContext().setNumberTheme(App.THEME_BLUE);
                 break;
             case R.id.colors_green:
-                select = App.getAppContext().setNumberTheme(App.THEME_GREEN);
+                select = App.getContext().setNumberTheme(App.THEME_GREEN);
                 break;
             case R.id.colors_red:
-                select = App.getAppContext().setNumberTheme(App.THEME_RED);
+                select = App.getContext().setNumberTheme(App.THEME_RED);
                 break;
         }
 
-        //App.getAppContext().savePreferences();
+        //App.getContext().savePreferences();
         dismiss();
 
         if (current != select) {

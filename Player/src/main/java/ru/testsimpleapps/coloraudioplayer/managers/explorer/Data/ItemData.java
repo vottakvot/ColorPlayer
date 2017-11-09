@@ -1,6 +1,6 @@
-package ru.testsimpleapps.coloraudioplayer.managers.explorer;
+package ru.testsimpleapps.coloraudioplayer.managers.explorer.Data;
 
-public class DataItem {
+public class ItemData {
 
     private boolean isChecked = false;
 
@@ -15,7 +15,7 @@ public class DataItem {
     private long dateAdded;
     private long bitrate;
 
-    public DataItem(final String path,
+    public ItemData(final String path,
                     final String name,
                     final String folder,
                     final String album,

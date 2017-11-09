@@ -8,7 +8,7 @@
 
     <android.support.v7.widget.RecyclerView
         style="@style/PlayerListCommon"
-        android:id="@+id/explorer_list_fragment"
+        android:id="@+id/explorer_list"
         android:choiceMode="singleChoice"
         android:divider="@color/common_transparent"
         android:background="@drawable/drawable_explorer_background" />

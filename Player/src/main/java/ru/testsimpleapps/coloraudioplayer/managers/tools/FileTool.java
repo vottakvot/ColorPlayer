@@ -9,37 +9,30 @@ import java.util.List;
 
 public class FileTool {
 
-    public static String getName(String path) {
+    public static String getFileName(final String path) {
         if (path != null)
             return new File(path).getName();
         return null;
     }
 
-    public static String getNameSegment(String path) {
-        return getSegment(path, true);
+    public static String getFolderName(final String path) {
+        if (path != null)
+            return new File(path).getParent();
+        return null;
     }
 
-    public static String getFolder(String path) {
-        return getSegment(path, false);
-    }
-
-    private static String getSegment(final String path, final boolean isFile) {
-        String name = null;
+    public static String getComplexName(final String path) {
         if (path != null) {
-            List<String> pathSegment = Uri.parse(path).getPathSegments();
-            if (pathSegment != null && pathSegment.size() > 0) {
-                if (isFile) {
-                    name = pathSegment.get(pathSegment.size() - 1);
-                } else {
-                    name = pathSegment.get(pathSegment.size() - 2);
-                }
+            final List<String> pathSegment = Uri.parse(path).getPathSegments();
+            if (pathSegment != null && pathSegment.size() > 1) {
+                return pathSegment.get(pathSegment.size() - 2) + pathSegment.get(pathSegment.size() - 1);
             }
         }
 
-        return name;
+        return null;
     }
 
-    public static String getAppPath(Context context) {
+    public static String getAppPath(final Context context) {
         return context.getFilesDir().getAbsolutePath() + "/";
     }
 

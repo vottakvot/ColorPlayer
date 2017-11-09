@@ -74,10 +74,10 @@ public class PlaylistAdapter extends BaseAdapter {
     }
 
     public void deleteTrack(int position) {
-//        if(App.getAppContext().getPlaylistId() != -1) {
+//        if(App.getContext().getPlaylistId() != -1) {
 //            mPlaylist.goTo(position);
 //            Long trackId = mPlaylist.getTrackId();
-//            CursorTool.deleteTrackFromPlaylist(context.getContentResolver(), App.getAppContext().getPlaylistId(), trackId);
+//            CursorTool.deleteTrackFromPlaylist(context.getContentResolver(), App.getContext().getPlaylistId(), trackId);
 //            refreshPlaylist(currentSortBy);
 //        }
     }
@@ -140,12 +140,12 @@ public class PlaylistAdapter extends BaseAdapter {
         }
 
         // For select playing position. If cursor doesn't init, select first position.
-//        long sonID = App.getAppContext().getSongId();
+//        long sonID = App.getContext().getSongId();
 //        if(sonID == -1){
-//            IPlaylist mainActivePlaylist = App.getAppContext().getPlayerConfig().refreshPlaylist();
+//            IPlaylist mainActivePlaylist = App.getContext().getPlayerConfig().refreshPlaylist();
 //            if(mainActivePlaylist.position() == -1){
 //                mainActivePlaylist.toFirst();
-//                App.getAppContext().setSongId(mainActivePlaylist.getTrackId());
+//                App.getContext().setSongId(mainActivePlaylist.getTrackId());
 //            }
 //            sonID = mainActivePlaylist.getTrackId();
 //        }
@@ -162,7 +162,7 @@ public class PlaylistAdapter extends BaseAdapter {
 //
 //        // For custom search selection
 //        if( searchPosition == position && searchPosition != -1 &&
-//            searchPosition != App.getAppContext().getPlayerConfig().refreshPlaylist().position()){
+//            searchPosition != App.getContext().getPlayerConfig().refreshPlaylist().position()){
 //            view.setBackgroundResource(R.drawable.drawable_listview_item_find);
 //        } else if(sonID != mPlaylist.getTrackId()){
 //                view.setBackgroundColor(Color.TRANSPARENT);
@@ -211,14 +211,14 @@ public class PlaylistAdapter extends BaseAdapter {
     }
 
     public void onItemClick(final View view, final int position) {
-        IPlaylist mainActivePlaylist = App.getAppContext().getPlayerConfig().getPlaylist();
+        IPlaylist mainActivePlaylist = App.getContext().getPlayerConfig().getPlaylist();
         mainActivePlaylist.goTo(position - 1);
-        App.getAppContext().getPlayerConfig().setTrackPathFromPlaylist();
+        App.getContext().getPlayerConfig().setTrackPathFromPlaylist();
         context.startService(new Intent(PlayerService.ACTION_PLAY)
                 .putExtra(PlayerService.KEY_PLAY_NEW, PlayerService.KEY_PLAY_NEW)
                 .setPackage(context.getPackageName()));
         // Save current track id for select item view
-        //App.getAppContext().setSongId(mainActivePlaylist.getTrackId());
+        //App.getContext().setSongId(mainActivePlaylist.getTrackId());
         view.setBackgroundColor(MainActivity.getColor(context, R.color.common_select_list_item));
         notifyDataSetChanged();
     }
