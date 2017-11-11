@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layoutExplorer_folders"
-    android:layout_width="wrap_content"
+    android:id="@+id/explorer_layout_files"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:paddingTop="10dp"
@@ -10,34 +10,35 @@
     android:background="@drawable/selector_listview_explorer_item"
     android:layout_alignParentTop="true">
 
-    <!-- 1 view folder-->
+    <!-- 1 view files-->
     <ImageView
         style="@style/PlayerImageViewCommon"
-        android:id="@+id/imageFolder"
+        android:id="@+id/explorer_file_image"
         android:layout_alignParentLeft="true" />
 
-    <!-- 2 view count of media-files in album -->
+    <!-- 2 view duration of the content media-file -->
     <TextView
         style="@style/PlayerTextCommon"
-        android:id="@+id/countFolder"
-        android:layout_alignRight="@id/imageFolder" />
+        android:id="@+id/explorer_file_duration"
+        android:layout_alignRight="@+id/explorer_file_image"
+        android:textSize="14sp" />
 
     <!-- 4 view check for add in active playlist -->
     <CheckBox
+        android:id="@+id/explorer_file_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/noteFolder"
         android:focusable="false"
         android:clickable="true"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true" />
 
-    <!-- 3 view name of the content media-album -->
+    <!-- 3 view name of the content media-file -->
     <TextView
         style="@style/PlayerTextCommon"
-        android:id="@+id/nameFolder"
-        android:layout_toRightOf="@id/imageFolder"
-        android:layout_toLeftOf="@id/noteFolder"
+        android:id="@+id/explorer_file_name"
+        android:layout_toRightOf="@+id/explorer_file_image"
+        android:layout_toLeftOf="@+id/explorer_file_check"
         android:layout_marginLeft="10dp"
         android:textSize="15sp"
         android:textStyle="normal" />

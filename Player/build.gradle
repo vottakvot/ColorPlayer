@@ -19,7 +19,7 @@ def appCode = 6
 def appName = "1.0.6"
 def appId = "ru.testsimpleapps.coloraudioplayer"
 def verTarget = 25
-def verMin = 10
+def verMin = 11
 
 // Libs
 def verSupportLibs = "25.4.0"

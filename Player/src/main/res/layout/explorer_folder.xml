@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/explorer_layout_files"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:background="@drawable/selector_listview_explorer_item"
+    android:layout_alignParentTop="true">
+
+    <!-- 1 view folder-->
+    <ImageView
+        style="@style/PlayerImageViewCommon"
+        android:id="@+id/explorer_folder_image"
+        android:layout_alignParentLeft="true" />
+
+    <!-- 2 view count of media-files in album -->
+    <TextView
+        style="@style/PlayerTextCommon"
+        android:id="@+id/explorer_folder_count"
+        android:layout_alignRight="@+id/explorer_folder_image" />
+
+    <!-- 4 view check for add in active playlist -->
+    <CheckBox
+        android:id="@+id/explorer_folder_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:clickable="true"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true" />
+
+    <!-- 3 view name of the content media-album -->
+    <TextView
+        style="@style/PlayerTextCommon"
+        android:id="@+id/explorer_folder_name"
+        android:layout_toRightOf="@+id/explorer_folder_image"
+        android:layout_toLeftOf="@+id/explorer_folder_check"
+        android:layout_marginLeft="10dp"
+        android:textSize="15sp"
+        android:textStyle="normal" />
+
+</RelativeLayout>

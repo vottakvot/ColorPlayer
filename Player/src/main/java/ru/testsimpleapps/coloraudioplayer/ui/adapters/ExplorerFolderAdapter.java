@@ -26,7 +26,7 @@ public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        final View viewItem = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.explorer_item_folder, viewGroup, false);
+        final View viewItem = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.explorer_folder, viewGroup, false);
         return new ViewHolderItem(viewItem);
     }
 
@@ -45,9 +45,9 @@ public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
     }
 
     protected class ViewHolderItem extends RecyclerView.ViewHolder {
-        @BindView(R.id.countFolder) TextView mCountInFolder;
-        @BindView(R.id.nameFolder) TextView mNameFolder;
-        @BindView(R.id.noteFolder) CheckBox mCheckFolder;
+        @BindView(R.id.explorer_folder_count) TextView mCountInFolder;
+        @BindView(R.id.explorer_folder_name) TextView mNameFolder;
+        @BindView(R.id.explorer_folder_check) CheckBox mCheckFolder;
 
         public ViewHolderItem(final View view) {
             super(view);

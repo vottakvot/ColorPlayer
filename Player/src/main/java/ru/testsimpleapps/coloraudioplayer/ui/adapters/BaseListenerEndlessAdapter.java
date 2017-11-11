@@ -17,9 +17,9 @@ public abstract class BaseListenerEndlessAdapter extends RecyclerView.OnScrollLi
     @Override
     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        int visibleItemCount = layoutManager.getChildCount();
-        int totalItemCount = layoutManager.getItemCount();
-        int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+        final int visibleItemCount = layoutManager.getChildCount();
+        final int totalItemCount = layoutManager.getItemCount();
+        final int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
         if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
             if (loadingMode) {
                 if (totalItemCount > previousTotalItemCount) {

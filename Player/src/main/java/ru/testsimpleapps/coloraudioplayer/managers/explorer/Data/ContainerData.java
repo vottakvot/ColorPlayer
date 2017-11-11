@@ -30,4 +30,8 @@ public class ContainerData<Item> {
         return mContainer.size();
     }
 
+    public List<Item> getList() {
+        return mContainer;
+    }
+
 }

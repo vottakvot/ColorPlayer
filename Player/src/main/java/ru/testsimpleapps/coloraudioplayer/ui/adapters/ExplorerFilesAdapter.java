@@ -1,54 +1,42 @@
 package ru.testsimpleapps.coloraudioplayer.ui.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import ru.testsimpleapps.coloraudioplayer.R;
+import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.ItemData;
 
-/*
-* http://habrahabr.ru/post/133575/
-* */
-public class ExplorerFilesAdapter
-        extends BaseAdapter {
 
-    private Context context;
-    private LayoutInflater inflater;
+public class ExplorerFilesAdapter extends BaseAdapter<ItemData> {
 
-    /*
-    * Files in current folder
-    * */
-//    private FoldersArrayList<FileDataItem> files;
+    private final Context mContext;
 
-    public ExplorerFilesAdapter(Context context) {
+    public ExplorerFilesAdapter(@NonNull Context context) {
         super();
-        this.context = context;
-//        this.files = files;
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    static class ViewHolder {
-        public ImageView imageFile;
-        public TextView nameFile;
-        public TextView durationFile;
-        public CheckBox checkFile;
+        mContext = context;
     }
 
     @Override
-    public int getCount() {
-        return 0;
-//        return (files != null && files.size() > 0) ? files.size() : 0;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        final View viewItem = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.explorer_file, viewGroup, false);
+        return new ExplorerFilesAdapter.ViewHolderItem(viewItem);
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
-//        return (files != null && files.size() > position) ? files.get(position) : null;
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
+        final ExplorerFilesAdapter.ViewHolderItem mViewHolder = (ExplorerFilesAdapter.ViewHolderItem) viewHolder;
+        final ItemData itemData = getItem(i);
+        mViewHolder.mDurationFile.setText(String.valueOf(itemData.getDuration()));
+        mViewHolder.mNameFile.setText(String.valueOf(itemData.getName()));
+        mViewHolder.mCheckFile.setChecked(itemData.isChecked());
     }
 
     @Override
@@ -56,102 +44,22 @@ public class ExplorerFilesAdapter
         return position;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = null;
-//        ViewHolder viewHolder = null;
-//
-//        if (convertView == null) {
-//            view = inflater.inflate(R.layout.explorer_item_track, parent, false);
-//            viewHolder = new ViewHolder();
-//            viewHolder.imageFile = (ImageView) view.findViewById(R.id.imageFiles);
-//            viewHolder.nameFile = (TextView) view.findViewById(R.id.nameFiles);
-//            viewHolder.durationFile = (TextView) view.findViewById(R.id.durationFiles);
-//            viewHolder.checkFile = (CheckBox) view.findViewById(R.id.noteFiles);
-//            view.setTag(viewHolder);
-//        } else {
-//            view = convertView;
-//            viewHolder = (ViewHolder) view.getTag();
-//        }
-//
-//        FileDataItem fileDataItem = files.get(position);
-//
-//        viewHolder.imageFile.setImageResource(R.drawable.audio);
-//        viewHolder.nameFile.setText(fileDataItem.getName());
-//
-//        String duration = FindMedia.getDuration(fileDataItem.getDuration());
-//        if (duration.length() > 5) {
-//            duration = duration.substring(0, 1) + "H:" + duration.substring(2, 4);
-//        }
-//
-//        viewHolder.durationFile.setText(duration);
-//        viewHolder.checkFile.setTag(position);
-//        viewHolder.checkFile.setOnCheckedChangeListener(checkFile);
-//        viewHolder.checkFile.setChecked(fileDataItem.isChecked());
-//
-//        if (fileDataItem.isChecked()) {
-//            view.setBackgroundResource(R.drawable.drawable_listview_item_explorer);
-//        } else {
-//            view.setBackgroundColor(Color.WHITE);
-//        }
+    protected class ViewHolderItem extends RecyclerView.ViewHolder {
+        @BindView(R.id.explorer_file_duration) TextView mDurationFile;
+        @BindView(R.id.explorer_file_name) TextView mNameFile;
+        @BindView(R.id.explorer_file_check) CheckBox mCheckFile;
 
-        return view;
-    }
-
-    private CheckBox.OnCheckedChangeListener checkFile = new CheckBox.OnCheckedChangeListener() {
-
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//            Log.d(MainActivity.LOG_ACTIVITY, this.getClass().getName().toString() + " - OnCheckedChangeListener - Tag №" + (Integer) buttonView.getTag() + " = " + isChecked);
-//            files.get((Integer) buttonView.getTag()).setIsChecked(isChecked);
-//            notifyDataSetChanged();
-
+        public ViewHolderItem(final View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(view, getLayoutPosition());
+                    }
+                }
+            });
         }
-    };
-
-//    /*
-//    * For names
-//    * */
-//    class CompareFilesName implements Comparator<FileDataItem> {
-//        FoldersArrayList<FileDataItem> container;
-//
-//        public CompareFilesName(FoldersArrayList<FileDataItem> container) {
-//            this.container = container;
-//        }
-//
-//        @Override
-//        public int compare(FileDataItem lhs, FileDataItem rhs) {
-//            return MediaExplorerManager.getName(lhs.getName()).compareTo(MediaExplorerManager.getName(rhs.getName()));
-//        }
-//    }
-//
-//    /*
-//    * For track length
-//    * */
-//    class CompareFilesLength implements Comparator<FileDataItem> {
-//        FoldersArrayList<FileDataItem> container;
-//
-//        public CompareFilesLength(FoldersArrayList<FileDataItem> container) {
-//            this.container = container;
-//        }
-//
-//        @Override
-//        public int compare(FileDataItem lhs, FileDataItem rhs) {
-//            return ((Long) lhs.getDuration()).compareTo((Long) rhs.getDuration());
-//        }
-//    }
-//
-//    public void setSortByName() {
-//        Collections.sort(files, new CompareFilesName(files));
-//        notifyDataSetChanged();
-//    }
-//
-//    public void setSortByLength() {
-//        Collections.sort(files, new CompareFilesLength(files));
-//        notifyDataSetChanged();
-//    }
-//
-//    public FoldersArrayList<FileDataItem> getFiles() {
-//        return files;
-//    }
+    }
 }
