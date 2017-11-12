@@ -11,7 +11,7 @@
         android:orientation="horizontal">
 
         <TextView
-            style="@style/PlayerTextCommon"
+            style="@style/PlayerTextViewCommon"
             android:id="@+id/widgetCurrentTrackName"
             android:layout_width="match_parent"
             android:singleLine="true"

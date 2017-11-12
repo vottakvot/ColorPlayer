@@ -1,46 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/explorer_layout_files"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    android:background="@drawable/selector_listview_explorer_item"
-    android:layout_alignParentTop="true">
+    android:padding="5dp"
+    android:background="@drawable/selector_listview_explorer_item">
 
     <!-- 1 view files-->
     <ImageView
         style="@style/PlayerImageViewCommon"
         android:id="@+id/explorer_file_image"
-        android:layout_alignParentLeft="true" />
+        android:src="@drawable/album"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 2 view duration of the content media-file -->
     <TextView
-        style="@style/PlayerTextCommon"
         android:id="@+id/explorer_file_duration"
-        android:layout_alignRight="@+id/explorer_file_image"
-        android:textSize="14sp" />
+        style="@style/PlayerTextViewCommon"
+        android:text="-"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/explorer_file_image"
+        app:layout_constraintEnd_toEndOf="@+id/explorer_file_image"
+        app:layout_constraintStart_toStartOf="@+id/explorer_file_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 3 view name of the content media-file -->
+    <TextView
+        style="@style/PlayerTextViewCommon"
+        android:id="@+id/explorer_file_name"
+        android:textSize="15sp"
+        android:textStyle="normal"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/explorer_file_image"
+        app:layout_constraintRight_toLeftOf="@+id/explorer_file_check"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 4 view check for add in active playlist -->
     <CheckBox
         android:id="@+id/explorer_file_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:focusable="false"
         android:clickable="true"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true" />
+        android:focusable="false"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 3 view name of the content media-file -->
-    <TextView
-        style="@style/PlayerTextCommon"
-        android:id="@+id/explorer_file_name"
-        android:layout_toRightOf="@+id/explorer_file_image"
-        android:layout_toLeftOf="@+id/explorer_file_check"
-        android:layout_marginLeft="10dp"
-        android:textSize="15sp"
-        android:textStyle="normal" />
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

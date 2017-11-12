@@ -13,7 +13,7 @@
 
     <!-- 2 view name drawer-->
     <TextView
-        style="@style/PlayerTextCommon"
+        style="@style/PlayerTextViewCommon"
         android:id="@+id/nameConfig"
         android:layout_toRightOf="@id/imageConfig"
         android:textColor="@color/common_text_drawer" />

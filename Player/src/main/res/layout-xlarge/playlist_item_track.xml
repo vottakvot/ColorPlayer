@@ -15,7 +15,7 @@
 
         <!-- 2 view number of track -->
         <TextView
-            style="@style/PlayerTextCommon"
+            style="@style/PlayerTextViewCommon"
             android:id="@+id/numberTrack"
             android:layout_alignLeft="@id/imageTrack"
             android:layout_marginLeft="0dp"/>

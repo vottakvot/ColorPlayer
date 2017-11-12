@@ -85,8 +85,22 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
 
     @OnClick(R.id.explorer_back)
     protected void backButtonClick() {
-        mRecyclerView.setAdapter(mExplorerFolderAdapter);
-        mRecyclerView.getLayoutManager().onRestoreInstanceState(mListState);
+        restoreAdapter();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return restoreAdapter();
+    }
+
+    private boolean restoreAdapter() {
+        if (mRecyclerView.getAdapter() instanceof ExplorerFilesAdapter) {
+            mRecyclerView.setAdapter(mExplorerFolderAdapter);
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(mListState);
+            return true;
+        }
+
+        return false;
     }
 
 }

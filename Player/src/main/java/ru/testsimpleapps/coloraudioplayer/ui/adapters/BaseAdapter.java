@@ -20,6 +20,11 @@ public abstract class BaseAdapter<D> extends RecyclerView.Adapter {
         return mList != null ? mList.size() : 0;
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         mOnItemClickListener = listener;
     }

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        style="@style/PlayerTextCommon"
+        style="@style/PlayerTextViewCommon"
         android:id="@+id/bassBoostNote"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true" />
@@ -22,20 +22,20 @@
         android:progress="0" />
 
     <TextView
-        style="@style/PlayerTextCommon"
+        style="@style/PlayerTextViewCommon"
         android:id="@+id/minEqualizer"
         android:layout_below="@+id/seekEqualizer"
         android:layout_alignParentLeft="true" />
 
     <TextView
-        style="@style/PlayerTextCommon"
+        style="@style/PlayerTextViewCommon"
         android:id="@+id/zeroEqualizer"
         android:layout_alignBottom="@+id/seekEqualizer"
         android:layout_centerInParent="true"
         android:paddingTop="20dp" />
 
     <TextView
-        style="@style/PlayerTextCommon"
+        style="@style/PlayerTextViewCommon"
         android:id="@+id/maxEqualizer"
         android:layout_below="@+id/seekEqualizer"
         android:layout_alignParentRight="true" />

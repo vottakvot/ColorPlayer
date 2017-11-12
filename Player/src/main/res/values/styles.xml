@@ -54,7 +54,7 @@
         <item name="android:cursorVisible">false</item>
     </style>
 
-    <style name="PlayerTextCommon" parent="android:Widget.TextView">
+    <style name="PlayerTextViewCommon" parent="android:Widget.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerVertical">true</item>
@@ -79,9 +79,7 @@
     <style name="PlayerImageViewCommon" parent="android:Widget.ImageWell">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">5dp</item>
         <item name="android:background">@android:color/transparent</item>
-        <item name="android:layout_centerVertical">true</item>
         <item name="android:clickable">false</item>
         <item name="android:focusable">false</item>
         <item name="android:scaleType">fitCenter</item>
@@ -170,7 +168,7 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="PlayerPlaylistItemTextName" parent="PlayerTextCommon">
+    <style name="PlayerPlaylistItemTextName" parent="PlayerTextViewCommon">
         <item name="android:layout_marginLeft">@dimen/playlist_item_left_margin_into</item>
         <item name="android:paddingBottom">0dp</item>
         <item name="android:minLines">2</item>
@@ -186,7 +184,7 @@
         <item name="android:shadowRadius">4</item>
     </style>
 
-    <style name="PlayerPlaylistItemTextDescription" parent="PlayerTextCommon">
+    <style name="PlayerPlaylistItemTextDescription" parent="PlayerTextViewCommon">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_margin">0dp</item>
         <item name="android:padding">0dp</item>
@@ -197,7 +195,7 @@
         <item name="android:gravity">left</item>
     </style>
 
-    <style name="PlayerNotificationTrackName" parent="PlayerTextCommon">
+    <style name="PlayerNotificationTrackName" parent="PlayerTextViewCommon">
         <item name="android:minLines">1</item>
         <item name="android:maxLines">3</item>
         <item name="android:textSize">@dimen/player_notification_track_name_size</item>
@@ -208,7 +206,7 @@
         <item name="android:textColor">@color/common_notification_track_name</item>
     </style>
 
-    <style name="PlayerActionBarTextAppName" parent="PlayerTextCommon">
+    <style name="PlayerActionBarTextAppName" parent="PlayerTextViewCommon">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:paddingRight">5dp</item>
         <item name="android:layout_margin">0dp</item>
@@ -220,7 +218,7 @@
         <item name="android:shadowRadius">5</item>
     </style>
 
-    <style name="PlayerPlaylistItemTextTextMains" parent="PlayerTextCommon">
+    <style name="PlayerPlaylistItemTextTextMains" parent="PlayerTextViewCommon">
         <item name="android:shadowColor">@color/common_text_shadow</item>
         <item name="android:shadowDx">2</item>
         <item name="android:shadowDy">2</item>
@@ -228,7 +226,7 @@
         <item name="android:paddingRight">@dimen/playlist_item_outer_layout_paddingRight</item>
     </style>
 
-    <style name="PlayerListviewHeaders" parent="PlayerTextCommon">
+    <style name="PlayerListviewHeaders" parent="PlayerTextViewCommon">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_gravity">center_horizontal|top</item>
@@ -250,7 +248,7 @@
         <item name="android:shadowRadius">5</item>
     </style>
 
-    <style name="PlayerControlTrackInfo" parent="PlayerTextCommon">
+    <style name="PlayerControlTrackInfo" parent="PlayerTextViewCommon">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">0dp</item>

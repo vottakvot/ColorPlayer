@@ -17,6 +17,8 @@ import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.FolderData;
 
 public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
 
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_ITEM = 1;
     private final Context mContext;
 
     public ExplorerFolderAdapter(@NonNull Context context) {
@@ -26,22 +28,52 @@ public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        final View viewItem = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.explorer_folder, viewGroup, false);
-        return new ViewHolderItem(viewItem);
+        switch (i) {
+            case TYPE_HEADER: {
+                final View viewItem = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.explorer_header, viewGroup, false);
+                return new ViewHolderHeader(viewItem);
+            }
+
+            case TYPE_ITEM: {
+                final View viewItem = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.explorer_folder, viewGroup, false);
+                return new ViewHolderItem(viewItem);
+            }
+
+            default:
+                return null;
+        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-        final ViewHolderItem mViewHolder = (ViewHolderItem) viewHolder;
-        final FolderData folderData = getItem(i);
-        mViewHolder.mCheckFolder.setChecked(folderData.isChecked());
-        mViewHolder.mCountInFolder.setText(String.valueOf(folderData.size()));
-        mViewHolder.mNameFolder.setText(folderData.getName());
+        if (viewHolder instanceof ViewHolderItem) {
+            final ViewHolderItem mViewHolder = (ViewHolderItem) viewHolder;
+            final FolderData folderData = getItem(i);
+            mViewHolder.mCheckFolder.setChecked(folderData.isChecked());
+            mViewHolder.mCountInFolder.setText(String.valueOf(folderData.size()));
+            mViewHolder.mNameFolder.setText(folderData.getName());
+        } else if (viewHolder instanceof ViewHolderHeader) {
+            final ViewHolderHeader mViewHolder = (ViewHolderHeader) viewHolder;
+            mViewHolder.mHeader.setText(mContext.getString(R.string.explorer_header_count_items) + mList.size());
+        }
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public int getItemCount() {
+        return super.getItemCount() + 1;
+    }
+
+    @Override
+    public FolderData getItem(int index) {
+        return super.getItem(index - 1);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return TYPE_HEADER;
+        }
+        return TYPE_ITEM;
     }
 
     protected class ViewHolderItem extends RecyclerView.ViewHolder {
@@ -60,6 +92,15 @@ public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
                     }
                 }
             });
+        }
+    }
+
+    protected class ViewHolderHeader extends RecyclerView.ViewHolder {
+        @BindView(R.id.explorer_list_header) TextView mHeader;
+
+        public ViewHolderHeader(final View view) {
+            super(view);
+            ButterKnife.bind(this, view);
         }
     }
 }

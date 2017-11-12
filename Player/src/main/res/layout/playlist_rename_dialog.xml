@@ -7,7 +7,7 @@
     android:padding="15dp">
 
     <TextView
-        style="@style/PlayerTextCommon"
+        style="@style/PlayerTextViewCommon"
         android:id="@+id/playlistRename_header"
         android:layout_width="match_parent"
         android:text="@string/playlist_rename_header"

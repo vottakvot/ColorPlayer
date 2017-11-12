@@ -14,9 +14,9 @@
         </shape>
     </item>
     <item
-        android:bottom="2dp"
-        android:left="2dp"
-        android:right="2dp">
+        android:bottom="1dp"
+        android:left="1dp"
+        android:right="1dp">
         <shape android:shape="rectangle">
             <corners
                 android:bottomLeftRadius="@dimen/player_header_corners_radius"

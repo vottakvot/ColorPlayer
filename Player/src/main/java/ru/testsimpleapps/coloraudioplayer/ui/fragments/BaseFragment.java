@@ -56,5 +56,8 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    public boolean onBackPressed() {
+        return false;
+    }
 
 }

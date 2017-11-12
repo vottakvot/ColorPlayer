@@ -1,14 +1,12 @@
 package ru.testsimpleapps.coloraudioplayer.ui.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +63,6 @@ public class PagerFragment extends BaseFragment {
         mViewPager.setAdapter(new AdapterForPages(getChildFragmentManager()));
         mBottomSheetBehavior = BottomSheetBehavior.from(mControlLayout);
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetState());
     }
 
     /*
@@ -105,32 +102,6 @@ public class PagerFragment extends BaseFragment {
         public int getCount() {
             return COUNT_PAGES;
         }
-    }
-
-    /*
-    * Panel behavior state
-    * */
-    private class BottomSheetState extends BottomSheetBehavior.BottomSheetCallback {
-
-        @Override
-        public void onStateChanged(@NonNull View bottomSheet, int newState) {
-            Log.d(TAG, BottomSheetState.class.getSimpleName() + " - onStateChanged(). State: " + newState);
-
-            switch (newState) {
-                case BottomSheetBehavior.STATE_COLLAPSED:
-                    break;
-                case BottomSheetBehavior.STATE_HIDDEN:
-                    break;
-                case BottomSheetBehavior.STATE_EXPANDED:
-                    break;
-            }
-        }
-
-        @Override
-        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-            Log.d(TAG, BottomSheetState.class.getSimpleName() + " - onSlide(). Offset: " + slideOffset);
-        }
-
     }
 
 }
