@@ -9,6 +9,8 @@
     <android.support.v7.widget.RecyclerView
         style="@style/PlayerListCommon"
         android:id="@+id/playlist_list_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:divider="@color/common_transparent"
         android:background="@drawable/drawable_playlist_background" />
 

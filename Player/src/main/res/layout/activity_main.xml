@@ -13,9 +13,11 @@
         android:layout_height="match_parent" />
 
     <ListView
-        android:layout_gravity="start"
         style="@style/PlayerListCommon"
         android:id="@+id/drawer_list_config"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
         android:divider="@null"
         android:choiceMode="singleChoice"
         android:listSelector="@color/common_config_select"

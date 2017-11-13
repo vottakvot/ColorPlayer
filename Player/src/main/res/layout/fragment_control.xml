@@ -7,9 +7,9 @@
     android:background="@color/blueAccent">
 
     <TextView
+        android:id="@+id/track_name_control"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/track_name_control"
         android:gravity="left|center_vertical"
         android:singleLine="true"
         android:textStyle="bold"
@@ -33,9 +33,9 @@
     </TextView>
 
     <SeekBar
+        android:id="@+id/seek_position_control"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/seek_position_control"
         android:minHeight="@dimen/player_controls_seek_height"
         android:maxHeight="@dimen/player_controls_seek_height"
         android:background="@color/common_transparent"
@@ -51,11 +51,11 @@
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <RelativeLayout
+        android:id="@+id/time_control_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:id="@+id/time_control_layout"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -66,6 +66,8 @@
         <TextView
             style="@style/PlayerControlTrackInfo"
             android:id="@+id/position_time_control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="20dp"
             android:text="00:00" />
@@ -73,12 +75,16 @@
         <TextView
             style="@style/PlayerControlTrackInfo"
             android:id="@+id/number_tracks_control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="0000/0000" />
 
         <TextView
             style="@style/PlayerControlTrackInfo"
             android:id="@+id/total_time_control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:text="00:00" />

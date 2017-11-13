@@ -9,6 +9,8 @@
 
     <TextView
         style="@style/PlayerListviewHeaders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/explorer_list_header"
         android:text="@string/explorer_list_header" />
 

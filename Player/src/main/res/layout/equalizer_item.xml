@@ -6,13 +6,15 @@
     <TextView
         style="@style/PlayerTextViewCommon"
         android:id="@+id/bassBoostNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true" />
 
     <SeekBar
+        android:id="@+id/seekEqualizer"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:id="@+id/seekEqualizer"
         android:layout_below="@+id/bassBoostNote"
         android:layout_weight="0"
         android:minHeight="30dp"
@@ -24,12 +26,16 @@
     <TextView
         style="@style/PlayerTextViewCommon"
         android:id="@+id/minEqualizer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/seekEqualizer"
         android:layout_alignParentLeft="true" />
 
     <TextView
         style="@style/PlayerTextViewCommon"
         android:id="@+id/zeroEqualizer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/seekEqualizer"
         android:layout_centerInParent="true"
         android:paddingTop="20dp" />
@@ -37,6 +43,8 @@
     <TextView
         style="@style/PlayerTextViewCommon"
         android:id="@+id/maxEqualizer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/seekEqualizer"
         android:layout_alignParentRight="true" />
 

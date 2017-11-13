@@ -2,6 +2,7 @@ package ru.testsimpleapps.coloraudioplayer.ui.fragments;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,6 +31,8 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
     public static final String TAG = ExplorerFragment.class.getSimpleName();
 
     protected Unbinder mUnbinder;
+    @BindView(R.id.explorer_additional_panel_layout)
+    protected ConstraintLayout mAdditionalPanel;
     @BindView(R.id.explorer_list)
     protected RecyclerView mRecyclerView;
     @BindView(R.id.explorer_back)
@@ -72,6 +75,7 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mExplorerFolderAdapter);
+        mRecyclerView.addOnScrollListener(new OnScrollList());
     }
 
     @Override
@@ -88,6 +92,17 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
         restoreAdapter();
     }
 
+    @OnClick(R.id.explorer_add)
+    protected void addButtonClick() {
+        for (FolderData folder : mFolderData) {
+            for (ItemData file : folder.getContainerItemData().getList()) {
+                if (folder.isChecked() || file.isChecked()) {
+                    // Todo: add checked files or all folders
+                }
+            }
+        }
+    }
+
     @Override
     public boolean onBackPressed() {
         return restoreAdapter();
@@ -101,6 +116,24 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
         }
 
         return false;
+    }
+
+
+    private class OnScrollList extends RecyclerView.OnScrollListener {
+
+        private int mPreviousDy = 0;
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            if (dy - mPreviousDy > 0) {
+                mAdditionalPanel.setVisibility(View.VISIBLE);
+            } else {
+                mAdditionalPanel.setVisibility(View.INVISIBLE);
+            }
+
+            mPreviousDy = dy;
+        }
     }
 
 }

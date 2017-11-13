@@ -8,6 +8,8 @@
     <ImageView
         style="@style/PlayerImageViewCommon"
         android:id="@+id/imageConfig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp" />
 
@@ -15,6 +17,9 @@
     <TextView
         style="@style/PlayerTextViewCommon"
         android:id="@+id/nameConfig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imageConfig"
         android:textColor="@color/common_text_drawer" />
+
 </RelativeLayout>

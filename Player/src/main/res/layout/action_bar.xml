@@ -7,6 +7,8 @@
     <ImageView
         style="@style/PlayerImageViewCommon"
         android:id="@+id/action_bar_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/app_bar"
         android:layout_margin="0dp"
         android:padding="0dp"
@@ -33,6 +35,8 @@
 
         <TextView
             style="@style/PlayerActionBarTextAppName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/action_bar_name_color"
             android:text="@string/app_name_action_bar_color"
             android:textColor="@color/redPrimary" />
@@ -40,12 +44,16 @@
         <TextView
             style="@style/PlayerActionBarTextAppName"
             android:id="@+id/action_bar_name_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/app_name_action_bar_audio"
             android:textColor="@color/bluePrimary" />
 
         <TextView
             style="@style/PlayerActionBarTextAppName"
             android:id="@+id/action_bar_name_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/app_name_action_bar_player"
             android:textColor="@color/greenPrimary" />
     </LinearLayout>

@@ -12,6 +12,8 @@
     <!-- 1 view files-->
     <ImageView
         style="@style/PlayerImageViewCommon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/explorer_file_image"
         android:src="@drawable/album"
         android:layout_marginTop="8dp"
@@ -23,8 +25,10 @@
 
     <!-- 2 view duration of the content media-file -->
     <TextView
-        android:id="@+id/explorer_file_duration"
         style="@style/PlayerTextViewCommon"
+        android:id="@+id/explorer_file_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="-"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/explorer_file_image"
@@ -36,6 +40,8 @@
     <TextView
         style="@style/PlayerTextViewCommon"
         android:id="@+id/explorer_file_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:textSize="15sp"
         android:textStyle="normal"
         android:layout_marginBottom="8dp"
@@ -56,7 +62,7 @@
         android:focusable="false"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
