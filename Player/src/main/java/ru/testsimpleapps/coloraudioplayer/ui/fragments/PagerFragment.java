@@ -21,6 +21,7 @@ import ru.testsimpleapps.coloraudioplayer.R;
 public class PagerFragment extends BaseFragment {
 
     public static final String TAG = PagerFragment.class.getSimpleName();
+    private static final String TAG_BOTTOM_SHEET_STATE = "TAG_BOTTOM_SHEET_STATE";
 
     private static final int COUNT_PAGES = 2;
     private static final int PLAYLIST_PAGE = 0;
@@ -44,13 +45,14 @@ public class PagerFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_pager, container, false);
         mUnbinder = ButterKnife.bind(this, view);
-        init();
+        init(savedInstanceState);
         return view;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(TAG_BOTTOM_SHEET_STATE, mBottomSheetBehavior.getState());
     }
 
     @Override
@@ -59,10 +61,18 @@ public class PagerFragment extends BaseFragment {
         mUnbinder.unbind();
     }
 
-    private void init() {
+    private void init(final Bundle savedInstanceState) {
         mViewPager.setAdapter(new AdapterForPages(getChildFragmentManager()));
         mBottomSheetBehavior = BottomSheetBehavior.from(mControlLayout);
-        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        // Restore previous states
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(TAG_BOTTOM_SHEET_STATE)) {
+                mBottomSheetBehavior.setState(savedInstanceState.getInt(TAG_BOTTOM_SHEET_STATE));
+            } else {
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        }
     }
 
     /*

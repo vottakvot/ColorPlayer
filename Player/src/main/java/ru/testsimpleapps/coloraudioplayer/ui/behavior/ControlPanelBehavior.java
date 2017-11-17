@@ -43,7 +43,7 @@ public class ControlPanelBehavior extends BottomSheetBehavior<LinearLayout> {
 
     private void hideByOffset(final RecyclerView recyclerView) {
         final int currentOffset = recyclerView.computeVerticalScrollOffset();
-        if (currentOffset - mPreviousOffset > 0) {
+        if (currentOffset - mPreviousOffset > 0 && getState() != STATE_COLLAPSED) {
             setState(STATE_COLLAPSED);
         }
 
