@@ -1,10 +1,16 @@
 package ru.testsimpleapps.coloraudioplayer.ui.fragments;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import ru.testsimpleapps.coloraudioplayer.R;
 
@@ -12,8 +18,43 @@ import ru.testsimpleapps.coloraudioplayer.R;
 public abstract class BaseFragment extends Fragment {
 
     public static final String TAG = BaseFragment.class.getSimpleName();
+
     protected FragmentManager mFragmentManager;
     protected FragmentManager mParentFragmentManager;
+    protected Snackbar mSnackBar;
+    protected Toast mToast;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = super.onCreateView(inflater, container, savedInstanceState);
+        init(container, savedInstanceState);
+        return view;
+    }
+
+    private void init(final ViewGroup container, final Bundle savedInstanceState) {
+        setSnackBar(container);
+        setToast();
+    }
+
+    private void setSnackBar(final ViewGroup container) {
+        mSnackBar = Snackbar.make(container, "", Snackbar.LENGTH_SHORT);
+        mSnackBar.setDuration(Snackbar.LENGTH_SHORT);
+    }
+
+    private void setToast() {
+        mToast = Toast.makeText(getContext(), "", Toast.LENGTH_LONG);
+        mToast.setDuration(Toast.LENGTH_SHORT);
+    }
+
+    protected void showSnackBar(final int stringResource) {
+        mSnackBar.setText(getString(stringResource));
+        mSnackBar.show();
+    }
+
+    protected void showToast(final int stringResource) {
+        mToast.setText(getString(stringResource));
+        mToast.show();
+    }
 
     protected void showFragment(@NonNull final Fragment fragment, @Nullable final String tag, boolean isAdd) {
         if (mFragmentManager == null) {

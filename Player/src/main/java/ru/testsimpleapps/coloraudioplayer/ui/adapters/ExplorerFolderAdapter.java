@@ -46,15 +46,17 @@ public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-        if (viewHolder instanceof ViewHolderItem) {
-            final ViewHolderItem mViewHolder = (ViewHolderItem) viewHolder;
-            final FolderData folderData = getItem(i);
-            mViewHolder.mCheckFolder.setChecked(folderData.isChecked());
-            mViewHolder.mCountInFolder.setText(String.valueOf(folderData.size()));
-            mViewHolder.mNameFolder.setText(folderData.getName());
-        } else if (viewHolder instanceof ViewHolderHeader) {
-            final ViewHolderHeader mViewHolder = (ViewHolderHeader) viewHolder;
-            mViewHolder.mHeader.setText(mContext.getString(R.string.explorer_header_count_items) + mList.size());
+        if (mList != null) {
+            if (viewHolder instanceof ViewHolderItem) {
+                final ViewHolderItem mViewHolder = (ViewHolderItem) viewHolder;
+                final FolderData folderData = getItem(i);
+                folderData.setChecked(mViewHolder.mCheckFolder.isChecked());
+                mViewHolder.mCountInFolder.setText(String.valueOf(folderData.size()));
+                mViewHolder.mNameFolder.setText(folderData.getName());
+            } else if (viewHolder instanceof ViewHolderHeader) {
+                final ViewHolderHeader mViewHolder = (ViewHolderHeader) viewHolder;
+                mViewHolder.mHeader.setText(mContext.getString(R.string.explorer_header_count_items) + mList.size());
+            }
         }
     }
 
@@ -93,6 +95,7 @@ public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
                 }
             });
         }
+
     }
 
     protected class ViewHolderHeader extends RecyclerView.ViewHolder {

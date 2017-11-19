@@ -17,7 +17,9 @@ import android.view.animation.LayoutAnimationController;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,10 +36,17 @@ import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFilesAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFolderAdapter;
 
 
-public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItemClickListener {
+public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItemClickListener,
+        MediaExplorerManager.OnDataReady {
 
     public static final String TAG = ExplorerFragment.class.getSimpleName();
     private static final String TAG_ADD_PANEL = "TAG_ADD_PANEL";
+    private static final String TAG_TYPE_ADAPTER = "TAG_TYPE_ADAPTER";
+    private static final String TAG_FOLDER_STATE_ADAPTER = "TAG_FOLDER_STATE_ADAPTER";
+    private static final String TAG_FILES_STATE_ADAPTER = "TAG_FILES_STATE_ADAPTER";
+    private static final String TAG_FOLDER_POSITION = "TAG_FOLDER_POSITION";
+    private static final String TAG_FOLDER_CONTENT = "TAG_FOLDER_CONTENT";
+    private static final String TAG_FILES_CONTENT = "TAG_FILES_CONTENT";
 
     private static final int ANIMATION_TRANSLATION_DURATION = 200;
     private static final int ANIMATION_ALPHA_DURATION = 300;
@@ -51,11 +60,13 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
     protected ImageButton mBackButton;
     @BindView(R.id.explorer_add)
     protected ImageButton mAddButton;
+    @BindView(R.id.explorer_progress)
+    protected ProgressBar mProgressBar;
 
     private ExplorerFilesAdapter mExplorerFilesAdapter;
     private ExplorerFolderAdapter mExplorerFolderAdapter;
-    private List<FolderData> mFolderData;
-    private Parcelable mListState;
+    private Parcelable mFolderStateAdapter;
+    private int mFolderPosition = 0;
 
     private AlphaAnimation mAlphaAnimation;
     private TranslateAnimation mTranslateAnimation;
@@ -70,6 +81,7 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_explorer, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         init(savedInstanceState);
@@ -79,6 +91,7 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        MediaExplorerManager.getInstance().removeFindCallback();
         mBackButton.clearAnimation();
         mAdditionalPanel.clearAnimation();
         mUnbinder.unbind();
@@ -88,45 +101,19 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(TAG_ADD_PANEL, mAdditionalPanel.getVisibility());
-    }
+        outState.putInt(TAG_FOLDER_POSITION,  mFolderPosition);
+        outState.putBoolean(TAG_TYPE_ADAPTER,  mRecyclerView.getAdapter() instanceof ExplorerFolderAdapter);
 
-    private void init(final Bundle savedInstanceState) {
-        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycle_layout_animation);
-        mRecyclerView.setLayoutAnimation(animation);
-
-        mBackButton.setVisibility(View.INVISIBLE);
-        mAdditionalPanel.setVisibility(View.INVISIBLE);
-
-        mAlphaAnimation = new AlphaAnimation(0.0f, 1.0f);
-        mOnAnimation = new OnTranslationListener(mAdditionalPanel);
-        mOnFadeAnimation = new OnAlphaListener(mBackButton);
-
-        mExplorerFilesAdapter = new ExplorerFilesAdapter(getContext());
-        mExplorerFolderAdapter = new ExplorerFolderAdapter(getContext());
-
-        MediaExplorerManager.getInstance().findMedia();
-        mFolderData = MediaExplorerManager.getInstance().getAlbums();
-        mExplorerFolderAdapter.setItems(mFolderData);
-        mExplorerFolderAdapter.setOnItemClickListener(this);
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(mExplorerFolderAdapter);
-        mRecyclerView.addOnScrollListener(new OnScrollRecycleViewListener());
-
-        restoreStates(savedInstanceState);
-    }
-
-    private void restoreStates(final Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(TAG_ADD_PANEL)) {
-                mAdditionalPanel.setVisibility(savedInstanceState.getInt(TAG_ADD_PANEL));
-            }
-        }
+        outState.putParcelable(TAG_FOLDER_STATE_ADAPTER,  mFolderStateAdapter);
+        outState.putParcelable(TAG_FILES_STATE_ADAPTER,  mRecyclerView.getLayoutManager().onSaveInstanceState());
+        outState.putSerializable(TAG_FOLDER_CONTENT, (ArrayList<FolderData>) mExplorerFolderAdapter.getItemList());
+        outState.putSerializable(TAG_FILES_CONTENT, (ArrayList<ItemData>) mExplorerFilesAdapter.getItemList());
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        mListState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+        mFolderPosition = position;
+        mFolderStateAdapter = mRecyclerView.getLayoutManager().onSaveInstanceState();
         final FolderData folderData = mExplorerFolderAdapter.getItem(position);
         final ContainerData<ItemData> itemData = folderData.getContainerItemData();
         mExplorerFilesAdapter.setItems(itemData.getList());
@@ -142,7 +129,7 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
 
     @OnClick(R.id.explorer_add)
     protected void addButtonClick() {
-        for (FolderData folder : mFolderData) {
+        for (FolderData folder : mExplorerFolderAdapter.getItemList()) {
             for (ItemData file : folder.getContainerItemData().getList()) {
                 if (folder.isChecked() || file.isChecked()) {
                     // Todo: add checked files or all folders
@@ -156,10 +143,87 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
         return restoreAdapter();
     }
 
+    @Override
+    public void onSuccess() {
+        showToast(R.string.explorer_find_media_ok);
+        mProgressBar.setVisibility(View.INVISIBLE);
+        final List<FolderData> folderDataList = MediaExplorerManager.getInstance().getAlbums();
+        mExplorerFolderAdapter.setItems(folderDataList);
+        mRecyclerView.scheduleLayoutAnimation();
+    }
+
+    @Override
+    public void onError() {
+        showToast(R.string.explorer_find_media_error);
+        mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private void init(final Bundle savedInstanceState) {
+        MediaExplorerManager.getInstance().setFindCallback(this);
+
+        mBackButton.setVisibility(View.INVISIBLE);
+        mAdditionalPanel.setVisibility(View.INVISIBLE);
+
+        mAlphaAnimation = new AlphaAnimation(0.0f, 1.0f);
+        mOnAnimation = new OnTranslationListener(mAdditionalPanel);
+        mOnFadeAnimation = new OnAlphaListener(mBackButton);
+
+        mExplorerFilesAdapter = new ExplorerFilesAdapter(getContext());
+        mExplorerFolderAdapter = new ExplorerFolderAdapter(getContext());
+        mExplorerFolderAdapter.setOnItemClickListener(this);
+
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycle_layout_animation);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(mExplorerFolderAdapter);
+        mRecyclerView.setLayoutAnimation(animation);
+        mRecyclerView.addOnScrollListener(new OnScrollRecycleViewListener());
+
+        getData(savedInstanceState);
+        restoreStates(savedInstanceState);
+    }
+
+    private void getData(final Bundle savedInstanceState) {
+        // Search media data
+        if (savedInstanceState == null) {
+            MediaExplorerManager.getInstance().findMediaAsync();
+        }
+
+        // Show progress for async data search
+        if (MediaExplorerManager.getInstance().isProcessing()) {
+            mProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void restoreStates(final Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            // State for adapter back press
+            mFolderStateAdapter = savedInstanceState.getParcelable(TAG_FOLDER_STATE_ADAPTER);
+            // Panel state
+            mAdditionalPanel.setVisibility(savedInstanceState.getInt(TAG_ADD_PANEL));
+
+            // Previous adapter
+            if (savedInstanceState.getBoolean(TAG_TYPE_ADAPTER)) {
+                mRecyclerView.setAdapter(mExplorerFolderAdapter);
+            } else {
+                mFolderPosition = savedInstanceState.getInt(TAG_FOLDER_POSITION);
+                final FolderData folderData = mExplorerFolderAdapter.getItem(mFolderPosition);
+                mExplorerFilesAdapter.setItems(folderData.getContainerItemData().getList());
+                mRecyclerView.setAdapter(mExplorerFilesAdapter);
+                mBackButton.setVisibility(View.VISIBLE);
+            }
+
+            // Previous adapter state
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(TAG_FOLDER_STATE_ADAPTER));
+            mRecyclerView.scheduleLayoutAnimation();
+        }
+    }
+
     private boolean restoreAdapter() {
         if (mRecyclerView.getAdapter() instanceof ExplorerFilesAdapter) {
             mRecyclerView.setAdapter(mExplorerFolderAdapter);
-            mRecyclerView.getLayoutManager().onRestoreInstanceState(mListState);
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(mFolderStateAdapter);
             mRecyclerView.scheduleLayoutAnimation();
             backButtonAnimation(1.0f, 0.0f, false);
             return true;
@@ -167,7 +231,6 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
 
         return false;
     }
-
 
     private class OnScrollRecycleViewListener extends RecyclerView.OnScrollListener {
 
@@ -319,7 +382,5 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
             mAdditionalPanel.startAnimation(mTranslateAnimation);
         }
     }
-
-
 
 }

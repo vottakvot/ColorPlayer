@@ -1,9 +1,10 @@
 package ru.testsimpleapps.coloraudioplayer.managers.explorer.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContainerData<Item> {
+public class ContainerData<Item>  implements Serializable {
 
     private final List<Item> mContainer;
 

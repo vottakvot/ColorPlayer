@@ -54,13 +54,15 @@ public abstract class BaseAdapter<D> extends RecyclerView.Adapter {
     }
 
     public void setItems(final List<D> list) {
-        if (mList != null) {
-            mList.clear();
-        } else {
-            mList = new ArrayList<>();
+        if (list != null) {
+            if (mList != null) {
+                mList.clear();
+            } else {
+                mList = new ArrayList<>();
+            }
+            mList.addAll(list);
+            notifyDataSetChanged();
         }
-        mList.addAll(list);
-        notifyDataSetChanged();
     }
 
     public void addItem(final D item) {

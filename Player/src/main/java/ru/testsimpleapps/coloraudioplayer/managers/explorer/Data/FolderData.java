@@ -1,6 +1,8 @@
 package ru.testsimpleapps.coloraudioplayer.managers.explorer.Data;
 
-public class FolderData {
+import java.io.Serializable;
+
+public class FolderData  implements Serializable {
 
     private boolean isChecked = false;
     private String name;

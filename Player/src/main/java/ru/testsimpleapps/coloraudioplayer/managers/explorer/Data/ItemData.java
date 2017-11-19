@@ -1,6 +1,8 @@
 package ru.testsimpleapps.coloraudioplayer.managers.explorer.Data;
 
-public class ItemData {
+import java.io.Serializable;
+
+public class ItemData implements Serializable {
 
     private boolean isChecked = false;
 

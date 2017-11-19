@@ -4,9 +4,12 @@ package ru.testsimpleapps.coloraudioplayer.managers.explorer;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,11 @@ public class MediaExplorerManager {
 
     public static final String TAG = MediaExplorerManager.class.getSimpleName();
     private static MediaExplorerManager sMediaExplorerManager;
+
+    public interface OnDataReady {
+        void onSuccess();
+        void onError();
+    }
 
     public static MediaExplorerManager getInstance() {
         if (sMediaExplorerManager == null) {
@@ -51,6 +59,10 @@ public class MediaExplorerManager {
     /*
     * Objects for work
     * */
+    private WeakReference<OnDataReady> mOnDataReadyWeakReference;
+    private AsyncFind mAsyncFind;
+    private boolean mIsProcessing = false;
+
     private final Context mContext;
     private List<FolderData> mFoldersList;
     private List<FolderData> mArtistList;
@@ -63,7 +75,7 @@ public class MediaExplorerManager {
         mAlbumsList = new ArrayList<>();
     }
 
-    public boolean findMedia() {
+    public synchronized boolean findMedia() {
         Cursor cursor = null;
         try {
             // Get user media files
@@ -156,15 +168,73 @@ public class MediaExplorerManager {
         return null;
     }
 
-    public List<FolderData> getFolders() {
+    synchronized public void findMediaAsync() {
+        if (mAsyncFind != null && !mAsyncFind.isCancelled()) {
+            mAsyncFind.cancel(true);
+        }
+
+        mAsyncFind = new AsyncFind();
+        mAsyncFind.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    synchronized public void setFindCallback(@NonNull final OnDataReady onDataReady) {
+        mOnDataReadyWeakReference = new WeakReference<>(onDataReady);
+    }
+
+    synchronized public void removeFindCallback() {
+        mOnDataReadyWeakReference = null;
+    }
+
+    synchronized public boolean isProcessing() {
+        return mIsProcessing;
+    }
+
+    private class AsyncFind extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mIsProcessing = true;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void[] objects) {
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return findMedia();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isSuccess) {
+            super.onPostExecute(isSuccess);
+            mIsProcessing = false;
+            final WeakReference<OnDataReady> onDataReadyWeakReference = mOnDataReadyWeakReference;
+            if (onDataReadyWeakReference != null) {
+                final OnDataReady onDataReady = onDataReadyWeakReference.get();
+                if (onDataReady != null) {
+                    if (isSuccess.booleanValue()) {
+                        onDataReady.onSuccess();
+                    } else {
+                        onDataReady.onError();
+                    }
+                }
+            }
+        }
+
+    }
+
+    synchronized public List<FolderData> getFolders() {
         return mFoldersList;
     }
 
-    public List<FolderData> getArtists() {
+    synchronized public List<FolderData> getArtists() {
         return mArtistList;
     }
 
-    public List<FolderData> getAlbums() {
+    synchronized public List<FolderData> getAlbums() {
         return mAlbumsList;
     }
 

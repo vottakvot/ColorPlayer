@@ -20,7 +20,9 @@
     <string name="explorer_sort_by_name">Имена</string>
     <string name="explorer_sort_by_duration">Длина треков</string>
     <string name="explorer_update_music">Обновить список музыки</string>
-    <string name="explorer_header_count_items">Кол-во элементов:</string>
+    <string name="explorer_header_count_items">Кол-во элементов:\u0020</string>
+    <string name="explorer_find_media_ok">Список музыки обновлен!</string>
+    <string name="explorer_find_media_error">Не удалось обновить список музыки:(</string>
 
     <string name="playlist_create_header">Введите название плейлиста</string>
     <string name="playlist_create_create">Создать</string>

@@ -46,15 +46,17 @@ public class ExplorerFilesAdapter extends BaseAdapter<ItemData> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-        if (viewHolder instanceof ViewHolderItem) {
-            final ViewHolderItem mViewHolder = (ViewHolderItem) viewHolder;
-            final ItemData itemData = getItem(i);
-            mViewHolder.mDurationFile.setText(String.valueOf(itemData.getDuration()));
-            mViewHolder.mNameFile.setText(String.valueOf(itemData.getName()));
-            mViewHolder.mCheckFile.setChecked(itemData.isChecked());
-        } else if (viewHolder instanceof ViewHolderHeader) {
-            final ViewHolderHeader mViewHolder = (ViewHolderHeader) viewHolder;
-            mViewHolder.mHeader.setText(mContext.getString(R.string.explorer_header_count_items) + mList.size());
+        if (mList != null) {
+            if (viewHolder instanceof ViewHolderItem) {
+                final ViewHolderItem mViewHolder = (ViewHolderItem) viewHolder;
+                final ItemData itemData = getItem(i);
+                mViewHolder.mDurationFile.setText(String.valueOf(itemData.getDuration()));
+                mViewHolder.mNameFile.setText(String.valueOf(itemData.getName()));
+                mViewHolder.mCheckFile.setChecked(itemData.isChecked());
+            } else if (viewHolder instanceof ViewHolderHeader) {
+                final ViewHolderHeader mViewHolder = (ViewHolderHeader) viewHolder;
+                mViewHolder.mHeader.setText(mContext.getString(R.string.explorer_header_count_items) + mList.size());
+            }
         }
     }
 
