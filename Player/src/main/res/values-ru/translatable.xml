@@ -8,7 +8,7 @@
 
     <string name="explorer_list_header">Список музыки</string>
     <string name="explorer_root_message">Вы в корневом каталоге!</string>
-    <string name="explorer_add_to_playlist">Добавлено в плейлист:</string>
+    <string name="explorer_add_to_playlist">Добавлено в плейлист:\u0020</string>
     <string name="explorer_add_to_playlist_nothing">Нечего добавлять!</string>
     <string name="explorer_sort_header">Сортировать по</string>
     <string name="explorer_sort_by_folders">Папки</string>
@@ -20,7 +20,9 @@
     <string name="explorer_sort_by_name">Имена</string>
     <string name="explorer_sort_by_duration">Длина треков</string>
     <string name="explorer_update_music">Обновить список музыки</string>
-    <string name="explorer_header_count_items">Кол-во элементов:\u0020</string>
+    <string name="explorer_header_count_folders">Кол-во папок:</string>
+    <string name="explorer_header_total_tracks">Всего треков:</string>
+    <string name="explorer_header_total_time">Общее время:</string>
     <string name="explorer_find_media_ok">Список музыки обновлен!</string>
     <string name="explorer_find_media_error">Не удалось обновить список музыки:(</string>
 

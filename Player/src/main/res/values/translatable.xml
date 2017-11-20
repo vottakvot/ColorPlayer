@@ -12,7 +12,7 @@
 
     <string name="explorer_list_header">List of music</string>
     <string name="explorer_root_message">You are in root!</string>
-    <string name="explorer_add_to_playlist">Added to playlist:</string>
+    <string name="explorer_add_to_playlist">Added to playlist:\u0020</string>
     <string name="explorer_add_to_playlist_nothing">Nothing to add!</string>
     <string name="explorer_sort_header">Sort type</string>
     <string name="explorer_sort_by_folders">Folders</string>
@@ -24,10 +24,12 @@
     <string name="explorer_sort_by_name">Names</string>
     <string name="explorer_sort_by_duration">Track duration</string>
     <string name="explorer_update_music">Update music list</string>
-    <string name="explorer_header_count_items">Count items:\u0020</string>
+    <string name="explorer_header_count_folders">Count folders:</string>
+    <string name="explorer_header_count_files">Count files:</string>
+    <string name="explorer_header_total_tracks">Total tracks:</string>
+    <string name="explorer_header_total_time">Total time:</string>
     <string name="explorer_find_media_ok">Music list is update!</string>
     <string name="explorer_find_media_error">Error for update music list :(</string>
-    <string name="explorer_snack_bar_hide_button">HIDE</string>
 
     <string name="playlist_create_header">Input playlist name</string>
     <string name="playlist_create_create">Create</string>

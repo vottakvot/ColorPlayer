@@ -11,8 +11,11 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.FolderData;
+import ru.testsimpleapps.coloraudioplayer.managers.explorer.MediaExplorerManager;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.TimeTool;
 
 
 public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
@@ -30,7 +33,7 @@ public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         switch (i) {
             case TYPE_HEADER: {
-                final View viewItem = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.explorer_header, viewGroup, false);
+                final View viewItem = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.explorer_header_folders, viewGroup, false);
                 return new ViewHolderHeader(viewItem);
             }
 
@@ -46,17 +49,18 @@ public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-        if (mList != null) {
-            if (viewHolder instanceof ViewHolderItem) {
-                final ViewHolderItem mViewHolder = (ViewHolderItem) viewHolder;
-                final FolderData folderData = getItem(i);
-                folderData.setChecked(mViewHolder.mCheckFolder.isChecked());
-                mViewHolder.mCountInFolder.setText(String.valueOf(folderData.size()));
-                mViewHolder.mNameFolder.setText(folderData.getName());
-            } else if (viewHolder instanceof ViewHolderHeader) {
-                final ViewHolderHeader mViewHolder = (ViewHolderHeader) viewHolder;
-                mViewHolder.mHeader.setText(mContext.getString(R.string.explorer_header_count_items) + mList.size());
-            }
+        if (viewHolder instanceof ViewHolderItem) {
+            final ViewHolderItem mViewHolder = (ViewHolderItem) viewHolder;
+            final FolderData folderData = getItem(i);
+            mViewHolder.mCheckFolder.setTag(ViewHolderItem.TAG_CHECK, i);
+            mViewHolder.mCheckFolder.setChecked(folderData.isChecked());
+            mViewHolder.mCountInFolder.setText(String.valueOf(folderData.size()));
+            mViewHolder.mNameFolder.setText(folderData.getName());
+        } else if (viewHolder instanceof ViewHolderHeader) {
+            final ViewHolderHeader mViewHolder = (ViewHolderHeader) viewHolder;
+            mViewHolder.mCountFolders.setText(String.valueOf(getItemCount() - 1));
+            mViewHolder.mCountTracks.setText(String.valueOf(MediaExplorerManager.getInstance().getTotalTracks()));
+            mViewHolder.mTotalTime.setText(TimeTool.getDuration(MediaExplorerManager.getInstance().getTotalTime()));
         }
     }
 
@@ -79,6 +83,9 @@ public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
     }
 
     protected class ViewHolderItem extends RecyclerView.ViewHolder {
+
+        public static final int TAG_CHECK = 10 << 24;
+
         @BindView(R.id.explorer_folder_count) TextView mCountInFolder;
         @BindView(R.id.explorer_folder_name) TextView mNameFolder;
         @BindView(R.id.explorer_folder_check) CheckBox mCheckFolder;
@@ -96,10 +103,19 @@ public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
             });
         }
 
+        @OnCheckedChanged(R.id.explorer_folder_check)
+        protected void onChecked(final CheckBox checkBox) {
+            final int position = (int) checkBox.getTag(TAG_CHECK);
+            final FolderData folderData = getItem(position);
+            folderData.setChecked(checkBox.isChecked());
+        }
+
     }
 
     protected class ViewHolderHeader extends RecyclerView.ViewHolder {
-        @BindView(R.id.explorer_list_header) TextView mHeader;
+        @BindView(R.id.explorer_header_folder_count_folders_value) TextView mCountFolders;
+        @BindView(R.id.explorer_header_folder_count_tracks_value) TextView mCountTracks;
+        @BindView(R.id.explorer_header_folder_total_time_value) TextView mTotalTime;
 
         public ViewHolderHeader(final View view) {
             super(view);

@@ -61,12 +61,15 @@ public class MediaExplorerManager {
     * */
     private WeakReference<OnDataReady> mOnDataReadyWeakReference;
     private AsyncFind mAsyncFind;
-    private boolean mIsProcessing = false;
+    private volatile boolean mIsProcessing = false;
 
     private final Context mContext;
     private List<FolderData> mFoldersList;
     private List<FolderData> mArtistList;
     private List<FolderData> mAlbumsList;
+
+    private long mTotalTime;
+    private long mTotalTracks;
 
     private MediaExplorerManager(Context context) {
         mContext = context;
@@ -144,6 +147,8 @@ public class MediaExplorerManager {
                         }
                         folderContainer.addItem(dataItem);
 
+                        mTotalTime += duration;
+                        mTotalTracks++;
                     } catch (RuntimeException e) {
                         Log.e(TAG, e.getMessage());
                     }
@@ -199,11 +204,6 @@ public class MediaExplorerManager {
 
         @Override
         protected Boolean doInBackground(Void[] objects) {
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             return findMedia();
         }
 
@@ -236,6 +236,14 @@ public class MediaExplorerManager {
 
     synchronized public List<FolderData> getAlbums() {
         return mAlbumsList;
+    }
+
+    synchronized public long getTotalTracks() {
+        return mTotalTracks;
+    }
+
+    synchronized public long getTotalTime() {
+        return mTotalTime;
     }
 
 }

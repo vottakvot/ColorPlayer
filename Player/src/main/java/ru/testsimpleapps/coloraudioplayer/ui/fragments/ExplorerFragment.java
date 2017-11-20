@@ -43,10 +43,9 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
     private static final String TAG_ADD_PANEL = "TAG_ADD_PANEL";
     private static final String TAG_TYPE_ADAPTER = "TAG_TYPE_ADAPTER";
     private static final String TAG_FOLDER_STATE_ADAPTER = "TAG_FOLDER_STATE_ADAPTER";
-    private static final String TAG_FILES_STATE_ADAPTER = "TAG_FILES_STATE_ADAPTER";
     private static final String TAG_FOLDER_POSITION = "TAG_FOLDER_POSITION";
     private static final String TAG_FOLDER_CONTENT = "TAG_FOLDER_CONTENT";
-    private static final String TAG_FILES_CONTENT = "TAG_FILES_CONTENT";
+    private static final String TAG_PREVIOUS_STATE_ADAPTER = "TAG_PREVIOUS_STATE_ADAPTER";
 
     private static final int ANIMATION_TRANSLATION_DURATION = 200;
     private static final int ANIMATION_ALPHA_DURATION = 300;
@@ -66,7 +65,7 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
     private ExplorerFilesAdapter mExplorerFilesAdapter;
     private ExplorerFolderAdapter mExplorerFolderAdapter;
     private Parcelable mFolderStateAdapter;
-    private int mFolderPosition = 0;
+    private int mFolderPosition = 1;
 
     private AlphaAnimation mAlphaAnimation;
     private TranslateAnimation mTranslateAnimation;
@@ -105,9 +104,8 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
         outState.putBoolean(TAG_TYPE_ADAPTER,  mRecyclerView.getAdapter() instanceof ExplorerFolderAdapter);
 
         outState.putParcelable(TAG_FOLDER_STATE_ADAPTER,  mFolderStateAdapter);
-        outState.putParcelable(TAG_FILES_STATE_ADAPTER,  mRecyclerView.getLayoutManager().onSaveInstanceState());
+        outState.putParcelable(TAG_PREVIOUS_STATE_ADAPTER,  mRecyclerView.getLayoutManager().onSaveInstanceState());
         outState.putSerializable(TAG_FOLDER_CONTENT, (ArrayList<FolderData>) mExplorerFolderAdapter.getItemList());
-        outState.putSerializable(TAG_FILES_CONTENT, (ArrayList<ItemData>) mExplorerFilesAdapter.getItemList());
     }
 
     @Override
@@ -129,12 +127,26 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
 
     @OnClick(R.id.explorer_add)
     protected void addButtonClick() {
+        int countAdded = 0;
         for (FolderData folder : mExplorerFolderAdapter.getItemList()) {
             for (ItemData file : folder.getContainerItemData().getList()) {
                 if (folder.isChecked() || file.isChecked()) {
                     // Todo: add checked files or all folders
+                    Log.d(TAG, file.getName());
+
+                    file.setChecked(false);
+                    countAdded++;
                 }
             }
+
+            folder.setChecked(false);
+        }
+
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+        if (countAdded == 0) {
+            showToast(R.string.explorer_add_to_playlist_nothing);
+        } else {
+            showToast(getString(R.string.explorer_add_to_playlist) + countAdded);
         }
     }
 
@@ -149,6 +161,7 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
         mProgressBar.setVisibility(View.INVISIBLE);
         final List<FolderData> folderDataList = MediaExplorerManager.getInstance().getAlbums();
         mExplorerFolderAdapter.setItems(folderDataList);
+        mRecyclerView.setAdapter(mExplorerFolderAdapter);
         mRecyclerView.scheduleLayoutAnimation();
     }
 
@@ -174,18 +187,44 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
 
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycle_layout_animation);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(mExplorerFolderAdapter);
         mRecyclerView.setLayoutAnimation(animation);
         mRecyclerView.addOnScrollListener(new OnScrollRecycleViewListener());
 
-        getData(savedInstanceState);
         restoreStates(savedInstanceState);
     }
 
-    private void getData(final Bundle savedInstanceState) {
-        // Search media data
+    private void restoreStates(final Bundle savedInstanceState) {
+        // Check previous states
         if (savedInstanceState == null) {
             MediaExplorerManager.getInstance().findMediaAsync();
+        } else {
+            // State for adapter back press
+            mFolderStateAdapter = savedInstanceState.getParcelable(TAG_FOLDER_STATE_ADAPTER);
+            // Panel state
+            mAdditionalPanel.setVisibility(savedInstanceState.getInt(TAG_ADD_PANEL));
+            // Restore folder adapter every time
+            final ArrayList<FolderData> folderDataList = (ArrayList<FolderData>) savedInstanceState.getSerializable(TAG_FOLDER_CONTENT);
+            if (folderDataList != null) {
+                mExplorerFolderAdapter.setItems(folderDataList);
+            }
+            // Restore files adapter every time
+            mFolderPosition = savedInstanceState.getInt(TAG_FOLDER_POSITION);
+            final FolderData folderData = mExplorerFolderAdapter.getItem(mFolderPosition);
+            if (folderData != null) {
+                mExplorerFilesAdapter.setItems(folderData.getContainerItemData().getList());
+            }
+
+            // Previous adapter
+            if (savedInstanceState.getBoolean(TAG_TYPE_ADAPTER)) {
+                mRecyclerView.setAdapter(mExplorerFolderAdapter);
+            } else {
+                mRecyclerView.setAdapter(mExplorerFilesAdapter);
+                mBackButton.setVisibility(View.VISIBLE);
+            }
+
+            // Previous adapter state
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(TAG_PREVIOUS_STATE_ADAPTER));
+            mRecyclerView.scheduleLayoutAnimation();
         }
 
         // Show progress for async data search
@@ -193,30 +232,6 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
             mProgressBar.setVisibility(View.VISIBLE);
         } else {
             mProgressBar.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    private void restoreStates(final Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            // State for adapter back press
-            mFolderStateAdapter = savedInstanceState.getParcelable(TAG_FOLDER_STATE_ADAPTER);
-            // Panel state
-            mAdditionalPanel.setVisibility(savedInstanceState.getInt(TAG_ADD_PANEL));
-
-            // Previous adapter
-            if (savedInstanceState.getBoolean(TAG_TYPE_ADAPTER)) {
-                mRecyclerView.setAdapter(mExplorerFolderAdapter);
-            } else {
-                mFolderPosition = savedInstanceState.getInt(TAG_FOLDER_POSITION);
-                final FolderData folderData = mExplorerFolderAdapter.getItem(mFolderPosition);
-                mExplorerFilesAdapter.setItems(folderData.getContainerItemData().getList());
-                mRecyclerView.setAdapter(mExplorerFilesAdapter);
-                mBackButton.setVisibility(View.VISIBLE);
-            }
-
-            // Previous adapter state
-            mRecyclerView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(TAG_FOLDER_STATE_ADAPTER));
-            mRecyclerView.scheduleLayoutAnimation();
         }
     }
 

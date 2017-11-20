@@ -46,13 +46,23 @@ public abstract class BaseFragment extends Fragment {
         mToast.setDuration(Toast.LENGTH_SHORT);
     }
 
-    protected void showSnackBar(final int stringResource) {
-        mSnackBar.setText(getString(stringResource));
+    protected void showSnackBar(final int resource) {
+        mSnackBar.setText(getResources().getString(resource));
         mSnackBar.show();
     }
 
-    protected void showToast(final int stringResource) {
-        mToast.setText(getString(stringResource));
+    protected void showSnackBar(final String string) {
+        mSnackBar.setText(string);
+        mSnackBar.show();
+    }
+
+    protected void showToast(final int resource) {
+        mToast.setText(getResources().getString(resource));
+        mToast.show();
+    }
+
+    protected void showToast(final String string) {
+        mToast.setText(string);
         mToast.show();
     }
 

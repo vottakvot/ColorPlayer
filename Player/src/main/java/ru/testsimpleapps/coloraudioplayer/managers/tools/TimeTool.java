@@ -32,7 +32,6 @@ public class TimeTool {
         return mSimpleTimeFormat.format(new Date(ms));
     }
 
-    @Deprecated
     public static String getDuration(long ms) {
         return ((ms / (1000 * 60 * 60)) != 0 ? String.format("%01d", (ms / (1000 * 60 * 60))) + ":" : "") +
                 String.format("%02d", (ms / (1000 * 60)) % 60) + ":" +
