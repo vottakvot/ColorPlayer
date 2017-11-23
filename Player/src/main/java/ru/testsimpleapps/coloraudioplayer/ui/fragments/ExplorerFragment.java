@@ -10,37 +10,44 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.ContainerData;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.FolderData;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.ItemData;
+import ru.testsimpleapps.coloraudioplayer.managers.explorer.FoldersComparator;
+import ru.testsimpleapps.coloraudioplayer.managers.explorer.ItemsComparator;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.MediaExplorerManager;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.BaseAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFilesAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFolderAdapter;
+import ru.testsimpleapps.coloraudioplayer.ui.dialogs.ExplorerDialog;
 
 
 public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItemClickListener,
-        MediaExplorerManager.OnDataReady {
+        MediaExplorerManager.OnDataReady, BaseAdapter.OnItemCheckListener, ExplorerDialog.OnRadioButtonsCheck {
 
     public static final String TAG = ExplorerFragment.class.getSimpleName();
     private static final String TAG_ADD_PANEL = "TAG_ADD_PANEL";
+    private static final String TAG_DIALOG = "TAG_DIALOG";
     private static final String TAG_TYPE_ADAPTER = "TAG_TYPE_ADAPTER";
     private static final String TAG_FOLDER_STATE_ADAPTER = "TAG_FOLDER_STATE_ADAPTER";
     private static final String TAG_FOLDER_POSITION = "TAG_FOLDER_POSITION";
@@ -48,30 +55,45 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
     private static final String TAG_PREVIOUS_STATE_ADAPTER = "TAG_PREVIOUS_STATE_ADAPTER";
 
     private static final int ANIMATION_TRANSLATION_DURATION = 200;
-    private static final int ANIMATION_ALPHA_DURATION = 300;
 
     protected Unbinder mUnbinder;
-    @BindView(R.id.explorer_additional_panel_layout)
-    protected ConstraintLayout mAdditionalPanel;
+
     @BindView(R.id.explorer_list)
     protected RecyclerView mRecyclerView;
-    @BindView(R.id.explorer_back)
-    protected ImageButton mBackButton;
-    @BindView(R.id.explorer_add)
-    protected ImageButton mAddButton;
     @BindView(R.id.explorer_progress)
     protected ProgressBar mProgressBar;
+
+    @BindView(R.id.explorer_additional_layout)
+    protected FrameLayout mAdditionalPanel;
+    @BindView(R.id.explorer_additional_files_layout)
+    protected ConstraintLayout mAdditionalFilesPanel;
+    @BindView(R.id.explorer_additional_folders_layout)
+    protected ConstraintLayout mAdditionalFoldersPanel;
+
+    /*
+    * Buttons for files context
+    * */
+    @BindView(R.id.explorer_files_back)
+    protected ImageButton mBackFilesButton;
+    @BindView(R.id.explorer_files_add)
+    protected ImageButton mAddFilesButton;
+
+    /*
+    * Buttons for folders context
+    * */
+    @BindView(R.id.explorer_folders_settings)
+    protected ImageButton mSettingsFilesButton;
+    @BindView(R.id.explorer_folders_add)
+    protected ImageButton mAddFoldersButton;
 
     private ExplorerFilesAdapter mExplorerFilesAdapter;
     private ExplorerFolderAdapter mExplorerFolderAdapter;
     private Parcelable mFolderStateAdapter;
     private int mFolderPosition = 1;
 
-    private AlphaAnimation mAlphaAnimation;
     private TranslateAnimation mTranslateAnimation;
-
-    private OnTranslationListener mOnAnimation;
-    private OnAlphaListener mOnFadeAnimation;
+    private OnTranslationListener mTranslateListener;
+    private ExplorerDialog mExplorerDialog;
 
     public static ExplorerFragment newInstance() {
         ExplorerFragment fragment = new ExplorerFragment();
@@ -91,8 +113,7 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
     public void onDestroyView() {
         super.onDestroyView();
         MediaExplorerManager.getInstance().removeFindCallback();
-        mBackButton.clearAnimation();
-        mAdditionalPanel.clearAnimation();
+
         mUnbinder.unbind();
     }
 
@@ -102,6 +123,7 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
         outState.putInt(TAG_ADD_PANEL, mAdditionalPanel.getVisibility());
         outState.putInt(TAG_FOLDER_POSITION,  mFolderPosition);
         outState.putBoolean(TAG_TYPE_ADAPTER,  mRecyclerView.getAdapter() instanceof ExplorerFolderAdapter);
+        outState.putBoolean(TAG_DIALOG,  mExplorerDialog.isShowing());
 
         outState.putParcelable(TAG_FOLDER_STATE_ADAPTER,  mFolderStateAdapter);
         outState.putParcelable(TAG_PREVIOUS_STATE_ADAPTER,  mRecyclerView.getLayoutManager().onSaveInstanceState());
@@ -110,27 +132,32 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
 
     @Override
     public void onItemClick(View view, int position) {
+        typePanelVisibility(false);
         mFolderPosition = position;
         mFolderStateAdapter = mRecyclerView.getLayoutManager().onSaveInstanceState();
         final FolderData folderData = mExplorerFolderAdapter.getItem(position);
         final ContainerData<ItemData> itemData = folderData.getContainerItemData();
-        mExplorerFilesAdapter.setItems(itemData.getList());
+        mExplorerFilesAdapter.setItems(sortFiles(PreferenceTool.getInstance().getSortType(), itemData.getList()));
         mRecyclerView.setAdapter(mExplorerFilesAdapter);
         mRecyclerView.scheduleLayoutAnimation();
-        backButtonAnimation(0.0f, 1.0f, true);
     }
 
-    @OnClick(R.id.explorer_back)
+    @Override
+    public void onItemCheck(View view, int position) {
+        animateAddPanel(false);
+    }
+
+    @OnClick(R.id.explorer_files_back)
     protected void backButtonClick() {
         restoreAdapter();
     }
 
-    @OnClick(R.id.explorer_add)
-    protected void addButtonClick() {
+    @OnClick(R.id.explorer_folders_add)
+    protected void addFoldersButtonClick() {
         int countAdded = 0;
         for (FolderData folder : mExplorerFolderAdapter.getItemList()) {
-            for (ItemData file : folder.getContainerItemData().getList()) {
-                if (folder.isChecked() || file.isChecked()) {
+            if (folder.isChecked()) {
+                for (ItemData file : folder.getContainerItemData().getList()) {
                     // Todo: add checked files or all folders
                     Log.d(TAG, file.getName());
 
@@ -138,6 +165,7 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
                     countAdded++;
                 }
             }
+
 
             folder.setChecked(false);
         }
@@ -150,6 +178,48 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
         }
     }
 
+    @OnClick(R.id.explorer_files_add)
+    protected void addFilesButtonClick() {
+        int countAdded = 0;
+        for (ItemData file : mExplorerFilesAdapter.getItemList()) {
+            if (file.isChecked()) {
+                // Todo: add checked files or all folders
+                Log.d(TAG, file.getName());
+
+                file.setChecked(false);
+                countAdded++;
+            }
+        }
+
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+        if (countAdded == 0) {
+            showToast(R.string.explorer_add_to_playlist_nothing);
+        } else {
+            showToast(getString(R.string.explorer_add_to_playlist) + countAdded);
+        }
+    }
+
+    @OnClick(R.id.explorer_folders_settings)
+    protected void settingsFoldersButtonClick() {
+        mExplorerDialog.show();
+    }
+
+    @OnLongClick({R.id.explorer_files_add, R.id.explorer_folders_add})
+    protected boolean onLongAddClick() {
+        if (mRecyclerView.getAdapter() instanceof ExplorerFolderAdapter) {
+            for (FolderData item : mExplorerFolderAdapter.getItemList()) {
+                item.setChecked(true);
+            }
+        } else {
+            for (ItemData item : mExplorerFilesAdapter.getItemList()) {
+                item.setChecked(true);
+            }
+        }
+
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+        return true;
+    }
+
     @Override
     public boolean onBackPressed() {
         return restoreAdapter();
@@ -159,7 +229,8 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
     public void onSuccess() {
         showToast(R.string.explorer_find_media_ok);
         mProgressBar.setVisibility(View.INVISIBLE);
-        final List<FolderData> folderDataList = MediaExplorerManager.getInstance().getAlbums();
+        final List<FolderData> folderDataList = groupFolders(PreferenceTool.getInstance().getGroupType());
+        sortFolders(PreferenceTool.getInstance().getSortType(), folderDataList);
         mExplorerFolderAdapter.setItems(folderDataList);
         mRecyclerView.setAdapter(mExplorerFolderAdapter);
         mRecyclerView.scheduleLayoutAnimation();
@@ -171,19 +242,80 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
         mProgressBar.setVisibility(View.INVISIBLE);
     }
 
+    @Override
+    public void onGroup(final int value) {
+        mExplorerFolderAdapter.setItems(groupFolders(value));
+        mRecyclerView.scheduleLayoutAnimation();
+    }
+
+    @Override
+    public void onSort(final int value) {
+        sortFolders(value, mExplorerFolderAdapter.getItemList());
+        mExplorerFolderAdapter.notifyDataSetChanged();
+        mRecyclerView.scheduleLayoutAnimation();
+    }
+
+    private List<FolderData> groupFolders(final int value) {
+        switch (value) {
+            case PreferenceTool.GROUP_TYPE_ALBUMS:
+                return MediaExplorerManager.getInstance().getAlbums();
+            case PreferenceTool.GROUP_TYPE_FOLDERS:
+                return MediaExplorerManager.getInstance().getFolders();
+            case PreferenceTool.GROUP_TYPE_ARTISTS:
+                return MediaExplorerManager.getInstance().getArtists();
+        }
+
+        return null;
+    }
+
+    private List<FolderData> sortFolders(final int value, final List<FolderData> list) {
+        switch (value) {
+            case PreferenceTool.SORT_TYPE_AZ:
+                Collections.sort(list, new FoldersComparator.NameAz());
+                break;
+            case PreferenceTool.SORT_TYPE_ZA:
+                Collections.sort(list, new FoldersComparator.NameZa());
+                break;
+            case PreferenceTool.SORT_TYPE_VALUE:
+                Collections.sort(list, new FoldersComparator.Size());
+                break;
+        }
+
+        return list;
+    }
+
+    private List<ItemData> sortFiles(final int value, final List<ItemData> list) {
+        switch (value) {
+            case PreferenceTool.SORT_TYPE_AZ:
+                Collections.sort(list, new ItemsComparator.NameAz());
+                break;
+            case PreferenceTool.SORT_TYPE_ZA:
+                Collections.sort(list, new ItemsComparator.NameZa());
+                break;
+            case PreferenceTool.SORT_TYPE_VALUE:
+                Collections.sort(list, new ItemsComparator.Duration());
+                break;
+            case PreferenceTool.SORT_TYPE_DATE:
+                Collections.sort(list, new ItemsComparator.DataAdded());
+                break;
+        }
+
+        return list;
+    }
+
     private void init(final Bundle savedInstanceState) {
         MediaExplorerManager.getInstance().setFindCallback(this);
 
-        mBackButton.setVisibility(View.INVISIBLE);
-        mAdditionalPanel.setVisibility(View.INVISIBLE);
+        typePanelVisibility(true);
+        mTranslateListener = new OnTranslationListener(mAdditionalPanel);
 
-        mAlphaAnimation = new AlphaAnimation(0.0f, 1.0f);
-        mOnAnimation = new OnTranslationListener(mAdditionalPanel);
-        mOnFadeAnimation = new OnAlphaListener(mBackButton);
-
+        mExplorerDialog = new ExplorerDialog(getContext());
+        mExplorerDialog.setOnRadioButtonsCheck(this);
         mExplorerFilesAdapter = new ExplorerFilesAdapter(getContext());
+        mExplorerFilesAdapter.setOnItemCheckListener(this);
         mExplorerFolderAdapter = new ExplorerFolderAdapter(getContext());
         mExplorerFolderAdapter.setOnItemClickListener(this);
+        mExplorerFolderAdapter.setOnItemCheckListener(this);
 
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycle_layout_animation);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -217,14 +349,20 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
             // Previous adapter
             if (savedInstanceState.getBoolean(TAG_TYPE_ADAPTER)) {
                 mRecyclerView.setAdapter(mExplorerFolderAdapter);
+                typePanelVisibility(true);
             } else {
                 mRecyclerView.setAdapter(mExplorerFilesAdapter);
-                mBackButton.setVisibility(View.VISIBLE);
+                typePanelVisibility(false);
             }
 
             // Previous adapter state
             mRecyclerView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(TAG_PREVIOUS_STATE_ADAPTER));
             mRecyclerView.scheduleLayoutAnimation();
+
+            // Check settings dialog
+            if (savedInstanceState.getBoolean(TAG_DIALOG)) {
+                mExplorerDialog.show();
+            }
         }
 
         // Show progress for async data search
@@ -235,12 +373,22 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
         }
     }
 
+    private void typePanelVisibility(final boolean isFolder) {
+        if (isFolder) {
+            mAdditionalFoldersPanel.setVisibility(View.VISIBLE);
+            mAdditionalFilesPanel.setVisibility(View.GONE);
+        } else {
+            mAdditionalFoldersPanel.setVisibility(View.GONE);
+            mAdditionalFilesPanel.setVisibility(View.VISIBLE);
+        }
+    }
+
     private boolean restoreAdapter() {
         if (mRecyclerView.getAdapter() instanceof ExplorerFilesAdapter) {
+            typePanelVisibility(true);
             mRecyclerView.setAdapter(mExplorerFolderAdapter);
             mRecyclerView.getLayoutManager().onRestoreInstanceState(mFolderStateAdapter);
             mRecyclerView.scheduleLayoutAnimation();
-            backButtonAnimation(1.0f, 0.0f, false);
             return true;
         }
 
@@ -260,19 +408,12 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            if (mState == RecyclerView.SCROLL_STATE_DRAGGING && !mOnAnimation.isAnimating()) {
+            if (mState == RecyclerView.SCROLL_STATE_DRAGGING && !mTranslateListener.isAnimating()) {
                 animateAddPanel(dy < 0);
             }
         }
     }
 
-    private void backButtonAnimation(final float from, final float to, final boolean isVisible) {
-        mAlphaAnimation = new AlphaAnimation(from, to);
-        mAlphaAnimation.setDuration(ANIMATION_ALPHA_DURATION);
-        mOnFadeAnimation.setVisible(isVisible);
-        mAlphaAnimation.setAnimationListener(mOnFadeAnimation);
-        mBackButton.startAnimation(mAlphaAnimation);
-    }
 
     /*
     * Additional panel translation listener
@@ -320,56 +461,11 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
     }
 
     /*
-    * Back button on additional panel listener
-    * */
-    private class OnAlphaListener implements Animation.AnimationListener {
-
-        private View mView;
-        private boolean mIsAnimating = false;
-        private boolean mIsVisible = false;
-
-        public OnAlphaListener(final View view) {
-            mView = view;
-        }
-
-        @Override
-        public void onAnimationStart(Animation animation) {
-            Log.d(TAG, "onAnimationStart()");
-            mIsAnimating = true;
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            Log.d(TAG, "onAnimationEnd()");
-            mIsAnimating = false;
-            if (mIsVisible) {
-                mView.setVisibility(View.VISIBLE);
-            } else {
-                mView.setVisibility(View.INVISIBLE);
-            }
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-
-        }
-
-        public boolean isAnimating() {
-            return mIsAnimating;
-        }
-
-        public void setVisible(final boolean isVisible) {
-            mIsVisible = isVisible;
-        }
-
-    }
-
-    /*
     * Hide or show additional panel animation
     * */
-    private void animateAddPanel(final boolean isDown) {
-        if ((isDown && mAdditionalPanel.getVisibility() == View.VISIBLE) ||
-                (!isDown && mAdditionalPanel.getVisibility() == View.INVISIBLE)) {
+    private void animateAddPanel(final boolean isHide) {
+        if ((isHide && mAdditionalPanel.getVisibility() == View.VISIBLE) ||
+                (!isHide && mAdditionalPanel.getVisibility() == View.INVISIBLE)) {
 
             // Get view position
             final Rect rect = new Rect();
@@ -380,7 +476,7 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
             float toTop;
 
             // Get new coordinates
-            if (isDown) {
+            if (isHide) {
                 fromTop = rect.top;
                 toTop = rect.top - height;
             } else {
@@ -389,11 +485,11 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
             }
 
             // Animate transition
-            mOnAnimation.setTranslationType(isDown);
+            mTranslateListener.setTranslationType(isHide);
             mTranslateAnimation = new TranslateAnimation(rect.left, rect.left, fromTop, toTop);
             mTranslateAnimation.setDuration(ANIMATION_TRANSLATION_DURATION);
             mTranslateAnimation.setInterpolator(new LinearInterpolator());
-            mTranslateAnimation.setAnimationListener(mOnAnimation);
+            mTranslateAnimation.setAnimationListener(mTranslateListener);
             mAdditionalPanel.startAnimation(mTranslateAnimation);
         }
     }

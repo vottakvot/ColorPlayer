@@ -12,8 +12,13 @@ public abstract class BaseAdapter<D> extends RecyclerView.Adapter {
         void onItemClick(View view, int position);
     }
 
+    public interface OnItemCheckListener {
+        void onItemCheck(View view, int position);
+    }
+
     protected List<D> mList;
     protected OnItemClickListener mOnItemClickListener;
+    protected OnItemCheckListener mOnItemCheckListener;
 
     @Override
     public int getItemCount() {
@@ -27,6 +32,10 @@ public abstract class BaseAdapter<D> extends RecyclerView.Adapter {
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mOnItemClickListener = listener;
+    }
+
+    public void setOnItemCheckListener(OnItemCheckListener listener) {
+        mOnItemCheckListener = listener;
     }
 
     public void addItems(final List<D> list) {

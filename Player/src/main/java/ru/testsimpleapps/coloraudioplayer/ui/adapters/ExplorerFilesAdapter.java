@@ -16,7 +16,6 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.ItemData;
-import ru.testsimpleapps.coloraudioplayer.managers.explorer.MediaExplorerManager;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.TimeTool;
 
 
@@ -26,6 +25,7 @@ public class ExplorerFilesAdapter extends BaseAdapter<ItemData> {
     private static final int TYPE_ITEM = 1;
     private final Context mContext;
     private long mTotalTime = -1L;
+
 
     public ExplorerFilesAdapter(@NonNull Context context) {
         super();
@@ -129,6 +129,10 @@ public class ExplorerFilesAdapter extends BaseAdapter<ItemData> {
             final int position = (int) checkBox.getTag(TAG_CHECK);
             final ItemData itemData = getItem(position);
             itemData.setChecked(checkBox.isChecked());
+
+            if (mOnItemCheckListener != null) {
+                mOnItemCheckListener.onItemCheck(checkBox, position);
+            }
         }
     }
 

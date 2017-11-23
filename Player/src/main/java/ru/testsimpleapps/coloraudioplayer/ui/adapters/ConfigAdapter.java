@@ -34,7 +34,7 @@ public class ConfigAdapter extends BaseAdapter implements ListView.OnItemClickLi
     private final LayoutInflater inflater;
 
     /*
-    * Name items of config
+    * NameAz items of config
     * */
     private String[] nameItems;
     private ArrayList<DrawerDataItem> configList;

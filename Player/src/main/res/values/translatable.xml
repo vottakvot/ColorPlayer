@@ -10,26 +10,43 @@
     <string name="drawer_open">Drawer open</string>
     <string name="drawer_close">Drawer close</string>
 
+
+    <!-- ................................................................................... -->
+    <!-- Explorer -->
     <string name="explorer_list_header">List of music</string>
     <string name="explorer_root_message">You are in root!</string>
     <string name="explorer_add_to_playlist">Added to playlist:\u0020</string>
     <string name="explorer_add_to_playlist_nothing">Nothing to add!</string>
+
+    <!-- Sort -->
+    <string name="explorer_group_header">Group type</string>
     <string name="explorer_sort_header">Sort type</string>
     <string name="explorer_sort_by_folders">Folders</string>
     <string name="explorer_sort_by_artists">Artists</string>
     <string name="explorer_sort_by_albums">Albums</string>
     <string name="explorer_sort_by_AZ">A-Z</string>
-    <string name="explorer_sort_by_size">Size</string>
+    <string name="explorer_sort_by_ZA">Z-A</string>
+    <string name="explorer_sort_by_size">Size/Duration</string>
+    <string name="explorer_sort_by_date">Date</string>
+
     <string name="explorer_clear_check">All check cleared!</string>
-    <string name="explorer_sort_by_name">Names</string>
-    <string name="explorer_sort_by_duration">Track duration</string>
     <string name="explorer_update_music">Update music list</string>
+
+    <!-- List header -->
     <string name="explorer_header_count_folders">Count folders:</string>
     <string name="explorer_header_count_files">Count files:</string>
     <string name="explorer_header_total_tracks">Total tracks:</string>
     <string name="explorer_header_total_time">Total time:</string>
+
+    <!-- Media manager -->
     <string name="explorer_find_media_ok">Music list is update!</string>
     <string name="explorer_find_media_error">Error for update music list :(</string>
+    <string name="explorer_dialog_header">Config music list</string>
+
+    <!-- ................................................................................... -->
+    <!-- Player control -->
+    <string name="player_control_hide_notification">Slide to up for show control panel</string>
+
 
     <string name="playlist_create_header">Input playlist name</string>
     <string name="playlist_create_create">Create</string>

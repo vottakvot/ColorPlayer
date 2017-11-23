@@ -51,7 +51,7 @@ public class PlayerService
         implements Handler.Callback {
 
     /*
-    * Name for player service
+    * NameAz for player service
     * */
     public static final String NAME_PLAYBACK_SERVICE = "PLAYER_SERVICE";
 

@@ -20,6 +20,7 @@ import ru.testsimpleapps.coloraudioplayer.managers.tools.TimeTool;
 
 public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
 
+
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private final Context mContext;
@@ -108,6 +109,10 @@ public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
             final int position = (int) checkBox.getTag(TAG_CHECK);
             final FolderData folderData = getItem(position);
             folderData.setChecked(checkBox.isChecked());
+
+            if (mOnItemCheckListener != null) {
+                mOnItemCheckListener.onItemCheck(checkBox, position);
+            }
         }
 
     }

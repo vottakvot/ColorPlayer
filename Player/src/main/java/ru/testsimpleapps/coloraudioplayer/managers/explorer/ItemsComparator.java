@@ -6,10 +6,17 @@ import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.ItemData;
 
 public class ItemsComparator {
 
-    public static class Name implements Comparator<ItemData> {
+    public static class NameAz implements Comparator<ItemData> {
         @Override
         public int compare(ItemData data1, ItemData data2) {
             return data1.getName().compareTo(data2.getName());
+        }
+    }
+
+    public static class NameZa implements Comparator<ItemData> {
+        @Override
+        public int compare(ItemData data1, ItemData data2) {
+            return -data1.getName().compareTo(data2.getName());
         }
     }
 

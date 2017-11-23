@@ -30,9 +30,13 @@
         app:behavior_peekHeight="@dimen/player_controls_peek_height"
         app:layout_behavior="ru.testsimpleapps.coloraudioplayer.ui.behavior.ControlPanelBehavior">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="@dimen/player_controls_peek_height" />
+        <TextView
+            android:id="@+id/control_hide_notification"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/player_controls_peek_height"
+            android:gravity="center"
+            android:background="@color/common_dialog_background"
+            android:text="@string/player_control_hide_notification"/>
 
         <fragment
             android:name="ru.testsimpleapps.coloraudioplayer.ui.fragments.ControlFragment"
