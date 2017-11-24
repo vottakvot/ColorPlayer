@@ -430,13 +430,11 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
 
         @Override
         public void onAnimationStart(Animation animation) {
-            Log.d(TAG, "onAnimationStart()");
             isAnimating = true;
         }
 
         @Override
         public void onAnimationEnd(Animation animation) {
-            Log.d(TAG, "onAnimationEnd()");
             isAnimating = false;
             if (isTranslation) {
                 mView.setVisibility(View.INVISIBLE);

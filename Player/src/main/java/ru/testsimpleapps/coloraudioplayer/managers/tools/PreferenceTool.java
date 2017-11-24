@@ -26,6 +26,7 @@ public class PreferenceTool {
     private final String KEY_CONTROL_IS_EXPAND = "KEY_CONTROL_IS_EXPAND";
     private final String KEY_EXPLORER_GROUP = "KEY_EXPLORER_GROUP";
     private final String KEY_EXPLORER_SORT = "KEY_EXPLORER_SORT";
+    private final String KEY_CONTROL_INFO = "KEY_CONTROL_INFO";
 
     private static PreferenceTool sPreferenceTool;
     private SharedPreferences mSharedPreferences;
@@ -64,6 +65,14 @@ public class PreferenceTool {
 
     public int getSortType() {
         return mSharedPreferences.getInt(KEY_EXPLORER_SORT, SORT_TYPE_AZ);
+    }
+
+    public void setControlInfo(final boolean value) {
+        mSharedPreferences.edit().putBoolean(KEY_CONTROL_INFO, value).commit();
+    }
+
+    public boolean getControlInfo() {
+        return mSharedPreferences.getBoolean(KEY_CONTROL_INFO, true);
     }
 
 }
