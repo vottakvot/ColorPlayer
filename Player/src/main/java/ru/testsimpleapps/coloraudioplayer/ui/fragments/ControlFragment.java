@@ -5,16 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import ru.testsimpleapps.coloraudioplayer.R;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
 
 
-public class ControlFragment extends BaseFragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarChangeListener {
 
     public static final String TAG = ControlFragment.class.getSimpleName();
     private static final String NOTES = "♫♪♭♩";
@@ -24,36 +27,38 @@ public class ControlFragment extends BaseFragment implements View.OnClickListene
     /*
     * Controls
     * */
-    @BindView(R.id.play_pause_control)
+    @BindView(R.id.control_play_pause)
     protected ImageButton mPlayPauseButton;
-    @BindView(R.id.expand_control)
+    @BindView(R.id.control_expand)
     protected ImageButton mExpandButton;
-    @BindView(R.id.random_control)
+    @BindView(R.id.control_random)
     protected ImageButton mRandomButton;
-    @BindView(R.id.previous_control)
+    @BindView(R.id.control_previous)
     protected ImageButton mPreviousButton;
-    @BindView(R.id.next_control)
+    @BindView(R.id.control_next)
     protected ImageButton mNextButton;
-    @BindView(R.id.repeat_control)
+    @BindView(R.id.control_repeat)
     protected ImageButton mRepeatButton;
 
     /*
     * Seeker
     * */
-    @BindView(R.id.seek_position_control)
+    @BindView(R.id.control_seek_position)
     protected SeekBar mSeekBar;
 
     /*
     * Info
     * */
-    @BindView(R.id.track_name_control)
+    @BindView(R.id.control_track_name)
     protected TextView mTrackNameTextView;
-    @BindView(R.id.number_tracks_control)
+    @BindView(R.id.control_number_tracks)
     protected TextView mTrackNumberTextView;
-    @BindView(R.id.position_time_control)
+    @BindView(R.id.control_position_time)
     protected TextView mCurrentTimeTextView;
-    @BindView(R.id.total_time_control)
+    @BindView(R.id.control_total_time)
     protected TextView mTotalTimeTextView;
+    @BindView(R.id.control_time_layout)
+    protected RelativeLayout mTimeLayout;
 
 
     public static ControlFragment newInstance() {
@@ -72,26 +77,7 @@ public class ControlFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        removeButtonsCallback();
         mUnbinder.unbind();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.play_pause_control:
-                break;
-            case R.id.expand_control:
-                break;
-            case R.id.random_control:
-                break;
-            case R.id.previous_control:
-                break;
-            case R.id.next_control:
-                break;
-            case R.id.repeat_control:
-                break;
-        }
     }
 
     @Override
@@ -109,27 +95,25 @@ public class ControlFragment extends BaseFragment implements View.OnClickListene
 
     }
 
+    @OnClick(R.id.control_expand)
+    protected void onExpandClick() {
+        final boolean isExpand = !(mTimeLayout.getVisibility() == View.VISIBLE);
+        setPartPanelVisibility(isExpand);
+        PreferenceTool.getInstance().setExpand(isExpand);
+    }
+
     private void init() {
-        setButtonsCallback();
+        setPartPanelVisibility(PreferenceTool.getInstance().isExpand());
     }
 
-    private void setButtonsCallback() {
-        mPlayPauseButton.setOnClickListener(this);
-        mExpandButton.setOnClickListener(this);
-        mRandomButton.setOnClickListener(this);
-        mPreviousButton.setOnClickListener(this);
-        mNextButton.setOnClickListener(this);
-        mRepeatButton.setOnClickListener(this);
+    private void setPartPanelVisibility(final boolean isVisible) {
+        if (isVisible) {
+            mTimeLayout.setVisibility(View.VISIBLE);
+            mTrackNameTextView.setVisibility(View.VISIBLE);
+        } else {
+            mTimeLayout.setVisibility(View.GONE);
+            mTrackNameTextView.setVisibility(View.GONE);
+        }
     }
-
-    private void removeButtonsCallback() {
-        mPlayPauseButton.setOnClickListener(null);
-        mExpandButton.setOnClickListener(null);
-        mRandomButton.setOnClickListener(null);
-        mPreviousButton.setOnClickListener(null);
-        mNextButton.setOnClickListener(null);
-        mRepeatButton.setOnClickListener(null);
-    }
-
 
 }

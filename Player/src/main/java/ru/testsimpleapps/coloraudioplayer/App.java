@@ -3,31 +3,12 @@ package ru.testsimpleapps.coloraudioplayer;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
-
-import org.acra.ReportingInteractionMode;
-import org.acra.annotation.ReportsCrashes;
 
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.FileTool;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.SerializableTool;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
-
-import static org.acra.ReportField.ANDROID_VERSION;
-import static org.acra.ReportField.APP_VERSION_CODE;
-import static org.acra.ReportField.PHONE_MODEL;
-import static org.acra.ReportField.STACK_TRACE;
-
-@ReportsCrashes(customReportContent = {APP_VERSION_CODE, ANDROID_VERSION, PHONE_MODEL, STACK_TRACE},
-        mailTo = "testsimpleapps@gmail.com",
-        mode = ReportingInteractionMode.DIALOG,
-        resToastText = R.string.acra_crush_title,
-        resDialogText = R.string.acra_crush_message_text,
-        resDialogIcon = android.R.drawable.ic_dialog_info,
-        resDialogTitle = R.string.acra_crush_title,
-        resDialogCommentPrompt = R.string.acra_crush_message_comment,
-        resDialogOkToast = R.string.acra_crush_ok)
 
 public class App extends Application {
 
@@ -49,9 +30,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(TAG_APP, getClass().getSimpleName() + " - onCreate()");
-//        ACRA.init(this);
-
         sPlayerApplication = this;
 //        loadSettings();
     }
@@ -59,8 +37,7 @@ public class App extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
-        Log.d(TAG_APP, getClass().getSimpleName() + " - onTerminate()");
-        CursorFactory.closeCursorsPlaylist();
+        CursorFactory.close();
     }
 
     public static App getContext() {
@@ -109,7 +86,7 @@ public class App extends Application {
         mPlayerConfig = (PlayerConfig) SerializableTool.fileToObject(FileTool.getAppPath(this) + PLAYER_SETTINGS);
         if (mPlayerConfig == null)
             mPlayerConfig = new PlayerConfig(false, PlayerConfig.Repeat.ALL, PlayerConfig.DEFAULT_SEEK_POSITION, null, null, (short) 0, null, (short) 0, null);
-        mPlayerConfig.setPlaylist(CursorFactory.setCursorPlaylist(this, mPlayerConfig.getPlaylistId(), mPlayerConfig.getPlaylistSort()));
+        mPlayerConfig.setPlaylist(CursorFactory.getInstance(mPlayerConfig.getPlaylistId(), mPlayerConfig.getPlaylistSort()));
     }
 
     public int getNumberTheme() {

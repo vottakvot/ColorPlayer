@@ -6,12 +6,12 @@ import android.support.v7.widget.RecyclerView;
 public abstract class BaseListenerEndlessAdapter extends RecyclerView.OnScrollListener {
 
     private static final int VISIBLE_THRESHOLD = 5;
-    private int previousTotalItemCount = 0;
-    private boolean loadingMode = true;
+    private int mPreviousTotalItemCount = 0;
+    private boolean mLoadingMode = true;
 
     public void reset() {
-        previousTotalItemCount = 0;
-        loadingMode = true;
+        mPreviousTotalItemCount = 0;
+        mLoadingMode = true;
     }
 
     @Override
@@ -22,20 +22,25 @@ public abstract class BaseListenerEndlessAdapter extends RecyclerView.OnScrollLi
             final int totalItemCount = layoutManager.getItemCount();
             final int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
 
-            if (loadingMode) {
-                if (totalItemCount > previousTotalItemCount) {
-                    loadingMode = false;
-                    previousTotalItemCount = totalItemCount;
+            if (mLoadingMode) {
+                if (totalItemCount > mPreviousTotalItemCount) {
+                    mLoadingMode = false;
+                    mPreviousTotalItemCount = totalItemCount;
                 }
             }
 
-            if (!loadingMode && visibleItemCount + firstVisibleItemPosition >= totalItemCount - VISIBLE_THRESHOLD) {
-                loadingMode = true;
-                onLoadMore();
+            if (!mLoadingMode && visibleItemCount + firstVisibleItemPosition >= totalItemCount - VISIBLE_THRESHOLD) {
+                mLoadingMode = true;
+                onEndList();
+            } else if (!mLoadingMode && firstVisibleItemPosition <= VISIBLE_THRESHOLD) {
+                mLoadingMode = true;
+                onStartList();
             }
         }
     }
 
-    public abstract void onLoadMore();
+    public abstract void onStartList();
+
+    public abstract void onEndList();
 
 }

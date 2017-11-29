@@ -36,14 +36,15 @@ import ru.testsimpleapps.coloraudioplayer.managers.explorer.FoldersComparator;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.ItemsComparator;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.MediaExplorerManager;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
-import ru.testsimpleapps.coloraudioplayer.ui.adapters.BaseAdapter;
+import ru.testsimpleapps.coloraudioplayer.ui.adapters.BaseListAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFilesAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFolderAdapter;
+import ru.testsimpleapps.coloraudioplayer.ui.animation.BaseAnimationListener;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.ExplorerDialog;
 
 
-public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItemClickListener,
-        MediaExplorerManager.OnDataReady, BaseAdapter.OnItemCheckListener, ExplorerDialog.OnRadioButtonsCheck {
+public class ExplorerFragment extends BaseFragment implements BaseListAdapter.OnItemClickListener,
+        MediaExplorerManager.OnDataReady, BaseListAdapter.OnItemCheckListener, ExplorerDialog.OnRadioButtonsCheck {
 
     public static final String TAG = ExplorerFragment.class.getSimpleName();
     private static final String TAG_ADD_PANEL = "TAG_ADD_PANEL";
@@ -113,7 +114,6 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
     public void onDestroyView() {
         super.onDestroyView();
         MediaExplorerManager.getInstance().removeFindCallback();
-
         mUnbinder.unbind();
     }
 
@@ -121,12 +121,12 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(TAG_ADD_PANEL, mAdditionalPanel.getVisibility());
-        outState.putInt(TAG_FOLDER_POSITION,  mFolderPosition);
-        outState.putBoolean(TAG_TYPE_ADAPTER,  mRecyclerView.getAdapter() instanceof ExplorerFolderAdapter);
-        outState.putBoolean(TAG_DIALOG,  mExplorerDialog.isShowing());
+        outState.putInt(TAG_FOLDER_POSITION, mFolderPosition);
+        outState.putBoolean(TAG_TYPE_ADAPTER, mRecyclerView.getAdapter() instanceof ExplorerFolderAdapter);
+        outState.putBoolean(TAG_DIALOG, mExplorerDialog.isShowing());
 
-        outState.putParcelable(TAG_FOLDER_STATE_ADAPTER,  mFolderStateAdapter);
-        outState.putParcelable(TAG_PREVIOUS_STATE_ADAPTER,  mRecyclerView.getLayoutManager().onSaveInstanceState());
+        outState.putParcelable(TAG_FOLDER_STATE_ADAPTER, mFolderStateAdapter);
+        outState.putParcelable(TAG_PREVIOUS_STATE_ADAPTER, mRecyclerView.getLayoutManager().onSaveInstanceState());
         outState.putSerializable(TAG_FOLDER_CONTENT, (ArrayList<FolderData>) mExplorerFolderAdapter.getItemList());
     }
 
@@ -418,24 +418,17 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
     /*
     * Additional panel translation listener
     * */
-    private class OnTranslationListener implements Animation.AnimationListener {
+    private class OnTranslationListener extends BaseAnimationListener {
 
-        private View mView;
-        private boolean isAnimating = false;
         private boolean isTranslation = false;
 
         public OnTranslationListener(final View view) {
-            mView = view;
-        }
-
-        @Override
-        public void onAnimationStart(Animation animation) {
-            isAnimating = true;
+            super(view);
         }
 
         @Override
         public void onAnimationEnd(Animation animation) {
-            isAnimating = false;
+            super.onAnimationEnd(animation);
             if (isTranslation) {
                 mView.setVisibility(View.INVISIBLE);
             } else {
@@ -443,19 +436,9 @@ public class ExplorerFragment extends BaseFragment implements BaseAdapter.OnItem
             }
         }
 
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-            Log.d(TAG, "onAnimationRepeat()");
-        }
-
-        public boolean isAnimating() {
-            return isAnimating;
-        }
-
         public void setTranslationType(final boolean isDown) {
             isTranslation = isDown;
         }
-
     }
 
     /*

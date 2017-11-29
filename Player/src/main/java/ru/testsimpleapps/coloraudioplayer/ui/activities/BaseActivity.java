@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (fragmentList != null) {
             for (Fragment fragment : fragmentList) {
                 if (fragment instanceof BaseFragment) {
-                    handled = ((BaseFragment)fragment).onBackPressed();
+                    handled = ((BaseFragment) fragment).onBackPressed();
 
                     // Check child fragments
                     // Inner back press has higher priority
@@ -43,7 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                     if (childFragmentList != null) {
                         for (Fragment childFragment : childFragmentList) {
                             if (childFragment instanceof BaseFragment) {
-                                final BaseFragment baseFragment = (BaseFragment)childFragment;
+                                final BaseFragment baseFragment = (BaseFragment) childFragment;
                                 // Todo: add check for visibility
                                 if (baseFragment.onBackPressed()) {
                                     return;
@@ -61,7 +60,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         // Outer back press
-        if(!handled) {
+        if (!handled) {
             super.onBackPressed();
         }
     }

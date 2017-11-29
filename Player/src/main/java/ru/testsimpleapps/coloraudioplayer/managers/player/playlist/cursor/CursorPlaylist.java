@@ -6,6 +6,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 
 import java.io.File;
+import java.util.List;
 
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 
@@ -24,6 +25,18 @@ public class CursorPlaylist implements IPlaylist {
     }
 
     @Override
+    public boolean add(Object item) {
+        final int count = CursorTool.addToPlaylist(mContext.getContentResolver(), mPlaylistId, (List<Long>) item);
+        return count > 0;
+    }
+
+    @Override
+    public boolean delete(long id) {
+        final int count = CursorTool.deleteTrackFromPlaylist(mContext.getContentResolver(), mPlaylistId, id);
+        return count > 0;
+    }
+
+    @Override
     public boolean toFirst() {
         return mPlaylist != null ? mPlaylist.moveToFirst() : false;
     }
@@ -34,8 +47,8 @@ public class CursorPlaylist implements IPlaylist {
     }
 
     @Override
-    public boolean goTo(int position) {
-        return mPlaylist != null ? mPlaylist.moveToPosition(position) : false;
+    public boolean goTo(long position) {
+        return mPlaylist != null ? mPlaylist.moveToPosition((int) position) : false;
     }
 
     @Override
@@ -104,7 +117,7 @@ public class CursorPlaylist implements IPlaylist {
     }
 
     @Override
-    public long find(final int position, final String name) {
+    public long find(final long position, final String name) {
         if (name != null && !name.equals("")) {
             if (goTo(position)) {
                 do {

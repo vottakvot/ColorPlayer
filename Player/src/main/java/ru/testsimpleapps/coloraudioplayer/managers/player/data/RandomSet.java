@@ -23,8 +23,9 @@ public final class RandomSet extends HashSet<Integer> {
 
     public Integer getNextRandom() {
         // check size
-        if (size() >= maxSize)
+        if (size() >= maxSize) {
             clear();
+        }
 
         // get random integer
         int i = 0;

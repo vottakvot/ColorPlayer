@@ -34,7 +34,6 @@ import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.receivers.MediaButtonsReceiver;
 import ru.testsimpleapps.coloraudioplayer.managers.receivers.ViewUpdaterReceiver;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
-import ru.testsimpleapps.coloraudioplayer.ui.adapters.PlaylistAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.EqualizerDialog;
 
 /**
@@ -371,7 +370,7 @@ public class PlayerService
         mVisualizerPlayer.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
             @Override
             public void onWaveFormDataCapture(Visualizer visualizer, byte[] bytes, int samplingRate) {
-                PlaylistAdapter.updateVisualizer(bytes, mMediaPlayer.isPlaying());
+
             }
 
             public void onFftDataCapture(Visualizer visualizer, byte[] bytes, int samplingRate) {

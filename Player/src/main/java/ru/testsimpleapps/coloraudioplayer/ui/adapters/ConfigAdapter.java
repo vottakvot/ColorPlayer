@@ -49,7 +49,7 @@ public class ConfigAdapter extends BaseAdapter implements ListView.OnItemClickLi
         super();
         this.context = context;
         this.drawerLayout = drawerLayout;
-        this.configList = new ArrayList<DrawerDataItem>();
+        this.configList = new ArrayList<>();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         createPlaylistDialog = new PlaylistCreateDialog(context);

@@ -11,8 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -22,14 +20,13 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
+import ru.testsimpleapps.coloraudioplayer.ui.behavior.BaseBottomSheetCallback;
 
 
 public class PagerFragment extends BaseFragment {
 
     public static final String TAG = PagerFragment.class.getSimpleName();
     private static final String TAG_BOTTOM_SHEET_STATE = "TAG_BOTTOM_SHEET_STATE";
-    private static final int ANIMATION_DURATION_FROM = 1000;
-    private static final int ANIMATION_DURATION_TO = 8000;
 
     private static final int COUNT_PAGES = 2;
     private static final int PLAYLIST_PAGE = 0;
@@ -46,11 +43,9 @@ public class PagerFragment extends BaseFragment {
     @BindView(R.id.control_hide_notification)
     protected ConstraintLayout mControlInfoLayout;
     @BindView(R.id.control_hide_close_button)
-    ImageButton mCloseInfoButton;
+    protected ImageButton mCloseInfoButton;
 
-    private AlphaAnimation mAlphaAnimationFrom;
-    private AlphaAnimation mAlphaAnimationTo;
-    private OnAlphaListener mOnAlphaListener;
+    private boolean mIsShowInfoPanel;
 
     public static PagerFragment newInstance() {
         PagerFragment fragment = new PagerFragment();
@@ -72,6 +67,12 @@ public class PagerFragment extends BaseFragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        PreferenceTool.getInstance().setControlPanel(mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
@@ -79,34 +80,25 @@ public class PagerFragment extends BaseFragment {
 
     @OnClick(R.id.control_hide_close_button)
     protected void onCloseInfoClick() {
+        mControlInfoLayout.setVisibility(View.INVISIBLE);
         PreferenceTool.getInstance().setControlInfo(false);
-        mControlInfoLayout.clearAnimation();
     }
 
     private void init(final Bundle savedInstanceState) {
-        mOnAlphaListener = new OnAlphaListener(mControlInfoLayout);
-        mAlphaAnimationFrom = new AlphaAnimation(0.0f, 1.0f);
-        mAlphaAnimationFrom.setDuration(ANIMATION_DURATION_FROM);
-        mAlphaAnimationFrom.setAnimationListener(mOnAlphaListener);
-        mAlphaAnimationTo = new AlphaAnimation(1.0f, 0.0f);
-        mAlphaAnimationTo.setDuration(ANIMATION_DURATION_TO);
-
         mControlInfoLayout.setVisibility(View.INVISIBLE);
         mViewPager.setAdapter(new AdapterForPages(getChildFragmentManager()));
+
         mBottomSheetBehavior = BottomSheetBehavior.from(mControlLayout);
-        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        mBottomSheetBehavior.setBottomSheetCallback(new BaseBottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View view, int i) {
+                super.onStateChanged(view, i);
                 switch (i) {
                     case BottomSheetBehavior.STATE_COLLAPSED: {
-//                        if (PreferenceTool.getInstance().getControlInfo()) {
-                            mControlInfoLayout.startAnimation(mAlphaAnimationFrom);
-//                        }
-                        break;
-                    }
-
-                    case BottomSheetBehavior.STATE_EXPANDED: {
-                        mControlInfoLayout.clearAnimation();
+                        if (mIsShowInfoPanel) {
+                            mControlInfoLayout.setVisibility(View.VISIBLE);
+                        }
                         break;
                     }
                 }
@@ -114,7 +106,8 @@ public class PagerFragment extends BaseFragment {
 
             @Override
             public void onSlide(@NonNull View view, float v) {
-
+                super.onSlide(view, v);
+                mControlInfoLayout.setAlpha(1.0f - v);
             }
         });
 
@@ -122,12 +115,9 @@ public class PagerFragment extends BaseFragment {
     }
 
     private void restoreStates(final Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(TAG_BOTTOM_SHEET_STATE)) {
-                mBottomSheetBehavior.setState(savedInstanceState.getInt(TAG_BOTTOM_SHEET_STATE));
-            } else {
-                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            }
+        mIsShowInfoPanel = PreferenceTool.getInstance().getControlInfo();
+        if (PreferenceTool.getInstance().getControlPanel()) {
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         }
     }
 
@@ -167,34 +157,6 @@ public class PagerFragment extends BaseFragment {
         @Override
         public int getCount() {
             return COUNT_PAGES;
-        }
-    }
-
-    /*
-    * Alpha layout
-    * */
-    private class OnAlphaListener implements Animation.AnimationListener {
-
-        private View mView;
-        private boolean isAnimating = false;
-
-        public OnAlphaListener(final View view) {
-            mView = view;
-        }
-
-        @Override
-        public void onAnimationStart(Animation animation) {
-
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            mView.startAnimation(mAlphaAnimationTo);
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-
         }
     }
 

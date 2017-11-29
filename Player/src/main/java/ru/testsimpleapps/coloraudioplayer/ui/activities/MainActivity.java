@@ -162,7 +162,6 @@ public class MainActivity extends BaseActivity {
         return null;
 
 
-
     }
 
     public static int[] getActivitySizeInt() {

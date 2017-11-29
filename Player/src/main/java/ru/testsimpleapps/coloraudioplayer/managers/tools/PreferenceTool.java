@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import ru.testsimpleapps.coloraudioplayer.App;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 
 
 public class PreferenceTool {
@@ -19,6 +20,7 @@ public class PreferenceTool {
     public static final int SORT_TYPE_ZA = 1;
     public static final int SORT_TYPE_VALUE = 2;
     public static final int SORT_TYPE_DATE = 3;
+    public static final long DEFAULT_PLAYLIST = IPlaylist.NOT_INIT;
 
     /*
     * Keys
@@ -26,7 +28,9 @@ public class PreferenceTool {
     private final String KEY_CONTROL_IS_EXPAND = "KEY_CONTROL_IS_EXPAND";
     private final String KEY_EXPLORER_GROUP = "KEY_EXPLORER_GROUP";
     private final String KEY_EXPLORER_SORT = "KEY_EXPLORER_SORT";
+    private final String KEY_CONTROL_PANEL = "KEY_CONTROL_PANEL";
     private final String KEY_CONTROL_INFO = "KEY_CONTROL_INFO";
+    private final String KEY_PLAYLIST = "KEY_PLAYLIST";
 
     private static PreferenceTool sPreferenceTool;
     private SharedPreferences mSharedPreferences;
@@ -67,12 +71,28 @@ public class PreferenceTool {
         return mSharedPreferences.getInt(KEY_EXPLORER_SORT, SORT_TYPE_AZ);
     }
 
+    public void setControlPanel(final boolean value) {
+        mSharedPreferences.edit().putBoolean(KEY_CONTROL_PANEL, value).commit();
+    }
+
+    public boolean getControlPanel() {
+        return mSharedPreferences.getBoolean(KEY_CONTROL_PANEL, true);
+    }
+
     public void setControlInfo(final boolean value) {
         mSharedPreferences.edit().putBoolean(KEY_CONTROL_INFO, value).commit();
     }
 
     public boolean getControlInfo() {
         return mSharedPreferences.getBoolean(KEY_CONTROL_INFO, true);
+    }
+
+    public void setPlaylist(final long value) {
+        mSharedPreferences.edit().putLong(KEY_PLAYLIST, value).commit();
+    }
+
+    public long getPlaylist() {
+        return mSharedPreferences.getLong(KEY_PLAYLIST, DEFAULT_PLAYLIST);
     }
 
 }

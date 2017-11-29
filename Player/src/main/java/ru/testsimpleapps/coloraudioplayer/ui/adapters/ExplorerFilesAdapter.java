@@ -19,16 +19,12 @@ import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.ItemData;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.TimeTool;
 
 
-public class ExplorerFilesAdapter extends BaseAdapter<ItemData> {
+public class ExplorerFilesAdapter extends BaseListAdapter<ItemData> {
 
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_ITEM = 1;
     private final Context mContext;
     private long mTotalTime = -1L;
 
-
     public ExplorerFilesAdapter(@NonNull Context context) {
-        super();
         mContext = context;
     }
 
@@ -107,9 +103,12 @@ public class ExplorerFilesAdapter extends BaseAdapter<ItemData> {
 
         public static final int TAG_CHECK = 10 << 24;
 
-        @BindView(R.id.explorer_file_duration) TextView mDurationFile;
-        @BindView(R.id.explorer_file_name) TextView mNameFile;
-        @BindView(R.id.explorer_file_check) CheckBox mCheckFile;
+        @BindView(R.id.explorer_file_duration)
+        TextView mDurationFile;
+        @BindView(R.id.explorer_file_name)
+        TextView mNameFile;
+        @BindView(R.id.explorer_file_check)
+        CheckBox mCheckFile;
 
         public ViewHolderItem(final View view) {
             super(view);
@@ -137,8 +136,10 @@ public class ExplorerFilesAdapter extends BaseAdapter<ItemData> {
     }
 
     protected class ViewHolderHeader extends RecyclerView.ViewHolder {
-        @BindView(R.id.explorer_header_files_count_files_value) TextView mCountFiles;
-        @BindView(R.id.explorer_header_files_total_time_value) TextView mTotalTime;
+        @BindView(R.id.explorer_header_files_count_files_value)
+        TextView mCountFiles;
+        @BindView(R.id.explorer_header_files_total_time_value)
+        TextView mTotalTime;
 
         public ViewHolderHeader(final View view) {
             super(view);

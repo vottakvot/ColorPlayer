@@ -14,6 +14,7 @@ public class ExplorerDialog extends BaseDialog {
 
     public interface OnRadioButtonsCheck {
         void onGroup(int value);
+
         void onSort(int value);
     }
 

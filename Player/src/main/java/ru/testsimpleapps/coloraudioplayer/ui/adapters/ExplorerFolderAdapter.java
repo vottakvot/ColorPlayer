@@ -18,15 +18,11 @@ import ru.testsimpleapps.coloraudioplayer.managers.explorer.MediaExplorerManager
 import ru.testsimpleapps.coloraudioplayer.managers.tools.TimeTool;
 
 
-public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
+public class ExplorerFolderAdapter extends BaseListAdapter<FolderData> {
 
-
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_ITEM = 1;
     private final Context mContext;
 
     public ExplorerFolderAdapter(@NonNull Context context) {
-        super();
         mContext = context;
     }
 
@@ -87,9 +83,12 @@ public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
 
         public static final int TAG_CHECK = 10 << 24;
 
-        @BindView(R.id.explorer_folder_count) TextView mCountInFolder;
-        @BindView(R.id.explorer_folder_name) TextView mNameFolder;
-        @BindView(R.id.explorer_folder_check) CheckBox mCheckFolder;
+        @BindView(R.id.explorer_folder_count)
+        TextView mCountInFolder;
+        @BindView(R.id.explorer_folder_name)
+        TextView mNameFolder;
+        @BindView(R.id.explorer_folder_check)
+        CheckBox mCheckFolder;
 
         public ViewHolderItem(final View view) {
             super(view);
@@ -118,9 +117,12 @@ public class ExplorerFolderAdapter extends BaseAdapter<FolderData> {
     }
 
     protected class ViewHolderHeader extends RecyclerView.ViewHolder {
-        @BindView(R.id.explorer_header_folder_count_folders_value) TextView mCountFolders;
-        @BindView(R.id.explorer_header_folder_count_tracks_value) TextView mCountTracks;
-        @BindView(R.id.explorer_header_folder_total_time_value) TextView mTotalTime;
+        @BindView(R.id.explorer_header_folder_count_folders_value)
+        TextView mCountFolders;
+        @BindView(R.id.explorer_header_folder_count_tracks_value)
+        TextView mCountTracks;
+        @BindView(R.id.explorer_header_folder_total_time_value)
+        TextView mTotalTime;
 
         public ViewHolderHeader(final View view) {
             super(view);

@@ -5,11 +5,15 @@ public interface IPlaylist extends Cloneable {
 
     long NOT_INIT = -1L;
 
+    boolean add(Object item);
+
+    boolean delete(long id);
+
     boolean toFirst();
 
     boolean toLast();
 
-    boolean goTo(int position);
+    boolean goTo(long position);
 
     boolean toNext();
 
@@ -37,7 +41,7 @@ public interface IPlaylist extends Cloneable {
 
     long getTrackDateModified();
 
-    long find(int position, String name);
+    long find(long position, String name);
 
     IPlaylist clone();
 }

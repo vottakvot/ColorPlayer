@@ -18,8 +18,10 @@ public final class StrictQueue<T> extends LinkedList<T> {
     }
 
     public void push(@Nullable T value) {
-        if (size() >= maxSize)
+        if (size() >= maxSize) {
             removeLast();
+        }
+
         addFirst(value);
     }
 

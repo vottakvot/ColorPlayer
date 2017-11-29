@@ -25,7 +25,7 @@ public class ControlPanelBehavior extends BottomSheetBehavior<LinearLayout> {
     @Override
     public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, LinearLayout child, View directTargetChild, View target, int nestedScrollAxes) {
         if (target instanceof RecyclerView) {
-            hideByOffset((RecyclerView)target);
+            hideByOffset((RecyclerView) target);
         }
 
         return super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, nestedScrollAxes);

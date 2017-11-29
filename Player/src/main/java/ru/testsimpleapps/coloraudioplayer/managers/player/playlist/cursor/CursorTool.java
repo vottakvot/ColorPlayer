@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -119,7 +119,7 @@ public class CursorTool {
     }
 
 
-    public static int addToPlaylist(ContentResolver resolver, long playlistId, ArrayList<Long> songId) {
+    public static int addToPlaylist(ContentResolver resolver, long playlistId, List<Long> songId) {
         if (playlistId == -1 && songId == null && songId.size() == 0)
             return 0;
 

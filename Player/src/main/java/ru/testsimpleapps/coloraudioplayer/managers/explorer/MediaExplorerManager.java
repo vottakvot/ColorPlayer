@@ -28,6 +28,7 @@ public class MediaExplorerManager {
 
     public interface OnDataReady {
         void onSuccess();
+
         void onError();
     }
 

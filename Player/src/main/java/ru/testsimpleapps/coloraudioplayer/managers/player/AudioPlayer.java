@@ -118,7 +118,6 @@ public class AudioPlayer
     * */
     @Override
     public void onCompletion(MediaPlayer mp) {
-        ;
         mAudioManager.abandonAudioFocus(this);
         next();
     }

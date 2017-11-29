@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/player_control_layout"
+    android:id="@+id/control_player_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/blueAccent">
 
     <TextView
-        android:id="@+id/track_name_control"
+        android:id="@+id/control_track_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="left|center_vertical"
@@ -33,7 +33,7 @@
     </TextView>
 
     <SeekBar
-        android:id="@+id/seek_position_control"
+        android:id="@+id/control_seek_position"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/player_controls_seek_height"
@@ -46,12 +46,12 @@
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/track_name_control"
+        app:layout_constraintTop_toBottomOf="@+id/control_track_name"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <RelativeLayout
-        android:id="@+id/time_control_layout"
+        android:id="@+id/control_time_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
@@ -59,13 +59,13 @@
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/seek_position_control"
+        app:layout_constraintTop_toBottomOf="@+id/control_seek_position"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent">
 
         <TextView
             style="@style/PlayerControlTrackInfo"
-            android:id="@+id/position_time_control"
+            android:id="@+id/control_position_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -74,7 +74,7 @@
 
         <TextView
             style="@style/PlayerControlTrackInfo"
-            android:id="@+id/number_tracks_control"
+            android:id="@+id/control_number_tracks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -82,7 +82,7 @@
 
         <TextView
             style="@style/PlayerControlTrackInfo"
-            android:id="@+id/total_time_control"
+            android:id="@+id/control_total_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -99,49 +99,49 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/time_control_layout"
+        app:layout_constraintTop_toBottomOf="@+id/control_time_layout"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageButton
             style="@style/PlayerImageButtonCommon"
-            android:id="@+id/expand_control"
+            android:id="@+id/control_expand"
             android:layout_weight="1"
             android:background="@drawable/drawable_image_buttons_background"
             android:src="@drawable/expand_inactive" />
 
         <ImageButton
             style="@style/PlayerImageButtonCommon"
-            android:id="@+id/random_control"
+            android:id="@+id/control_random"
             android:layout_weight="1"
             android:background="@drawable/drawable_image_buttons_background"
             android:src="@drawable/shuffle_inactive" />
 
         <ImageButton
             style="@style/PlayerImageButtonCommon"
-            android:id="@+id/previous_control"
+            android:id="@+id/control_previous"
             android:layout_weight="1"
             android:background="@drawable/drawable_image_buttons_background"
             android:src="@drawable/previous" />
 
         <ImageButton
             style="@style/PlayerImageButtonCommon"
-            android:id="@+id/play_pause_control"
+            android:id="@+id/control_play_pause"
             android:layout_weight="1"
             android:background="@drawable/drawable_image_buttons_background"
             android:src="@drawable/play" />
 
         <ImageButton
             style="@style/PlayerImageButtonCommon"
-            android:id="@+id/next_control"
+            android:id="@+id/control_next"
             android:layout_weight="1"
             android:background="@drawable/drawable_image_buttons_background"
             android:src="@drawable/next" />
 
         <ImageButton
             style="@style/PlayerImageButtonCommon"
-            android:id="@+id/repeat_control"
+            android:id="@+id/control_repeat"
             android:layout_weight="1"
             android:background="@drawable/drawable_image_buttons_background"
             android:src="@drawable/repeat_inactive" />
