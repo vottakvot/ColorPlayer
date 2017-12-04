@@ -1,11 +1,10 @@
 package ru.testsimpleapps.coloraudioplayer.managers.player.playlist;
 
-
 public interface IPlaylist extends Cloneable {
 
     long NOT_INIT = -1L;
 
-    boolean add(Object item);
+    boolean add(Object items);
 
     boolean delete(long id);
 

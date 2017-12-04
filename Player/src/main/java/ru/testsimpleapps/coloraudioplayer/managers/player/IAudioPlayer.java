@@ -1,6 +1,7 @@
 package ru.testsimpleapps.coloraudioplayer.managers.player;
 
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 
 public interface IAudioPlayer {
 
@@ -13,6 +14,16 @@ public interface IAudioPlayer {
     * Get player config
     * */
     PlayerConfig getConfig();
+
+    /*
+    * Set new playlist
+    * */
+    void setPlaylist(IPlaylist playlist);
+
+    /*
+    * Set new track
+    * */
+    void setTrackPath(final String path);
 
     /*
     * Play with result success.

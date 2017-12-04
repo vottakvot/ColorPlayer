@@ -39,7 +39,7 @@
         <service
             android:enabled="true"
             android:exported="false"
-            android:name=".PlayerService">
+            android:name=".service.PlayerService">
             <intent-filter>
                 <action android:name="ru.color_player.action.EXIT" />
                 <action android:name="ru.color_player.action.PLAY" />
@@ -52,7 +52,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".managers.receivers.MediaButtonsReceiver">
+        <receiver android:name=".receivers.MediaButtonsReceiver">
             <intent-filter android:priority="999">
                 <action android:name="android.media.AUDIO_BECOMING_NOISY" />
                 <action android:name="android.intent.action.HEADSET_PLUG" />

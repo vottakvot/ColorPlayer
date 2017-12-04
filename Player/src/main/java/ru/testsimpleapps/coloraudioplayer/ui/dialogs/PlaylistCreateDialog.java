@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 public class PlaylistCreateDialog
         extends BaseDialog
@@ -40,11 +39,8 @@ public class PlaylistCreateDialog
         switch (v.getId()) {
             case R.id.playlistCreate_create:
                 if (!editText.getText().toString().trim().equals("")) {
-                    //App.getContext().setPlaylistId(CursorTool.createPlaylist(context.getContentResolver(), editText.getText().toString().trim()));
                     dismiss();
-                    MainActivity.showInfoMessage(context.getResources().getString(R.string.playlist_create_done));
                 } else
-                    MainActivity.showInfoMessage(context.getResources().getString(R.string.playlist_create_wrong_name));
                 break;
             case R.id.playlistCreate_cancel:
                 dismiss();

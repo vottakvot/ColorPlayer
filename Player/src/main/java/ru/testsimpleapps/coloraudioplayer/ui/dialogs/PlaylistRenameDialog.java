@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 public class PlaylistRenameDialog
         extends BaseDialog
@@ -43,9 +42,9 @@ public class PlaylistRenameDialog
                     //CursorTool.renamePlaylist(context.getContentResolver(), App.getAppContext().getPlaylistId(), editText.getText().toString());
 
                     dismiss();
-                    MainActivity.showInfoMessage(context.getResources().getString(R.string.playlist_rename_done));
+
                 } else
-                    MainActivity.showInfoMessage(context.getResources().getString(R.string.playlist_rename_wrong_name));
+
                 break;
             case R.id.playlistRename_cancel:
                 dismiss();

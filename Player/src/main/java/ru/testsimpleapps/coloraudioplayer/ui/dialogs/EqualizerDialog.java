@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ru.testsimpleapps.coloraudioplayer.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
@@ -62,8 +61,7 @@ public class EqualizerDialog
     }
 
     public void getAudioObjects() {
-        this.equalizer = PlayerService.getAudioService().getEqualizer();
-        this.bassBoost = PlayerService.getAudioService().getBassBoost();
+
     }
 
     private void initMinMaxLevel() {

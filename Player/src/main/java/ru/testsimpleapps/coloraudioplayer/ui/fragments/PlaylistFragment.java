@@ -1,8 +1,13 @@
 package ru.testsimpleapps.coloraudioplayer.ui.fragments;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.os.IBinder;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +18,16 @@ import android.widget.ImageButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import ru.testsimpleapps.coloraudioplayer.R;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
+import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
+import ru.testsimpleapps.coloraudioplayer.ui.adapters.PlaylistAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.views.RecycleViewLayoutManager;
 
 
-public class PlaylistFragment extends BaseFragment implements View.OnClickListener {
+public class PlaylistFragment extends BaseFragment {
 
     public static final String TAG = PlaylistFragment.class.getSimpleName();
     private static final float RECYCLE_CENTER = 1.0f;
@@ -34,6 +43,8 @@ public class PlaylistFragment extends BaseFragment implements View.OnClickListen
     @BindView(R.id.playlist_list_fragment)
     protected RecyclerView mRecyclerView;
 
+    private PlayerService mPlayerService;
+    private PlaylistAdapter mPlaylistAdapter;
     private RecycleViewLayoutManager mRecycleViewLayoutManager;
 
     public static PlaylistFragment newInstance() {
@@ -50,41 +61,58 @@ public class PlaylistFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        removeButtonsCallback();
-        mUnbinder.unbind();
+    public void onStart() {
+        super.onStart();
+        Intent intent = new Intent(getContext(), PlayerService.class);
+        getContext().bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.search_track_button:
-                break;
-        }
+    public void onStop() {
+        super.onStop();
+        getContext().unbindService(mServiceConnection);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     private void init(final Bundle savedInstanceState) {
-        setButtonsCallback();
-
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycle_layout_animation);
         mRecycleViewLayoutManager = new RecycleViewLayoutManager(getContext());
         mRecycleViewLayoutManager.setCenter(RECYCLE_CENTER);
         mRecycleViewLayoutManager.setShrinkAmount(RECYCLE_SHRINK_AMOUNT);
         mRecycleViewLayoutManager.setShrinkDistance(RECYCLE_SHRINK_CENTER);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         mRecyclerView.setLayoutAnimation(animation);
         mRecyclerView.setLayoutManager(mRecycleViewLayoutManager);
         mRecyclerView.addOnScrollListener(new OnScrollRecycleViewListener());
+        mPlaylistAdapter = new PlaylistAdapter(getContext());
     }
 
-    private void setButtonsCallback() {
-        mFindTrackButton.setOnClickListener(this);
+    @OnClick(R.id.search_track_button)
+    protected void onSearchClickButton() {
+
     }
 
-    private void removeButtonsCallback() {
-        mFindTrackButton.setOnClickListener(null);
-    }
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            Log.d(TAG,  "onServiceConnected()");
+            PlayerService.LocalBinder binder = (PlayerService.LocalBinder) service;
+            mPlayerService = binder.getService();
+            mPlaylistAdapter.setPlaylist(CursorFactory.getViewInstance());
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            Log.d(TAG,  "onServiceDisconnected()");
+            mPlayerService = null;
+        }
+    };
 
     private class OnScrollRecycleViewListener extends RecyclerView.OnScrollListener {
 

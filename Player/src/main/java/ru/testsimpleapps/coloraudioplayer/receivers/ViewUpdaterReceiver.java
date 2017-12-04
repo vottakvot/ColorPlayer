@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer.managers.receivers;
+package ru.testsimpleapps.coloraudioplayer.receivers;
 
 
 import android.content.BroadcastReceiver;
@@ -25,7 +25,7 @@ public class ViewUpdaterReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(App.TAG_APP, getClass().getSimpleName() + " - onReceive()");
+        Log.d(App.TAG, getClass().getSimpleName() + " - onReceive()");
         if (intent != null && intent.getAction() != null) {
             String command = intent.getAction();
 

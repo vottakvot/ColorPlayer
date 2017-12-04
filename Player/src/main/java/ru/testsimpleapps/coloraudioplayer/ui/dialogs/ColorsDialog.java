@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 public class ColorsDialog
         extends BaseDialog
@@ -38,25 +36,6 @@ public class ColorsDialog
 
     @Override
     public void onClick(View v) {
-        int current = App.getContext().getNumberTheme();
-        int select = 0;
-        switch (v.getId()) {
-            case R.id.colors_blue:
-                select = App.getContext().setNumberTheme(App.THEME_BLUE);
-                break;
-            case R.id.colors_green:
-                select = App.getContext().setNumberTheme(App.THEME_GREEN);
-                break;
-            case R.id.colors_red:
-                select = App.getContext().setNumberTheme(App.THEME_RED);
-                break;
-        }
 
-        //App.getContext().savePreferences();
-        dismiss();
-
-        if (current != select) {
-            MainActivity.restartActivity();
-        }
     }
 }

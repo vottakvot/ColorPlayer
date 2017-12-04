@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer;
+package ru.testsimpleapps.coloraudioplayer.service;
 
 
 import android.app.Notification;
@@ -17,6 +17,7 @@ import android.media.audiofx.Visualizer;
 import android.media.session.MediaSession;
 import android.media.session.PlaybackState;
 import android.os.AsyncTask;
+import android.os.Binder;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -29,25 +30,20 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import ru.testsimpleapps.coloraudioplayer.App;
+import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.managers.player.AudioPlayer;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
-import ru.testsimpleapps.coloraudioplayer.managers.receivers.MediaButtonsReceiver;
-import ru.testsimpleapps.coloraudioplayer.managers.receivers.ViewUpdaterReceiver;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
+import ru.testsimpleapps.coloraudioplayer.receivers.MediaButtonsReceiver;
+import ru.testsimpleapps.coloraudioplayer.receivers.ViewUpdaterReceiver;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.EqualizerDialog;
 
-/**
- * <h1>PlayerService</h1>
- * The PlayerService controls the player in the background
- *
- * @author Egor
- * @version 1.0
- * @since 2016-03-31
- */
 
-public class PlayerService
-        extends Service
-        implements Handler.Callback {
+public class PlayerService extends Service implements Handler.Callback {
 
     /*
     * NameAz for player service
@@ -82,26 +78,23 @@ public class PlayerService
     public static final String TIMER_TYPE_NONE = "NONE";
 
     private static final int NOTIFICATION_ID = 1;
-    private static PlayerService sAudioService;
 
     /*
     * Player's objects
     * */
     private AudioPlayer mMediaPlayer;
+    private IPlaylist mPlaylist;
     private PlayerConfig mPlayerConfig;
     private Visualizer mVisualizerPlayer;
     private Equalizer mEqualizer;
     private BassBoost mBassBoost;
 
+    private IBinder mIBinder = new LocalBinder();
+
     /*
     * Receivers
     * */
     private MediaButtonsReceiver mMediaButtonsReceiver;
-
-    /*
-    * Timer - change to alarm manager
-    * */
-    private Thread timerThread;
 
     /*
     * Loop for commands
@@ -119,68 +112,28 @@ public class PlayerService
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(App.TAG_APP, getClass().getSimpleName() + " - onCreate()");
-        sAudioService = this;
-
-        // Init handler
-        playerThread = new HandlerThread(NAME_PLAYBACK_SERVICE, android.os.Process.THREAD_PRIORITY_BACKGROUND);
-        playerThread.start();
-        playerLooper = playerThread.getLooper();
-        queueHandler = new Handler(playerLooper, this);
-
-        // Player initialisation
-        mPlayerConfig = App.getContext().getPlayerConfig();
-        mMediaPlayer = new AudioPlayer(getApplicationContext(), null, mPlayerConfig);
-        mSeekBarUpdater = new SeekBarUpdater();
-        mSeekBarUpdater.execute();
-
-
-        Equalizer.Settings settings;
-        BassBoost.Settings settings1;
-        // Player effects
-        initEffects();
-
-        // Receiver for media buttons
-        //registerMediaButtonsReceiver();
+        Log.d(App.TAG, getClass().getSimpleName() + " - onCreate()");
+        init();
     }
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(App.TAG_APP, getClass().getSimpleName() + " - onDestroy()");
-        sAudioService = null;
-        mMediaPlayer.release();
-        playerLooper.quit();
-        mSeekBarUpdater.cancel(true);
-
-        stopForegroundNotification();
-        stopForeground(true);
-        stopTimer();
-
-        App.getContext().saveSettings();
-
-        // Receiver for media buttons
-        //unregisterMediaButtonsReceiver();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        Log.d(App.TAG_APP, getClass().getSimpleName() + " - onLowMemory()");
-        App.getContext().saveSettings();
+        Log.d(App.TAG, getClass().getSimpleName() + " - onDestroy()");
+        destroy();
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return mIBinder;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && intent.getAction() != null) {
-            Log.d(App.TAG_APP, getClass().getSimpleName() + " - " + intent.getAction());
+            Log.d(App.TAG, getClass().getSimpleName() + " - " + intent.getAction());
 
             // If it not command stop, then start service
             if (intent.getAction().equals(ACTION_EXIT)) {
@@ -195,7 +148,7 @@ public class PlayerService
             }
         }
 
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -243,8 +196,48 @@ public class PlayerService
             }
         }
 
-
         return isHandled;
+    }
+
+    public class LocalBinder extends Binder {
+        public PlayerService getService() {
+            return PlayerService.this;
+        }
+    }
+
+    private void init() {
+        // Init handler
+        playerThread = new HandlerThread(NAME_PLAYBACK_SERVICE, android.os.Process.THREAD_PRIORITY_BACKGROUND);
+        playerThread.start();
+        playerLooper = playerThread.getLooper();
+        queueHandler = new Handler(playerLooper, this);
+
+        // Player initialisation
+        mPlayerConfig = new PlayerConfig();
+        final long playlistId = PreferenceTool.getInstance().getPlaylist();
+        mPlaylist = CursorFactory.getInstance(playlistId, mPlayerConfig.getPlaylistSort());
+
+        mMediaPlayer = new AudioPlayer(getApplicationContext(), mPlayerConfig, mPlaylist);
+        mSeekBarUpdater = new SeekBarUpdater();
+        mSeekBarUpdater.execute();
+
+        // Player effects
+        initEffects();
+
+        // Receiver for media buttons
+        //registerMediaButtonsReceiver();
+    }
+
+    private void destroy() {
+        mMediaPlayer.release();
+        playerLooper.quit();
+        mSeekBarUpdater.cancel(true);
+
+        stopForegroundNotification();
+        stopForeground(true);
+
+        // Receiver for media buttons
+        //unregisterMediaButtonsReceiver();
     }
 
     private void updatePlayButton(boolean isPlay) {
@@ -265,7 +258,7 @@ public class PlayerService
     }
 
     public void registerMediaButtonsReceiver() {
-        Log.d(App.TAG_APP, getClass().getSimpleName() + " - registerMediaButtonsReceiver()");
+        Log.d(App.TAG, getClass().getSimpleName() + " - registerMediaButtonsReceiver()");
 
         // if receiver already init
         if (mMediaButtonsReceiver != null)
@@ -309,7 +302,7 @@ public class PlayerService
     }
 
     public void unregisterMediaButtonsReceiver() {
-        Log.d(App.TAG_APP, this.getClass().getName().toString() + " - unregisterActions()");
+        Log.d(App.TAG, this.getClass().getName().toString() + " - unregisterActions()");
 
         // if receiver not init
         if (mMediaButtonsReceiver == null)
@@ -339,7 +332,7 @@ public class PlayerService
     * First, init mEqualizer, then bass boost and visualizer
     * */
     private void initEffects() {
-        Log.d(App.TAG_APP, getClass().getSimpleName() + " - initEffects()");
+        Log.d(App.TAG, getClass().getSimpleName() + " - initEffects()");
 
         // Equalizer setup
         short equalizerPresent = mPlayerConfig.getEqualizerPresent();
@@ -387,7 +380,7 @@ public class PlayerService
     }
 
     private Notification createNotification(String trackName) {
-        Log.d(App.TAG_APP, getClass().getSimpleName() + " - createNotification()");
+        Log.d(App.TAG, getClass().getSimpleName() + " - createNotification()");
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
@@ -418,8 +411,8 @@ public class PlayerService
         // Update track name
         if (trackName != null) {
             remoteView.setTextViewText(R.id.nameTrackNotification, trackName);
-        } else if (mPlayerConfig.getPlaylist().getTrackName() != null) {
-            remoteView.setTextViewText(R.id.nameTrackNotification, mPlayerConfig.getPlaylist().getTrackName());
+        } else if (mPlaylist.getTrackName() != null) {
+            remoteView.setTextViewText(R.id.nameTrackNotification, mPlaylist.getTrackName());
         }
 
         // Update play/pause icon
@@ -465,85 +458,8 @@ public class PlayerService
         }
     }
 
-
-    /**
-     * This method is used to start timer for play or pause music.
-     *
-     * @param timerType This is the first paramter for select timer type
-     * @param time      This is the second parameter for timer interval
-     * @return void
-     */
-    private void startTimer(final String timerType, final int time) {
-//        // If previous timer is alive - stop it
-//        if(timerThread != null && timerThread.isAlive()){
-//            timerThread.interrupt();
-//        }
-//
-//        // Run new timer
-//        timerThread = new Thread(new Runnable() {
-//            @SuppressWarnings("WrongConstant")
-//            @Override
-//            public void run() {
-//                try {
-//                    Log.d(App.TAG_APP, getClass().getSimpleName() + " - startTimer - " + Thread.currentThread().getId());
-//
-//                    int timeToPause = time;
-//                    String typeTimer = timerType;
-//                    Calendar calendar = null;
-//                    Bundle viewData =  App.getContext().getViewDataTimer();
-//                    viewData.putString(SUB_ACTION_TIMER_TYPE, typeTimer);
-//                    viewData.putInt(SUB_ACTION_TIMER_VISIBILITY, View.VISIBLE);
-//
-//                    // Wait and update view
-//                    do {
-//                            viewData.putInt(SUB_ACTION_TIME, timeToPause);
-//                            updaterViewsHandler.sendEmptyMessage(UPDATE_TIMER);
-//                            Thread.currentThread().sleep(60000);
-//                            calendar = Calendar.getInstance();
-//
-//                            // Wake type
-//                            if(typeTimer.equals(TIMER_TYPE_WAKE)){
-//                                if(calendar.get(Calendar.HOUR_OF_DAY) == (timeToPause / 60) && calendar.get(Calendar.MINUTE) >= (timeToPause % 60)){
-//                                    mMediaPlayer.play();
-//                                    break;
-//                                }
-//                            }
-//
-//                            // Play-pause type
-//                            if(typeTimer.equals(TIMER_TYPE_PAUSE) || typeTimer.equals(TIMER_TYPE_PLAY)){
-//                                if(--timeToPause <= 0 && mMediaPlayer != null){
-//                                    if(typeTimer.equals(TIMER_TYPE_PAUSE) && mMediaPlayer.isPlaying()){
-//                                        mMediaPlayer.pause();
-//                                    } else if(typeTimer.equals(TIMER_TYPE_PLAY) && !mMediaPlayer.isPlaying()){
-//                                                mMediaPlayer.play();
-//                                            }
-//                                    break;
-//                                }
-//                            }
-//                    } while(!Thread.currentThread().isInterrupted());
-//                } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    } catch (Exception e){
-//                            e.printStackTrace();
-//                        }   finally {
-//                                App.getContext().initDefaultViewDataTimer();
-//                                updaterViewsHandler.sendEmptyMessage(UPDATE_TIMER);
-//                            }
-//            }
-//        });
-//
-//        timerThread.setDaemon(true);
-//        timerThread.start();
-    }
-
-    private void stopTimer() {
-        if (timerThread != null && timerThread.isAlive()) {
-            timerThread.interrupt();
-        }
-    }
-
-    public static PlayerService getAudioService() {
-        return sAudioService;
+    public IPlaylist getPlaylist() {
+        return mPlaylist;
     }
 
     public Equalizer getEqualizer() {

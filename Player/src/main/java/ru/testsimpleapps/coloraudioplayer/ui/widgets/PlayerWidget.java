@@ -9,8 +9,8 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import ru.testsimpleapps.coloraudioplayer.App;
-import ru.testsimpleapps.coloraudioplayer.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.R;
+import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 
 
 public class PlayerWidget extends AppWidgetProvider {
@@ -26,7 +26,7 @@ public class PlayerWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        Log.d(App.TAG_APP, getClass().getSimpleName() + " - PlayerWidget - action - " + intent.getAction());
+        Log.d(App.TAG, getClass().getSimpleName() + " - PlayerWidget - action - " + intent.getAction());
 
     }
 

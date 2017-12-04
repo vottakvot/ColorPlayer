@@ -25,8 +25,13 @@ public class CursorPlaylist implements IPlaylist {
     }
 
     @Override
-    public boolean add(Object item) {
-        final int count = CursorTool.addToPlaylist(mContext.getContentResolver(), mPlaylistId, (List<Long>) item);
+    public boolean add(@NonNull Object items) {
+        final List<Long> itemsList = (List<Long>)items;
+        if (itemsList.isEmpty()) {
+            return false;
+        }
+
+        final int count = CursorTool.addToPlaylist(mContext.getContentResolver(), mPlaylistId, itemsList);
         return count > 0;
     }
 
@@ -132,19 +137,21 @@ public class CursorPlaylist implements IPlaylist {
 
     @Override
     public IPlaylist clone() {
-        CursorPlaylist clone;
-        try {
-            clone = (CursorPlaylist) super.clone();
-            clone.setPlaylist(CursorTool.getTracksFromPlaylist(mContext.getContentResolver(), mPlaylistId, mSortBy));
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+        CursorPlaylist clone = null;
+        if (mPlaylistId > IPlaylist.NOT_INIT) {
+            try {
+                clone = (CursorPlaylist) super.clone();
+                clone.setPlaylist(CursorTool.getTracksFromPlaylist(mContext.getContentResolver(), mPlaylistId, mSortBy));
+            } catch (CloneNotSupportedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         return clone;
     }
 
     public IPlaylist setCursor(final long playlistId, final String sortBy) {
-        if (playlistId > -1) {
+        if (playlistId > IPlaylist.NOT_INIT) {
             mPlaylistId = playlistId;
             mSortBy = sortBy;
             Cursor activePlaylist = CursorTool.getTracksFromPlaylist(mContext.getContentResolver(), mPlaylistId, sortBy);

@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer.managers.receivers;
+package ru.testsimpleapps.coloraudioplayer.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import ru.testsimpleapps.coloraudioplayer.App;
-import ru.testsimpleapps.coloraudioplayer.PlayerService;
+import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 
 public class MediaButtonsReceiver extends BroadcastReceiver {
 
@@ -22,7 +22,7 @@ public class MediaButtonsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent != null && intent.getAction() != null) {
-            Log.d(App.TAG_APP, getClass().getSimpleName() + " - MediaButtonsReceiver - action - " + intent.getAction());
+            Log.d(App.TAG, getClass().getSimpleName() + " - MediaButtonsReceiver - action - " + intent.getAction());
             KeyEvent event = (KeyEvent) intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
 
             // If this headset on/off

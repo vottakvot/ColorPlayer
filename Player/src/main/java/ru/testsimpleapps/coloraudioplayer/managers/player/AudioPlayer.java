@@ -5,7 +5,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import ru.testsimpleapps.coloraudioplayer.App;
@@ -14,11 +13,8 @@ import ru.testsimpleapps.coloraudioplayer.managers.player.data.RandomSet;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.StrictQueue;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 
-public class AudioPlayer
-        implements IAudioPlayer,
-        MediaPlayer.OnCompletionListener,
+public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListener,
         AudioManager.OnAudioFocusChangeListener {
-
 
     /*
     * Max seek position interval.
@@ -63,24 +59,35 @@ public class AudioPlayer
     private StrictQueue<Integer> mListenedTracks;
     private RandomSet mTracksId;
     private PlayerConfig mPlayerConfig;
+    private IPlaylist mPlaylist;
+    private String mPath;
+    private boolean mIsPlaylist;
 
     /*
     * Triggers
     * */
     private boolean isAudioFocusLoss = false;
 
-    public AudioPlayer(@NonNull Context context, @Nullable AudioManager audioManager, @Nullable PlayerConfig playerConfig) {
+    public AudioPlayer(@NonNull Context context, @NonNull PlayerConfig playerConfig) {
         mContext = context;
         mPlayerConfig = playerConfig;
         mListenedTracks = new StrictQueue<>();
         mTracksId = new RandomSet();
         mMediaPlayer = new MediaPlayer();
+        mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         mMediaPlayer.setOnCompletionListener(this);
+    }
 
-        if (audioManager == null)
-            this.mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        else
-            this.mAudioManager = audioManager;
+    public AudioPlayer(@NonNull Context context, @NonNull PlayerConfig playerConfig, @NonNull IPlaylist playlist) {
+        this(context, playerConfig);
+        mPlaylist = playlist;
+        mIsPlaylist = true;
+    }
+
+    public AudioPlayer(@NonNull Context context, @NonNull PlayerConfig playerConfig, @NonNull String path) {
+        this(context, playerConfig);
+        mPath = path;
+        mIsPlaylist = false;
     }
 
     /*
@@ -131,7 +138,7 @@ public class AudioPlayer
             try {
                 // Prepare player
                 if (mState != State.PAUSE) {
-                    mMediaPlayer.setDataSource(mPlayerConfig.getTrackPath());
+                    mMediaPlayer.setDataSource(getPath());
                     mMediaPlayer.prepare();
                     mMediaPlayer.seekTo(mPlayerConfig.getLastSeekPosition());
                 }
@@ -146,7 +153,7 @@ public class AudioPlayer
                 mState = State.PLAY;
                 return true;
             } catch (Exception e) { // Path not found or bad file or bad path. Add log.
-                Log.d(App.TAG_APP, getClass().getSimpleName() + " - play() - " + e.getMessage());
+                Log.d(App.TAG, getClass().getSimpleName() + " - play() - " + e.getMessage());
                 mMediaPlayer.reset();
             }
         }
@@ -217,7 +224,7 @@ public class AudioPlayer
 
     @Override
     public void setConfig(PlayerConfig playerConfig) {
-        this.mPlayerConfig = playerConfig;
+        mPlayerConfig = playerConfig;
     }
 
     @Override
@@ -232,6 +239,69 @@ public class AudioPlayer
         return mPlayerConfig;
     }
 
+    @Override
+    public void setPlaylist(@NonNull final IPlaylist playlist) {
+        mPlaylist = playlist;
+        mIsPlaylist = true;
+    }
+
+    @Override
+    public void setTrackPath(@NonNull final String path) {
+        mPath = path;
+        mIsPlaylist = false;
+    }
+
+    private String getPath() {
+        return mIsPlaylist? mPlaylist.getTrackPath() : mPath;
+    }
+
+    private boolean nextInPlaylist() {
+        boolean isHasNext = false;
+        if (mPlaylist != null && mPlaylist.size() > 0) {
+
+            // Separate, if random. Infinity cycle.
+            if (mPlayerConfig.isRandom()) {
+                final Integer nextRandomTrack = mTracksId.getNextRandom();
+                if (nextRandomTrack != null)
+                    return mPlaylist.goTo(nextRandomTrack);
+
+                return false;
+            }
+
+            // If not random
+            switch (mPlayerConfig.getRepeat()) {
+                case NONE:
+                    if (!mPlaylist.toNext()) {
+                        mPlaylist.toFirst();
+                        isHasNext = false;
+                    } else {
+                        isHasNext = true;
+                    }
+
+                    break;
+                case ONE:
+                    isHasNext = true;
+                    break;
+                case ALL:
+                    if (!mPlaylist.toNext())
+                        mPlaylist.toFirst();
+                    isHasNext = true;
+            }
+        }
+
+        return isHasNext;
+    }
+
+    private boolean previousInPlaylist() {
+        boolean isHasPrevious = false;
+        final Integer previousPosition = mListenedTracks.pop();
+        if (previousPosition != null && mPlaylist != null) {
+            isHasPrevious = true;
+            mPlaylist.goTo(previousPosition);
+        }
+
+        return isHasPrevious;
+    }
 
     public boolean setConfigAndPlay(PlayerConfig playerConfig) {
         setConfig(playerConfig);
@@ -245,56 +315,6 @@ public class AudioPlayer
     public boolean playNew() {
         stop();
         return play();
-    }
-
-    private boolean nextInPlaylist() {
-        boolean isHasNext = false;
-        final IPlaylist playlist = mPlayerConfig.getPlaylist();
-        if (playlist != null && playlist.size() > 0) {
-
-            // Separate, if random. Infinity cycle.
-            if (mPlayerConfig.isRandom()) {
-                final Integer nextRandomTrack = mTracksId.getNextRandom();
-                if (nextRandomTrack != null && playlist.goTo(nextRandomTrack))
-                    mPlayerConfig.setTrackPathFromPlaylist();
-                return true;
-            }
-
-            // If not random
-            switch (mPlayerConfig.getRepeat()) {
-                case NONE:
-                    if (!playlist.toNext()) {
-                        playlist.toFirst();
-                        isHasNext = false;
-                    } else {
-                        isHasNext = true;
-                    }
-
-                    break;
-                case ONE:
-                    isHasNext = true;
-                    break;
-                case ALL:
-                    if (!playlist.toNext())
-                        playlist.toFirst();
-                    isHasNext = true;
-            }
-        }
-
-        mPlayerConfig.setTrackPathFromPlaylist();
-        return isHasNext;
-    }
-
-    private boolean previousInPlaylist() {
-        boolean isHasPrevious = false;
-        final IPlaylist playlist = mPlayerConfig.getPlaylist();
-        final Integer previousPosition = mListenedTracks.pop();
-        if (previousPosition != null && playlist.goTo(previousPosition)) {
-            isHasPrevious = true;
-            mPlayerConfig.setTrackPathFromPlaylist();
-        }
-
-        return isHasPrevious;
     }
 
     public boolean isPlaying() {

@@ -19,7 +19,6 @@ public class PlaylistAdapter extends BaseAdapter {
 
     private final Context mContext;
     private IPlaylist mIPlaylist;
-    private long mTotalTime = -1L;
 
     public PlaylistAdapter(@NonNull Context context) {
         mContext = context;
@@ -27,6 +26,7 @@ public class PlaylistAdapter extends BaseAdapter {
 
     public void setPlaylist(final IPlaylist iPlaylist) {
         mIPlaylist = iPlaylist;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class PlaylistAdapter extends BaseAdapter {
             }
 
             case TYPE_ITEM: {
-                final View viewItem = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.explorer_file, viewGroup, false);
+                final View viewItem = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.playlist_item_track, viewGroup, false);
                 return new ViewHolderItem(viewItem);
             }
 
@@ -51,6 +51,7 @@ public class PlaylistAdapter extends BaseAdapter {
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
         if (viewHolder instanceof ViewHolderItem) {
             final ViewHolderItem mViewHolder = (ViewHolderItem) viewHolder;
+
 
         } else if (viewHolder instanceof ViewHolderHeader) {
             final ViewHolderHeader mViewHolder = (ViewHolderHeader) viewHolder;
@@ -73,8 +74,6 @@ public class PlaylistAdapter extends BaseAdapter {
     }
 
     protected class ViewHolderItem extends RecyclerView.ViewHolder {
-
-        public static final int TAG_CHECK = 10 << 24;
 
         @BindView(R.id.explorer_file_duration)
         TextView mDurationFile;

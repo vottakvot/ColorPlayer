@@ -11,8 +11,6 @@ import android.widget.RelativeLayout;
 
 import java.util.Random;
 
-import ru.testsimpleapps.coloraudioplayer.App;
-
 public class VisualizerView
         extends View {
 
@@ -79,8 +77,7 @@ public class VisualizerView
                 points[i * 4 + 3] = middle + ((byte) (bytes[i + 1] + 128)) * middle / 128;
             }
 
-            App.getContext().getNumberTheme();
-            forePaint.setColor(App.getContext().getColorTheme(70, 0, 0, 0));
+            forePaint.setColor(Color.BLUE);
             canvas.drawLines(points, forePaint);
             previousTime = System.currentTimeMillis();
         }
@@ -112,7 +109,7 @@ public class VisualizerView
                         y -= 2 * r;
                     }
 
-                    forePaint.setColor(App.getContext().getColorTheme(100, random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+                    forePaint.setColor(Color.BLUE);
                     canvas.drawCircle(x, y, r, forePaint);
                 }
             }
@@ -143,7 +140,7 @@ public class VisualizerView
                 if ((i + 1) % numberDraw == 0) {
                     y = deltaAmplitude * average * 2.0f / numberDraw;
                     average = 0.0f;
-                    forePaint.setColor(App.getContext().getColorTheme(50, 0, 0, 0));
+                    forePaint.setColor(Color.BLUE);
                     canvas.drawRect((float) j * widthRect + border, middle - y, (float) j * widthRect + widthRect, middle + y, forePaint);
                     j++;
                 } else {
@@ -158,7 +155,7 @@ public class VisualizerView
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        switch (App.getContext().getNumberVisualizer()) {
+//        switch (App.getContext().getNumberVisualizer()) {
 //            case App.VISUALIZER_NONE:
 //                break;
 //            case App.VISUALIZER_LINE:
@@ -170,6 +167,6 @@ public class VisualizerView
 //            case App.VISUALIZER_RECT:
 //                drawRectEqualizer(canvas);
 //                break;
-        }
+//        }
     }
 }

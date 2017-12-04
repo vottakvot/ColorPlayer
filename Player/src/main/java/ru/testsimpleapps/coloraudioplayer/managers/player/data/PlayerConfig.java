@@ -2,11 +2,8 @@ package ru.testsimpleapps.coloraudioplayer.managers.player.data;
 
 import android.os.Parcel;
 import android.support.annotation.IntRange;
-import android.support.annotation.Nullable;
 
 import java.io.Serializable;
-
-import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 
 public final class PlayerConfig implements Serializable {
 
@@ -47,18 +44,6 @@ public final class PlayerConfig implements Serializable {
     private int mLastSeekPosition;
 
     /*
-    * For mPlaylist. If null you must set track identifier by method.
-    * */
-    @Nullable
-    private transient IPlaylist mPlaylist;
-
-    /*
-    * Track path.
-    * */
-    @Nullable
-    private String mTrackPath;
-
-    /*
     * Variants for mRepeat.
     * */
     public enum Repeat implements Serializable {
@@ -74,15 +59,13 @@ public final class PlayerConfig implements Serializable {
 
 
     public PlayerConfig() {
-        this(false, Repeat.NONE, DEFAULT_SEEK_POSITION, null, null, (short) 0, null, (short) 0, null);
+        this(false, Repeat.NONE, DEFAULT_SEEK_POSITION, (short) 0, null, (short) 0, null);
     }
 
     public PlayerConfig(PlayerConfig playerConfig) {
         this(playerConfig.isRandom(),
                 playerConfig.getRepeat(),
                 playerConfig.getLastSeekPosition(),
-                playerConfig.getPlaylist(),
-                playerConfig.getTrackPath(),
                 playerConfig.getEqualizerPresent(),
                 playerConfig.getEqualizerBands(),
                 playerConfig.getBassBoostStrength(),
@@ -92,8 +75,6 @@ public final class PlayerConfig implements Serializable {
     public PlayerConfig(boolean isRandom,
                         Repeat repeat,
                         int lastSeekPosition,
-                        @Nullable IPlaylist playlist,
-                        @Nullable String trackPath,
                         short equalizerPresent,
                         short[] equalizerBands,
                         short bassBoostStrength,
@@ -102,12 +83,10 @@ public final class PlayerConfig implements Serializable {
         mIsRandom = isRandom;
         mRepeat = repeat;
         mLastSeekPosition = lastSeekPosition;
-        mTrackPath = trackPath;
         mEqualizerPresent = equalizerPresent;
         mEqualizerBands = equalizerBands;
         mBassBoostStrength = bassBoostStrength;
         mPlaylistSort = playlistSort;
-        setPlaylist(playlist);
     }
 
     protected PlayerConfig(Parcel in) {
@@ -115,7 +94,6 @@ public final class PlayerConfig implements Serializable {
         mTrackId = in.readLong();
         mIsRandom = in.readByte() != 0;
         mLastSeekPosition = in.readInt();
-        mTrackPath = in.readString();
     }
 
     public boolean isRandom() {
@@ -131,7 +109,7 @@ public final class PlayerConfig implements Serializable {
     }
 
     public void setRepeat(Repeat repeat) {
-        this.mRepeat = repeat;
+        mRepeat = repeat;
     }
 
     public int getLastSeekPosition() {
@@ -141,32 +119,7 @@ public final class PlayerConfig implements Serializable {
     }
 
     public void setLastSeekPosition(int lastSeekPosition) {
-        this.mLastSeekPosition = lastSeekPosition;
-    }
-
-    @Nullable
-    public IPlaylist getPlaylist() {
-        return mPlaylist;
-    }
-
-    public void setPlaylist(@Nullable IPlaylist playlist) {
-        this.mPlaylist = playlist;
-        setTrackPathFromPlaylist();
-    }
-
-    @Nullable
-    public String getTrackPath() {
-        return mTrackPath;
-    }
-
-    @Nullable
-    public void setTrackPathFromPlaylist() {
-        if (mPlaylist != null)
-            mTrackPath = String.valueOf(mPlaylist.getTrackPath());
-    }
-
-    public void setTrackPath(@Nullable String trackPath) {
-        this.mTrackPath = trackPath;
+        mLastSeekPosition = lastSeekPosition;
     }
 
     public long getPlaylistId() {
@@ -174,7 +127,7 @@ public final class PlayerConfig implements Serializable {
     }
 
     public void setPlaylistId(long playlistId) {
-        this.mPlaylistId = playlistId;
+        mPlaylistId = playlistId;
     }
 
     public long getTrackId() {
@@ -182,7 +135,7 @@ public final class PlayerConfig implements Serializable {
     }
 
     public void setTrackId(long trackId) {
-        this.mTrackId = trackId;
+        mTrackId = trackId;
     }
 
     public short getEqualizerPresent() {
@@ -190,7 +143,7 @@ public final class PlayerConfig implements Serializable {
     }
 
     public void setEqualizerPresent(short equalizerPresent) {
-        this.mEqualizerPresent = equalizerPresent;
+        mEqualizerPresent = equalizerPresent;
     }
 
     public short[] getEqualizerBands() {
@@ -198,7 +151,7 @@ public final class PlayerConfig implements Serializable {
     }
 
     public void setEqualizerBands(short[] equalizerBands) {
-        this.mEqualizerBands = equalizerBands;
+        mEqualizerBands = equalizerBands;
     }
 
     public short getBassBoostStrength() {
@@ -206,14 +159,14 @@ public final class PlayerConfig implements Serializable {
     }
 
     public void setBassBoostStrength(short bassBoostStrength) {
-        this.mBassBoostStrength = bassBoostStrength;
+        mBassBoostStrength = bassBoostStrength;
     }
 
     public String getPlaylistSort() {
         return mPlaylistSort;
     }
 
-    public void setPlaylistSort(String mPlaylistSort) {
-        this.mPlaylistSort = mPlaylistSort;
+    public void setPlaylistSort(String playlistSort) {
+        mPlaylistSort = playlistSort;
     }
 }

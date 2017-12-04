@@ -8,13 +8,10 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
-import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.AboutDialog;
 
-public class PreferencesActivity
-        extends PreferenceActivity
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class PreferencesActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static AboutDialog aboutDialog;
     private static Preference aboutPref;
@@ -28,7 +25,6 @@ public class PreferencesActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        App.getContext().setCustomTheme(this);
         super.onCreate(savedInstanceState);
         aboutDialog = new AboutDialog(this);
 
@@ -67,8 +63,7 @@ public class PreferencesActivity
     }
 
     @TargetApi(11)
-    public static class PlayerPreferenceFragment
-            extends PreferenceFragment {
+    public static class PlayerPreferenceFragment extends PreferenceFragment {
 
         private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener = null;
 

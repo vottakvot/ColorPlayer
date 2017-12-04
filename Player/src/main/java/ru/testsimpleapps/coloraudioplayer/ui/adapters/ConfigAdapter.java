@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import ru.testsimpleapps.coloraudioplayer.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.data.DrawerDataItem;
+import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.PreferencesActivity;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.ColorsDialog;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.EqualizerDialog;

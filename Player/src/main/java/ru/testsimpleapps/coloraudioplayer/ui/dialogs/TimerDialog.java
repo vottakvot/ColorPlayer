@@ -9,9 +9,8 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TimePicker;
 
-import ru.testsimpleapps.coloraudioplayer.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
+import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 
 public class TimerDialog
         extends BaseDialog
@@ -92,7 +91,7 @@ public class TimerDialog
 
                 // Check time
                 if (!typeTimer.equals(PlayerService.TIMER_TYPE_WAKE) && minutes <= 0) {
-                    MainActivity.showInfoMessage(context.getResources().getString(R.string.timer_zero));
+
                     break;
                 }
 
@@ -100,7 +99,7 @@ public class TimerDialog
                         .setPackage(context.getPackageName()));
 
                 dismiss();
-                MainActivity.showInfoMessage(context.getResources().getString(R.string.timer_message));
+
                 break;
             case R.id.timer_reset:
                 resetPicker();

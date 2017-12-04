@@ -8,37 +8,37 @@
         <!-- 1 view track -->
         <ImageView
             style="@style/PlayerImageViewCommon"
-            android:id="@+id/imageTrack"
+            android:id="@+id/playlist_track_image"
             android:layout_alignParentLeft="true" />
 
         <!-- 2 view number of track -->
         <TextView
             style="@style/PlayerTextViewCommon"
-            android:id="@+id/numberTrack"
-            android:layout_alignLeft="@id/imageTrack"
+            android:id="@+id/playlist_track_count"
+            android:layout_alignLeft="@id/playlist_track_image"
             android:layout_marginLeft="0dp" />
 
         <!-- 4 view duration of track -->
         <TextView
             style="@style/PlayerPlaylistItemTextTextMains"
-            android:id="@+id/durationTrack"
+            android:id="@+id/playlist_track_duration"
             android:layout_alignParentRight="true" />
 
         <!-- 3 view name of track -->
         <TextView
             style="@style/PlayerPlaylistItemTextName"
-            android:id="@+id/nameTrack"
-            android:layout_toRightOf="@id/imageTrack"
-            android:layout_toLeftOf="@id/durationTrack" />
+            android:id="@+id/playlist_track_name"
+            android:layout_toRightOf="@id/playlist_track_image"
+            android:layout_toLeftOf="@id/playlist_track_duration" />
 
         <!-- Additional information-->
         <!-- 5 view -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/nameTrack"
-            android:layout_toRightOf="@id/imageTrack"
-            android:layout_toLeftOf="@id/durationTrack"
+            android:layout_below="@+id/playlist_track_name"
+            android:layout_toRightOf="@+id/playlist_track_image"
+            android:layout_toLeftOf="@+id/playlist_track_duration"
             android:layout_marginLeft="@dimen/playlist_item_left_margin_into"
             android:orientation="vertical">
 
@@ -51,7 +51,7 @@
 
                 <TextView
                     style="@style/PlayerPlaylistItemTextDescription"
-                    android:id="@+id/artistTrack"
+                    android:id="@+id/playlist_track_artist"
                     android:layout_weight="@integer/playlist_item_second_weight_description" />
             </LinearLayout>
 
@@ -64,7 +64,7 @@
 
                 <TextView
                     style="@style/PlayerPlaylistItemTextDescription"
-                    android:id="@+id/albumTrack"
+                    android:id="@+id/playlist_track_album"
                     android:layout_weight="@integer/playlist_item_second_weight_description" />
             </LinearLayout>
 
@@ -77,7 +77,7 @@
 
                 <TextView
                     style="@style/PlayerPlaylistItemTextDescription"
-                    android:id="@+id/dateTrack"
+                    android:id="@+id/playlist_track_date"
                     android:layout_weight="@integer/playlist_item_second_weight_description" />
             </LinearLayout>
         </LinearLayout>
@@ -85,9 +85,10 @@
 
     <!-- Visualizer -->
     <ru.testsimpleapps.coloraudioplayer.ui.views.VisualizerView
-        android:id="@+id/visualizerTrack"
+        android:id="@+id/playlist_track_visualizer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/playlist_item_outer_layout_margin"
         android:background="@color/common_transparent" />
+
 </FrameLayout>
