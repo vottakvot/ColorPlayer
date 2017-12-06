@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="0dp"
-    android:layout_margin="0dp"
-    android:background="@color/common_white_background">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.RecyclerView
         style="@style/PlayerListCommon"
@@ -12,8 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@color/common_transparent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:background="@drawable/drawable_playlist_background" />
 
-    <include layout="@layout/playlist_search_track" />
+    <include layout="@layout/playlist_track_additional_panel" />
 
 </RelativeLayout>

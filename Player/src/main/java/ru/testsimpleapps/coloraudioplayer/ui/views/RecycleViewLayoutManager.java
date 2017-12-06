@@ -7,9 +7,13 @@ import android.view.View;
 
 public class RecycleViewLayoutManager extends LinearLayoutManager {
 
+    private final float DEFAULT_CENTER = 1.0f;
+    private final float DEFAULT_MAX_CENTER = 1.6f;
+
     private float mShrinkAmount = 0.5f;
     private float mShrinkDistance = 0.9f;
-    private float mCenter = 1.0f;
+    private float mCenter = DEFAULT_CENTER;
+    private boolean mIsDynamic = false;
 
     public RecycleViewLayoutManager(Context context) {
         super(context);
@@ -32,7 +36,7 @@ public class RecycleViewLayoutManager extends LinearLayoutManager {
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
                 final float childMidpoint = (getDecoratedBottom(child) + getDecoratedTop(child)) / 2.f;
-                final float d = Math.min(d1, Math.abs(midpoint * mCenter - childMidpoint));
+                final float d = Math.min(d1, Math.abs(midpoint * getDynamicCenter() - childMidpoint));
                 final float scale = s0 + (s1 - s0) * (d - d0) / (d1 - d0);
                 child.setScaleX(scale);
                 child.setScaleY(scale);
@@ -65,6 +69,27 @@ public class RecycleViewLayoutManager extends LinearLayoutManager {
         } else {
             return 0;
         }
+    }
+
+    private float getDynamicCenter() {
+        float center = DEFAULT_CENTER;
+        if (mIsDynamic) {
+            final int totalItemCount = getItemCount();
+            if (totalItemCount > 0) {
+                final int visibleItemCount = getChildCount();
+                final int centerVisibleItemPosition = findFirstVisibleItemPosition() + visibleItemCount / 2;
+                final float delta = DEFAULT_MAX_CENTER / (float) totalItemCount;
+                center = delta * centerVisibleItemPosition;
+            }
+        } else {
+            center = mCenter;
+        }
+
+        return center;
+    }
+
+    public void setDynamicCenter(final boolean isDynamic) {
+        mIsDynamic = isDynamic;
     }
 
     public float getCenter() {

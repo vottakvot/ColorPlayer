@@ -16,28 +16,30 @@ public class CursorPlaylist implements IPlaylist {
     private Cursor mPlaylist;
     private long mPlaylistId = NOT_INIT;
     private String mSortBy = CursorTool.SORT_NONE;
+    private long mTotalTime;
 
-    public CursorPlaylist(@NonNull final Context context, final long playlistId, final String sortBy) {
+    public CursorPlaylist(@NonNull final Context context) {
         mContext = context;
         mPlaylistId = NOT_INIT;
         mSortBy = CursorTool.SORT_NONE;
-        setCursor(playlistId, mSortBy);
     }
 
     @Override
     public boolean add(@NonNull Object items) {
-        final List<Long> itemsList = (List<Long>)items;
+        final List<Long> itemsList = (List<Long>) items;
         if (itemsList.isEmpty()) {
             return false;
         }
 
         final int count = CursorTool.addToPlaylist(mContext.getContentResolver(), mPlaylistId, itemsList);
+        recountTotalTime();
         return count > 0;
     }
 
     @Override
     public boolean delete(long id) {
         final int count = CursorTool.deleteTrackFromPlaylist(mContext.getContentResolver(), mPlaylistId, id);
+        recountTotalTime();
         return count > 0;
     }
 
@@ -68,7 +70,7 @@ public class CursorPlaylist implements IPlaylist {
 
     @Override
     public long size() {
-        return mPlaylist != null ? mPlaylist.getCount() : NOT_INIT;
+        return mPlaylist != null ? mPlaylist.getCount() : 0;
     }
 
     @Override
@@ -112,6 +114,11 @@ public class CursorPlaylist implements IPlaylist {
     }
 
     @Override
+    public long getTotalTime() {
+        return mTotalTime;
+    }
+
+    @Override
     public long getTrackDuration() {
         return mPlaylist != null ? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DURATION)) : NOT_INIT;
     }
@@ -150,6 +157,22 @@ public class CursorPlaylist implements IPlaylist {
         return clone;
     }
 
+    public long recountTotalTime() {
+        if (mPlaylist != null) {
+            final int position = mPlaylist.getPosition();
+            mTotalTime = 0;
+            if (mPlaylist.moveToFirst()) {
+                do {
+                    mTotalTime += getTrackDuration();
+                } while (mPlaylist.moveToNext());
+            }
+
+            mPlaylist.moveToPosition(position);
+        }
+
+        return mTotalTime;
+    }
+
     public IPlaylist setCursor(final long playlistId, final String sortBy) {
         if (playlistId > IPlaylist.NOT_INIT) {
             mPlaylistId = playlistId;
@@ -177,4 +200,7 @@ public class CursorPlaylist implements IPlaylist {
     public void setPlaylist(Cursor mPlaylist) {
         this.mPlaylist = mPlaylist;
     }
+
+
+
 }

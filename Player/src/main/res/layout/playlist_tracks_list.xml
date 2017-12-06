@@ -12,6 +12,6 @@
         android:divider="@color/common_transparent"
         android:background="@drawable/drawable_playlist_background" />
 
-    <include layout="@layout/playlist_search_track" />
+    <include layout="@layout/playlist_track_additional_panel" />
 
 </RelativeLayout>

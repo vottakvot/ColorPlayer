@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/explorer_additional_folders_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/common_transparent">
+    android:layout_height="wrap_content">
 
     <ImageButton
         style="@style/PlayerImageButtonCommon"

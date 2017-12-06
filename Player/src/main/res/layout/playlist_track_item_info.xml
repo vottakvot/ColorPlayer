@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/playlist_track_item_info_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <!-- Duration -->
+    <TextView
+        android:id="@+id/playlist_track_duration_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="2dp"
+        android:maxLines="1"
+        android:text="@string/playlist_item_artists"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/playlist_track_artist_label"
+        app:layout_constraintRight_toLeftOf="@+id/guideline"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/playlist_track_duration_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:maxLines="1"
+        android:text="-"
+        app:layout_constraintBottom_toBottomOf="@+id/playlist_track_duration_label"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/playlist_track_duration_label" />
+
+    <!-- Artists -->
+    <TextView
+        android:id="@+id/playlist_track_artist_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playlist_item_artists"
+        android:maxLines="1"
+        android:layout_marginTop="2dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/playlist_track_duration_label"
+        app:layout_constraintRight_toLeftOf="@+id/guideline"
+        app:layout_constraintLeft_toLeftOf="@+id/playlist_track_duration_label"/>
+
+    <TextView
+        android:id="@+id/playlist_track_artist_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:text="-"
+        android:maxLines="1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toTopOf="@+id/playlist_track_artist_label"
+        app:layout_constraintBottom_toBottomOf="@+id/playlist_track_artist_label"
+        app:layout_constraintLeft_toRightOf="@+id/guideline"/>
+
+    <!-- Albums -->
+    <TextView
+        android:id="@+id/playlist_track_albums_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playlist_item_album"
+        android:maxLines="1"
+        android:layout_marginTop="2dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/playlist_track_artist_label"
+        app:layout_constraintRight_toLeftOf="@+id/guideline"
+        app:layout_constraintLeft_toLeftOf="@+id/playlist_track_duration_label"/>
+
+    <TextView
+        android:id="@+id/playlist_track_albums_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:text="-"
+        android:maxLines="1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toTopOf="@+id/playlist_track_albums_label"
+        app:layout_constraintBottom_toBottomOf="@+id/playlist_track_albums_label"
+        app:layout_constraintLeft_toRightOf="@+id/guideline"/>
+
+    <!-- Date -->
+    <TextView
+        android:id="@+id/playlist_track_date_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playlist_item_date"
+        android:gravity="left"
+        android:maxLines="1"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/playlist_track_albums_label"
+        app:layout_constraintRight_toLeftOf="@+id/guideline"
+        app:layout_constraintLeft_toLeftOf="@+id/playlist_track_duration_label"/>
+
+    <TextView
+        android:id="@+id/playlist_track_date_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:maxLines="1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/playlist_track_date_label"
+        app:layout_constraintBottom_toBottomOf="@+id/playlist_track_date_label"/>
+
+</android.support.constraint.ConstraintLayout>

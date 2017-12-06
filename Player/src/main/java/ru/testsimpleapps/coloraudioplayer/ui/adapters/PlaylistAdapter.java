@@ -6,13 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorTool;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.TimeTool;
 
 
 public class PlaylistAdapter extends BaseAdapter {
@@ -24,11 +26,6 @@ public class PlaylistAdapter extends BaseAdapter {
         mContext = context;
     }
 
-    public void setPlaylist(final IPlaylist iPlaylist) {
-        mIPlaylist = iPlaylist;
-        notifyDataSetChanged();
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         switch (i) {
@@ -38,7 +35,7 @@ public class PlaylistAdapter extends BaseAdapter {
             }
 
             case TYPE_ITEM: {
-                final View viewItem = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.playlist_item_track, viewGroup, false);
+                final View viewItem = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.playlist_track_layout, viewGroup, false);
                 return new ViewHolderItem(viewItem);
             }
 
@@ -49,14 +46,36 @@ public class PlaylistAdapter extends BaseAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-        if (viewHolder instanceof ViewHolderItem) {
-            final ViewHolderItem mViewHolder = (ViewHolderItem) viewHolder;
+        if (mIPlaylist != null) {
+            if (viewHolder instanceof ViewHolderItem) {
+                final ViewHolderItem mViewHolder = (ViewHolderItem) viewHolder;
+                mIPlaylist.goTo(i - 1);
+                // Main
+                mViewHolder.mImageTrack.setImageResource(R.drawable.item_track);
+                mViewHolder.mCountTrack.setText(String.valueOf(i));
+                mViewHolder.mDurationTrack.setText(TimeTool.getDuration(mIPlaylist.getTrackDuration()));
+                mViewHolder.mNameTrack.setText(String.valueOf(mIPlaylist.getTrackName()));
 
+                // Optional
+                if (mViewHolder.mArtistsTrack != null) {
+                    mViewHolder.mArtistsTrack.setText(String.valueOf(mIPlaylist.getTrackArtist()));
+                }
 
-        } else if (viewHolder instanceof ViewHolderHeader) {
-            final ViewHolderHeader mViewHolder = (ViewHolderHeader) viewHolder;
-            mViewHolder.mCountTracks.setText(String.valueOf(1));
-            mViewHolder.mTotalTime.setText(String.valueOf(1));
+                if (mViewHolder.mAlbumTrack != null) {
+                    mViewHolder.mAlbumTrack.setText(String.valueOf(mIPlaylist.getTrackAlbum()));
+                }
+
+                if (mViewHolder.mDateTrack != null) {
+                    mViewHolder.mDateTrack.setText(TimeTool.getDateTime(mIPlaylist.getTrackDateModified()));
+                }
+
+            } else if (viewHolder instanceof ViewHolderHeader) {
+                final ViewHolderHeader mViewHolder = (ViewHolderHeader) viewHolder;
+                mViewHolder.mNamePlaylist.setText(CursorTool.getPlaylistNameById(mContext.getContentResolver(),
+                        mIPlaylist.getPlaylistId()));
+                mViewHolder.mCountTracks.setText(String.valueOf(getTotalTracks()));
+                mViewHolder.mTotalTimeTracks.setText(TimeTool.getDuration(getTotalTime()));
+            }
         }
     }
 
@@ -73,14 +92,56 @@ public class PlaylistAdapter extends BaseAdapter {
         return TYPE_ITEM;
     }
 
+    public void setPlaylist(final IPlaylist iPlaylist) {
+        mIPlaylist = iPlaylist;
+        notifyDataSetChanged();
+    }
+
+    private long getTotalTime() {
+        return mIPlaylist != null? mIPlaylist.getTotalTime() : 0;
+    }
+
+    private long getTotalTracks() {
+        return mIPlaylist != null? mIPlaylist.size() : 0;
+    }
+
+    protected class ViewHolderHeader extends RecyclerView.ViewHolder {
+        @BindView(R.id.playlist_header_name_value)
+        TextView mNamePlaylist;
+        @BindView(R.id.playlist_header_count_value)
+        TextView mCountTracks;
+        @BindView(R.id.playlist_header_total_time_value)
+        TextView mTotalTimeTracks;
+
+        public ViewHolderHeader(final View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
     protected class ViewHolderItem extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.explorer_file_duration)
-        TextView mDurationFile;
-        @BindView(R.id.explorer_file_name)
-        TextView mNameFile;
-        @BindView(R.id.explorer_file_check)
-        CheckBox mCheckFile;
+        /*
+        * Main views
+        * */
+        @BindView(R.id.playlist_track_image)
+        ImageView mImageTrack;
+        @BindView(R.id.playlist_track_count)
+        TextView mCountTrack;
+        @BindView(R.id.playlist_track_name)
+        TextView mNameTrack;
+
+        /*
+        * Optional
+        * */
+        @BindView(R.id.playlist_track_duration_value)
+        TextView mDurationTrack;
+        @BindView(R.id.playlist_track_artist_value)
+        TextView mArtistsTrack;
+        @BindView(R.id.playlist_track_albums_value)
+        TextView mAlbumTrack;
+        @BindView(R.id.playlist_track_date_value)
+        TextView mDateTrack;
 
         public ViewHolderItem(final View view) {
             super(view);
@@ -93,18 +154,6 @@ public class PlaylistAdapter extends BaseAdapter {
                     }
                 }
             });
-        }
-    }
-
-    protected class ViewHolderHeader extends RecyclerView.ViewHolder {
-        @BindView(R.id.playlist_header_count_value)
-        TextView mCountTracks;
-        @BindView(R.id.playlist_header_total_time_value)
-        TextView mTotalTime;
-
-        public ViewHolderHeader(final View view) {
-            super(view);
-            ButterKnife.bind(this, view);
         }
     }
 

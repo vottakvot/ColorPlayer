@@ -214,8 +214,8 @@ public class PlayerService extends Service implements Handler.Callback {
 
         // Player initialisation
         mPlayerConfig = new PlayerConfig();
-        final long playlistId = PreferenceTool.getInstance().getPlaylist();
-        mPlaylist = CursorFactory.getInstance(playlistId, mPlayerConfig.getPlaylistSort());
+        long playlistId = PreferenceTool.getInstance().getPlaylist();
+        mPlaylist = CursorFactory.getInstance(2691, mPlayerConfig.getPlaylistSort());
 
         mMediaPlayer = new AudioPlayer(getApplicationContext(), mPlayerConfig, mPlaylist);
         mSeekBarUpdater = new SeekBarUpdater();

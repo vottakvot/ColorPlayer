@@ -2,6 +2,8 @@ package ru.testsimpleapps.coloraudioplayer.managers.player.playlist;
 
 public interface IPlaylist extends Cloneable {
 
+    String TEMP_PLAYLIST = "Temp_playlist";
+
     long NOT_INIT = -1L;
 
     boolean add(Object items);
@@ -35,6 +37,8 @@ public interface IPlaylist extends Cloneable {
     String getTrackTitle();
 
     String getTrackAlbum();
+
+    long getTotalTime();
 
     long getTrackDuration();
 

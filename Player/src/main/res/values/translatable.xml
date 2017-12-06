@@ -65,7 +65,7 @@
     <string name="playlist_search_empty">Input text for search</string>
     <string name="playlist_search_first_position">Move to first</string>
     <string name="playlist_search_no_match">No matches</string>
-    <string name="playlist_search_hint">Input value for search...</string>
+    <string name="playlist_search_hint">Search...</string>
     <string name="playlist_header">Choose or create playlist!</string>
     <string name="playlist_rename_change">Change</string>
     <string name="playlist_rename_header">Rename playlist</string>

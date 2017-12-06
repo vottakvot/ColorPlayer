@@ -1,7 +1,12 @@
 package ru.testsimpleapps.coloraudioplayer.ui.fragments;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.Parcelable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,6 +41,7 @@ import ru.testsimpleapps.coloraudioplayer.managers.explorer.FoldersComparator;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.ItemsComparator;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.MediaExplorerManager;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
+import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.BaseListAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFilesAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFolderAdapter;
@@ -87,6 +93,7 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
     @BindView(R.id.explorer_folders_add)
     protected ImageButton mAddFoldersButton;
 
+    private PlayerService mPlayerService;
     private ExplorerFilesAdapter mExplorerFilesAdapter;
     private ExplorerFolderAdapter mExplorerFolderAdapter;
     private Parcelable mFolderStateAdapter;
@@ -108,6 +115,19 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         mUnbinder = ButterKnife.bind(this, view);
         init(savedInstanceState);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Intent intent = new Intent(getContext(), PlayerService.class);
+        getContext().bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getContext().unbindService(mServiceConnection);
     }
 
     @Override
@@ -154,15 +174,12 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
 
     @OnClick(R.id.explorer_folders_add)
     protected void addFoldersButtonClick() {
-        int countAdded = 0;
+        final List<Long> items = new ArrayList<>();
         for (FolderData folder : mExplorerFolderAdapter.getItemList()) {
             if (folder.isChecked()) {
                 for (ItemData file : folder.getContainerItemData().getList()) {
-                    // Todo: add checked files or all folders
-                    Log.d(TAG, file.getName());
-
+                    items.add(file.getId());
                     file.setChecked(false);
-                    countAdded++;
                 }
             }
 
@@ -171,31 +188,30 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         }
 
         mRecyclerView.getAdapter().notifyDataSetChanged();
-        if (countAdded == 0) {
+        if (items.isEmpty()) {
             showToast(R.string.explorer_add_to_playlist_nothing);
         } else {
-            showToast(getString(R.string.explorer_add_to_playlist) + countAdded);
+            showToast(getString(R.string.explorer_add_to_playlist) + items.size());
+            mPlayerService.getPlaylist().add(items);
         }
     }
 
     @OnClick(R.id.explorer_files_add)
     protected void addFilesButtonClick() {
-        int countAdded = 0;
+        final List<Long> items = new ArrayList<>();
         for (ItemData file : mExplorerFilesAdapter.getItemList()) {
             if (file.isChecked()) {
-                // Todo: add checked files or all folders
-                Log.d(TAG, file.getName());
-
+                items.add(file.getId());
                 file.setChecked(false);
-                countAdded++;
             }
         }
 
         mRecyclerView.getAdapter().notifyDataSetChanged();
-        if (countAdded == 0) {
+        if (items.isEmpty()) {
             showToast(R.string.explorer_add_to_playlist_nothing);
         } else {
-            showToast(getString(R.string.explorer_add_to_playlist) + countAdded);
+            showToast(getString(R.string.explorer_add_to_playlist) + items.size());
+            mPlayerService.getPlaylist().add(items);
         }
     }
 
@@ -394,6 +410,22 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
 
         return false;
     }
+
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            Log.d(TAG,  "onServiceConnected()");
+            PlayerService.LocalBinder binder = (PlayerService.LocalBinder) service;
+            mPlayerService = binder.getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            Log.d(TAG,  "onServiceDisconnected()");
+            mPlayerService = null;
+        }
+    };
 
     private class OnScrollRecycleViewListener extends RecyclerView.OnScrollListener {
 
