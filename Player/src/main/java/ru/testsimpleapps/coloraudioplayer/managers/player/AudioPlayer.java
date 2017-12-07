@@ -153,7 +153,7 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
                 mState = State.PLAY;
                 return true;
             } catch (Exception e) { // Path not found or bad file or bad path. Add log.
-                Log.d(App.TAG, getClass().getSimpleName() + " - play() - " + e.getMessage());
+                Log.e(App.TAG, getClass().getSimpleName() + " - play() - " + e.getMessage());
                 mMediaPlayer.reset();
             }
         }

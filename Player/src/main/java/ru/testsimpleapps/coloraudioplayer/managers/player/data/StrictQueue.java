@@ -4,33 +4,35 @@ import android.support.annotation.Nullable;
 
 import java.util.LinkedList;
 
-public final class StrictQueue<T> extends LinkedList<T> {
+public final class StrictQueue<T> {
 
     private final static int DEFAULT_SIZE = 64;
-    private int maxSize = DEFAULT_SIZE;
+    private final LinkedList<T> mQueue;
+    private int mMaxSize = DEFAULT_SIZE;
 
     public StrictQueue() {
-        this.maxSize = DEFAULT_SIZE;
+        mQueue = new LinkedList<>();
     }
 
     public StrictQueue(int maxSize) {
-        this.maxSize = maxSize > 0 ? maxSize : DEFAULT_SIZE;
+        mMaxSize = maxSize;
+        mQueue = new LinkedList<>();
     }
 
     public void push(@Nullable T value) {
-        if (size() >= maxSize) {
-            removeLast();
+        if (mQueue.size() >= mMaxSize) {
+            mQueue.removeLast();
         }
 
-        addFirst(value);
+        mQueue.addFirst(value);
     }
 
     @Nullable
     public T pop() {
         T value = null;
-        if (size() > 0) {
-            value = getFirst();
-            removeFirst();
+        if (mQueue.size() > 0) {
+            value = mQueue.getFirst();
+            mQueue.removeFirst();
         }
 
         return value;

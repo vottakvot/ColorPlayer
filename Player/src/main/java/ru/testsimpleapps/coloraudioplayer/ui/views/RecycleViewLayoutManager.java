@@ -8,7 +8,7 @@ import android.view.View;
 public class RecycleViewLayoutManager extends LinearLayoutManager {
 
     private final float DEFAULT_CENTER = 1.0f;
-    private final float DEFAULT_MAX_CENTER = 1.6f;
+    private final float DEFAULT_MAX_CENTER = 1.8f;
 
     private float mShrinkAmount = 0.5f;
     private float mShrinkDistance = 0.9f;

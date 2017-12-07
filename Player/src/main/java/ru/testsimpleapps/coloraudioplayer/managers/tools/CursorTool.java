@@ -1,4 +1,4 @@
-package ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor;
+package ru.testsimpleapps.coloraudioplayer.managers.tools;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -13,11 +13,12 @@ import java.util.TreeMap;
 
 public class CursorTool {
 
-    public static final String SORT_ASC = " ASC";
-    public static final String SORT_NAME = MediaStore.Audio.Media.DATA;
-    public static final String SORT_DURATION = MediaStore.Audio.Media.DURATION;
-    public static final String SORT_MODIFY = MediaStore.Audio.Media.DATE_MODIFIED;
-    public static final String SORT_NONE = null;
+    public static final String SORT_ORDER_ASC = " ASC";
+    public static final String SORT_ORDER_DESC = " DESC";
+    public static final String FIELD_NAME = MediaStore.Audio.Media.DATA;
+    public static final String FIELD_DURATION = MediaStore.Audio.Media.DURATION;
+    public static final String FIELD_MODIFY = MediaStore.Audio.Media.DATE_MODIFIED;
+    public static final String FIELD_NONE = null;
 
     public static Map<Long, String> getPlaylists(ContentResolver resolver) {
         Map<Long, String> playlistMap = null;
@@ -38,23 +39,23 @@ public class CursorTool {
         return playlistMap;
     }
 
-    public static Cursor getTracksFromPlaylist(final ContentResolver contentResolver, final long playListID, final String sortBy) {
+    public static Cursor getTracksFromPlaylist(final ContentResolver contentResolver, final long playListID,
+                                               final String sortBy, final String sortType) {
         final Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playListID);
-        Cursor tracks = contentResolver.query(uri,
-                new String[]{
-                        CursorTool.SORT_NAME,
-                        CursorTool.SORT_DURATION,
+        final Cursor tracks = contentResolver.query(uri,
+                new String[] {
+                        CursorTool.FIELD_NAME,
+                        CursorTool.FIELD_DURATION,
                         MediaStore.Audio.Media._ID,
                         MediaStore.Audio.Media.ARTIST,
                         MediaStore.Audio.Media.ALBUM,
                         MediaStore.Audio.Media.DATE_MODIFIED,
-                        MediaStore.Audio.Media.TITLE}, null, null, sortBy);
+                        MediaStore.Audio.Media.TITLE }, null, null, sortBy + sortType);
         return (tracks != null && tracks.getCount() > 0) ? tracks : null;
     }
 
     public static long getPlaylistIdByName(ContentResolver resolver, String name) {
         long id = -1;
-
         Cursor cursor = resolver.query(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI,
                 new String[]{MediaStore.Audio.Playlists._ID},
                 MediaStore.Audio.Playlists.NAME + "=?",

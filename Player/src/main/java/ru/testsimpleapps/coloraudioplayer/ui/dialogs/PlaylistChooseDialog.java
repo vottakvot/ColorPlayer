@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorTool;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.CursorTool;
 
 public class PlaylistChooseDialog
         extends BaseDialog {
@@ -103,7 +103,7 @@ public class PlaylistChooseDialog
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //            if(MainPages.getPlaylistAdapter() != null && FindMedia.getMapMediaPosition(playlistMap, position) != -1){
 //                //App.getAppContext().setPlaylistId(FindMedia.getMapMediaPosition(playlistMap, position));
-//                MainPages.getPlaylistAdapter().refreshPlaylist(CursorTool.SORT_NONE);
+//                MainPages.getPlaylistAdapter().refreshPlaylist(CursorTool.FIELD_NONE);
 //                MainPages.getTextPlaylistHeader().setText(playlistMap.get(FindMedia.getMapMediaPosition(playlistMap, position)));
 //                MainPages.PageFragment.changePlaylistBackground();
 //                PlayerControl.setCountTracks();

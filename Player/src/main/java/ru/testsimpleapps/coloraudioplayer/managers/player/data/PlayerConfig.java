@@ -1,11 +1,47 @@
 package ru.testsimpleapps.coloraudioplayer.managers.player.data;
 
-import android.os.Parcel;
 import android.support.annotation.IntRange;
 
 import java.io.Serializable;
 
+import ru.testsimpleapps.coloraudioplayer.managers.tools.CursorTool;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.SerializableTool;
+
 public final class PlayerConfig implements Serializable {
+
+    public static final String TAG = PlayerConfig.class.getSimpleName();
+    private static volatile PlayerConfig sPlayerConfig;
+
+    public static PlayerConfig getInstance() {
+        PlayerConfig localInstance = sPlayerConfig;
+        if (localInstance == null) {
+            synchronized (PlayerConfig.class) {
+                localInstance = sPlayerConfig;
+                if (localInstance == null) {
+                    final Object object = SerializableTool.fileToObject(TAG);
+                    if (object instanceof PlayerConfig) {
+                        sPlayerConfig = localInstance = (PlayerConfig) object;
+                    } else {
+                        sPlayerConfig = localInstance = new PlayerConfig();
+                    }
+                }
+            }
+        }
+
+        return localInstance;
+    }
+
+    public static void save() {
+        PlayerConfig localInstance = sPlayerConfig;
+        if (localInstance != null) {
+            synchronized (PlayerConfig.class) {
+                localInstance = sPlayerConfig;
+                if (localInstance != null) {
+                    SerializableTool.objectToFile(TAG, localInstance);
+                }
+            }
+        }
+    }
 
     /*
     * Default seek position for init 0.
@@ -23,12 +59,17 @@ public final class PlayerConfig implements Serializable {
     private String mPlaylistSort;
 
     /*
+    * Playlist sort order
+    * */
+    private String mPlaylistSortOrder;
+
+    /*
     * Track id
     * */
     private long mTrackId;
 
     /*
-    * Set order.
+    * Set order
     * */
     private boolean mIsRandom;
 
@@ -58,27 +99,29 @@ public final class PlayerConfig implements Serializable {
     private short mBassBoostStrength = 0;
 
 
-    public PlayerConfig() {
-        this(false, Repeat.NONE, DEFAULT_SEEK_POSITION, (short) 0, null, (short) 0, null);
+    private PlayerConfig() {
+        this(false, Repeat.NONE, DEFAULT_SEEK_POSITION, (short) 0, null, (short) 0, CursorTool.FIELD_NAME, CursorTool.SORT_ORDER_ASC);
     }
 
-    public PlayerConfig(PlayerConfig playerConfig) {
+    private PlayerConfig(PlayerConfig playerConfig) {
         this(playerConfig.isRandom(),
                 playerConfig.getRepeat(),
                 playerConfig.getLastSeekPosition(),
                 playerConfig.getEqualizerPresent(),
                 playerConfig.getEqualizerBands(),
                 playerConfig.getBassBoostStrength(),
-                playerConfig.getPlaylistSort());
+                playerConfig.getPlaylistSort(),
+                playerConfig.getPlaylistSortOrder());
     }
 
-    public PlayerConfig(boolean isRandom,
+    private PlayerConfig(boolean isRandom,
                         Repeat repeat,
                         int lastSeekPosition,
                         short equalizerPresent,
                         short[] equalizerBands,
                         short bassBoostStrength,
-                        String playlistSort) {
+                        String playlistSort,
+                        String playlistSortOrder) {
 
         mIsRandom = isRandom;
         mRepeat = repeat;
@@ -87,20 +130,14 @@ public final class PlayerConfig implements Serializable {
         mEqualizerBands = equalizerBands;
         mBassBoostStrength = bassBoostStrength;
         mPlaylistSort = playlistSort;
-    }
-
-    protected PlayerConfig(Parcel in) {
-        mPlaylistId = in.readLong();
-        mTrackId = in.readLong();
-        mIsRandom = in.readByte() != 0;
-        mLastSeekPosition = in.readInt();
+        mPlaylistSortOrder = playlistSortOrder;
     }
 
     public boolean isRandom() {
         return mIsRandom;
     }
 
-    public void setRandom(boolean random) {
+    public void setRandom(final boolean random) {
         mIsRandom = random;
     }
 
@@ -108,7 +145,7 @@ public final class PlayerConfig implements Serializable {
         return mRepeat;
     }
 
-    public void setRepeat(Repeat repeat) {
+    public void setRepeat(final Repeat repeat) {
         mRepeat = repeat;
     }
 
@@ -118,7 +155,7 @@ public final class PlayerConfig implements Serializable {
         return copySeekPosition;
     }
 
-    public void setLastSeekPosition(int lastSeekPosition) {
+    public void setLastSeekPosition(final int lastSeekPosition) {
         mLastSeekPosition = lastSeekPosition;
     }
 
@@ -126,7 +163,7 @@ public final class PlayerConfig implements Serializable {
         return mPlaylistId;
     }
 
-    public void setPlaylistId(long playlistId) {
+    public void setPlaylistId(final long playlistId) {
         mPlaylistId = playlistId;
     }
 
@@ -134,7 +171,7 @@ public final class PlayerConfig implements Serializable {
         return mTrackId;
     }
 
-    public void setTrackId(long trackId) {
+    public void setTrackId(final long trackId) {
         mTrackId = trackId;
     }
 
@@ -142,7 +179,7 @@ public final class PlayerConfig implements Serializable {
         return mEqualizerPresent;
     }
 
-    public void setEqualizerPresent(short equalizerPresent) {
+    public void setEqualizerPresent(final short equalizerPresent) {
         mEqualizerPresent = equalizerPresent;
     }
 
@@ -150,7 +187,7 @@ public final class PlayerConfig implements Serializable {
         return mEqualizerBands;
     }
 
-    public void setEqualizerBands(short[] equalizerBands) {
+    public void setEqualizerBands(final short[] equalizerBands) {
         mEqualizerBands = equalizerBands;
     }
 
@@ -158,7 +195,7 @@ public final class PlayerConfig implements Serializable {
         return mBassBoostStrength;
     }
 
-    public void setBassBoostStrength(short bassBoostStrength) {
+    public void setBassBoostStrength(final short bassBoostStrength) {
         mBassBoostStrength = bassBoostStrength;
     }
 
@@ -168,5 +205,13 @@ public final class PlayerConfig implements Serializable {
 
     public void setPlaylistSort(String playlistSort) {
         mPlaylistSort = playlistSort;
+    }
+
+    public String getPlaylistSortOrder() {
+        return mPlaylistSortOrder;
+    }
+
+    public void setPlaylistSortOrder(String playlistSortOrder) {
+        mPlaylistSortOrder = playlistSortOrder;
     }
 }

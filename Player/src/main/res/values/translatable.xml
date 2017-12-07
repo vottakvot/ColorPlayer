@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- ................................................................................... -->
+    <!-- Main -->
     <string name="app_name">Color audio player</string>
     <string name="app_name_action_bar_color">COLOR</string>
     <string name="app_name_action_bar_audio">AUDIO</string>
@@ -18,7 +21,8 @@
     <string name="explorer_add_to_playlist">Added to playlist:\u0020</string>
     <string name="explorer_add_to_playlist_nothing">Nothing to add!</string>
 
-    <!-- Sort -->
+    <!-- Dialog -->
+    <string name="explorer_dialog_header">Config music list</string>
     <string name="explorer_group_header">Group type</string>
     <string name="explorer_sort_header">Sort type</string>
     <string name="explorer_sort_by_folders">Folders</string>
@@ -41,11 +45,23 @@
     <!-- Media manager -->
     <string name="explorer_find_media_ok">Music list is update!</string>
     <string name="explorer_find_media_error">Error for update music list :(</string>
-    <string name="explorer_dialog_header">Config music list</string>
 
     <!-- ................................................................................... -->
     <!-- Player control -->
     <string name="player_control_hide_notification">Slide to up for show control panel</string>
+
+
+    <!-- ................................................................................... -->
+    <!-- Playlist -->
+
+    <!-- Dialog -->
+    <string name="playlist_dialog_header">Config music list</string>
+    <string name="playlist_sort_header">Sort type</string>
+    <string name="playlist_sort_order">Sort order</string>
+    <string name="playlist_sort_by_name">Name</string>
+    <string name="playlist_sort_by_size">Size/Duration</string>
+    <string name="playlist_sort_by_date">Date</string>
+    <string name="playlist_view_expand">Expand view</string>
 
 
     <string name="playlist_create_header">Input playlist name</string>
@@ -58,7 +74,6 @@
     <string name="playlist_get_chose">Chosen playlist:</string>
     <string name="playlist_get_empty">No playlists found</string>
     <string name="playlist_get_no_choice">Not choosen playlist! Use playlist for temp...</string>
-    <string name="playlist_sort_by_name">Names</string>
     <string name="playlist_sort_by_duration">Track duration</string>
     <string name="playlist_sort_by_modify">Track added</string>
     <string name="playlist_delete_track">Delete track</string>

@@ -36,11 +36,8 @@ import ru.testsimpleapps.coloraudioplayer.managers.player.AudioPlayer;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
-import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
 import ru.testsimpleapps.coloraudioplayer.receivers.MediaButtonsReceiver;
-import ru.testsimpleapps.coloraudioplayer.receivers.ViewUpdaterReceiver;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
-import ru.testsimpleapps.coloraudioplayer.ui.dialogs.EqualizerDialog;
 
 
 public class PlayerService extends Service implements Handler.Callback {
@@ -61,6 +58,13 @@ public class PlayerService extends Service implements Handler.Callback {
     public static final String ACTION_TIMER_RESET = "ru.color_player.action.TIMER_STOP";
     public static final String ACTION_AUDIO_EFFECTS = "ru.color_player.action.AUDIO_EFFECTS";
     public static final String ACTION_EXIT = "ru.color_player.action.EXIT";
+
+
+    /*
+    * State update
+    * */
+    public static final String RECEIVER_PLAYLIST_ADD = "ru.color_player.action.ADD";
+
 
     /*
     * Keys for extras
@@ -84,7 +88,6 @@ public class PlayerService extends Service implements Handler.Callback {
     * */
     private AudioPlayer mMediaPlayer;
     private IPlaylist mPlaylist;
-    private PlayerConfig mPlayerConfig;
     private Visualizer mVisualizerPlayer;
     private Equalizer mEqualizer;
     private BassBoost mBassBoost;
@@ -137,7 +140,6 @@ public class PlayerService extends Service implements Handler.Callback {
 
             // If it not command stop, then start service
             if (intent.getAction().equals(ACTION_EXIT)) {
-                updateActivityFinish();
                 stopSelf();
             } else {
                 startForeground(NOTIFICATION_ID, createNotification(getString(R.string.notification_message)));
@@ -213,11 +215,8 @@ public class PlayerService extends Service implements Handler.Callback {
         queueHandler = new Handler(playerLooper, this);
 
         // Player initialisation
-        mPlayerConfig = new PlayerConfig();
-        long playlistId = PreferenceTool.getInstance().getPlaylist();
-        mPlaylist = CursorFactory.getInstance(2691, mPlayerConfig.getPlaylistSort());
-
-        mMediaPlayer = new AudioPlayer(getApplicationContext(), mPlayerConfig, mPlaylist);
+        mPlaylist = CursorFactory.getInstance();
+        mMediaPlayer = new AudioPlayer(getApplicationContext(), PlayerConfig.getInstance(), mPlaylist);
         mSeekBarUpdater = new SeekBarUpdater();
         mSeekBarUpdater.execute();
 
@@ -231,31 +230,25 @@ public class PlayerService extends Service implements Handler.Callback {
     private void destroy() {
         mMediaPlayer.release();
         playerLooper.quit();
-        mSeekBarUpdater.cancel(true);
 
         stopForegroundNotification();
         stopForeground(true);
 
+        PlayerConfig.save();
         // Receiver for media buttons
         //unregisterMediaButtonsReceiver();
     }
 
     private void updatePlayButton(boolean isPlay) {
-        Intent intentView = new Intent(ViewUpdaterReceiver.UPDATE_PLAY_BUTTON);
-        intentView.putExtra(ViewUpdaterReceiver.UPDATE_PLAY_BUTTON, isPlay);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intentView);
+//        Intent intentView = new Intent(ViewUpdaterReceiver.UPDATE_PLAY_BUTTON);
+//        intentView.putExtra(ViewUpdaterReceiver.UPDATE_PLAY_BUTTON, isPlay);
+//        LocalBroadcastManager.getInstance(this).sendBroadcast(intentView);
     }
 
     private void updateSeekBarPosition() {
-        Intent intentView = new Intent(ViewUpdaterReceiver.UPDATE_SEEK_BAR);
-        intentView.putExtra(ViewUpdaterReceiver.UPDATE_SEEK_BAR, mMediaPlayer.getConfig().getLastSeekPosition());
-        LocalBroadcastManager.getInstance(PlayerService.this).sendBroadcast(intentView);
+
     }
 
-    private void updateActivityFinish() {
-        Intent intentView = new Intent(ViewUpdaterReceiver.UPDATE_ACTIVITY_EXIT);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intentView);
-    }
 
     public void registerMediaButtonsReceiver() {
         Log.d(App.TAG, getClass().getSimpleName() + " - registerMediaButtonsReceiver()");
@@ -334,24 +327,24 @@ public class PlayerService extends Service implements Handler.Callback {
     private void initEffects() {
         Log.d(App.TAG, getClass().getSimpleName() + " - initEffects()");
 
-        // Equalizer setup
-        short equalizerPresent = mPlayerConfig.getEqualizerPresent();
-        mEqualizer = new Equalizer(EqualizerDialog.NORMAL_PRIORITY, mMediaPlayer.getAudioSessionId());
-        mEqualizer.setEnabled(true);
-
-        // Config with pre-settings or custom
-        if (equalizerPresent > -1 && equalizerPresent < 10) {
-            mEqualizer.usePreset(equalizerPresent);
-        } else {
-            short[] equalizerBands = mPlayerConfig.getEqualizerBands();
-            for (int i = 0; i < equalizerBands.length; i++)
-                mEqualizer.setBandLevel((short) i, equalizerBands[i]);
-        }
-
-        // Bass boost setup
-        mBassBoost = new BassBoost(EqualizerDialog.NORMAL_PRIORITY, mMediaPlayer.getAudioSessionId());
-        mBassBoost.setStrength(mPlayerConfig.getBassBoostStrength());
-        mBassBoost.setEnabled(true);
+//        // Equalizer setup
+//        short equalizerPresent = mPlayerConfig.getEqualizerPresent();
+//        mEqualizer = new Equalizer(EqualizerDialog.NORMAL_PRIORITY, mMediaPlayer.getAudioSessionId());
+//        mEqualizer.setEnabled(true);
+//
+//        // Config with pre-settings or custom
+//        if (equalizerPresent > -1 && equalizerPresent < 10) {
+//            mEqualizer.usePreset(equalizerPresent);
+//        } else {
+//            short[] equalizerBands = mPlayerConfig.getEqualizerBands();
+//            for (int i = 0; i < equalizerBands.length; i++)
+//                mEqualizer.setBandLevel((short) i, equalizerBands[i]);
+//        }
+//
+//        // Bass boost setup
+//        mBassBoost = new BassBoost(EqualizerDialog.NORMAL_PRIORITY, mMediaPlayer.getAudioSessionId());
+//        mBassBoost.setStrength(mPlayerConfig.getBassBoostStrength());
+//        mBassBoost.setEnabled(true);
 
         // Visualizer setup
         visualizerInit();
@@ -458,8 +451,21 @@ public class PlayerService extends Service implements Handler.Callback {
         }
     }
 
+    public boolean addToPlaylist(final Object items) {
+        final boolean isAdd = mPlaylist.add(items);
+        if (isAdd) {
+
+        }
+
+        return isAdd;
+    }
+
     public IPlaylist getPlaylist() {
         return mPlaylist;
+    }
+
+    public IPlaylist getCopyPlaylist() {
+        return CursorFactory.getCopyInstance();
     }
 
     public Equalizer getEqualizer() {
@@ -468,6 +474,11 @@ public class PlayerService extends Service implements Handler.Callback {
 
     public BassBoost getBassBoost() {
         return mBassBoost;
+    }
+
+    public static void sendPlaylistUpdate(final Context context) {
+        Intent intentView = new Intent(RECEIVER_PLAYLIST_ADD);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intentView);
     }
 
 }

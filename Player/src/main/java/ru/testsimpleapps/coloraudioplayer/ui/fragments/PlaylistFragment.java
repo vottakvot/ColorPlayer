@@ -1,23 +1,18 @@
 package ru.testsimpleapps.coloraudioplayer.ui.fragments;
 
-import android.content.ComponentName;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.graphics.Rect;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -26,20 +21,23 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ru.testsimpleapps.coloraudioplayer.R;
+import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
 import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.PlaylistAdapter;
-import ru.testsimpleapps.coloraudioplayer.ui.animation.BaseAnimationListener;
+import ru.testsimpleapps.coloraudioplayer.ui.animation.OnTranslationAnimation;
+import ru.testsimpleapps.coloraudioplayer.ui.dialogs.PlaylistSettingsDialog;
 import ru.testsimpleapps.coloraudioplayer.ui.views.RecycleViewLayoutManager;
 
 
-public class PlaylistFragment extends BaseFragment {
+public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDialog.OnViewEvent {
 
     public static final String TAG = PlaylistFragment.class.getSimpleName();
+    private static final String TAG_ADD_PANEL = "TAG_ADD_PANEL";
     private static final float RECYCLE_CENTER = 1.0f;
     private static final float RECYCLE_SHRINK_AMOUNT = 0.1f;
     private static final float RECYCLE_SHRINK_CENTER = 1.0f;
-    private static final int ANIMATION_TRANSLATION_DURATION = 200;
 
     protected Unbinder mUnbinder;
 
@@ -54,11 +52,10 @@ public class PlaylistFragment extends BaseFragment {
     @BindView(R.id.playlist_additional_layout)
     protected ConstraintLayout mAdditionalPanel;
 
-    private PlayerService mPlayerService;
+    private PlaylistSettingsDialog mPlaylistDialog;
     private PlaylistAdapter mPlaylistAdapter;
     private RecycleViewLayoutManager mRecycleViewLayoutManager;
-    private TranslateAnimation mTranslateAnimation;
-    private OnTranslationListener mTranslateListener;
+    private OnTranslationAnimation mTranslationAnimation;
 
     public static PlaylistFragment newInstance() {
         PlaylistFragment fragment = new PlaylistFragment();
@@ -76,14 +73,21 @@ public class PlaylistFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Intent intent = new Intent(getContext(), PlayerService.class);
-        getContext().bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
+        // Broadcast
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, getIntentFilter());
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(TAG_ADD_PANEL, mAdditionalPanel.getVisibility());
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        getContext().unbindService(mServiceConnection);
+        // Broadcast
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
     }
 
     @Override
@@ -92,9 +96,39 @@ public class PlaylistFragment extends BaseFragment {
         mUnbinder.unbind();
     }
 
+    @OnClick(R.id.playlist_search_button)
+    protected void onSearchClickButton() {
+
+    }
+
+    @OnClick(R.id.playlist_settings_button)
+    protected void onSettingsClickButton() {
+        mPlaylistDialog.show();
+    }
+
+    @Override
+    public void onSort(String value) {
+        PlayerConfig.getInstance().setPlaylistSort(value);
+        CursorFactory.newInstance();
+        setPlaylist();
+    }
+
+    @Override
+    public void onSortOrder(String value) {
+        PlayerConfig.getInstance().setPlaylistSortOrder(value);
+        CursorFactory.newInstance();
+        setPlaylist();
+    }
+
+    @Override
+    public void onView(boolean isValue) {
+        mPlaylistAdapter.setExpand(isValue);
+        mRecyclerView.scheduleLayoutAnimation();
+    }
+
     private void init(final Bundle savedInstanceState) {
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycle_layout_animation);
-        mTranslateListener = new OnTranslationListener(mAdditionalPanel);
+        mTranslationAnimation = new OnTranslationAnimation(mAdditionalPanel, OnTranslationAnimation.DEFAULT_DURATION);
         mRecycleViewLayoutManager = new RecycleViewLayoutManager(getContext());
         mRecycleViewLayoutManager.setCenter(RECYCLE_CENTER);
         mRecycleViewLayoutManager.setShrinkAmount(RECYCLE_SHRINK_AMOUNT);
@@ -105,31 +139,54 @@ public class PlaylistFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(mRecycleViewLayoutManager);
         mRecyclerView.addOnScrollListener(new OnScrollRecycleViewListener());
         mPlaylistAdapter = new PlaylistAdapter(getContext());
+        mPlaylistAdapter.setExpand(PreferenceTool.getInstance().getPlaylistViewExpand());
+        mRecyclerView.setAdapter(mPlaylistAdapter);
+
+        mPlaylistDialog = new PlaylistSettingsDialog(getContext());
+        mPlaylistDialog.setOnViewEvent(this);
+
+        setPlaylist();
+        restoreStates(savedInstanceState);
     }
 
-    @OnClick(R.id.playlist_search_button)
-    protected void onSearchClickButton() {
+    private void restoreStates(final Bundle savedInstanceState) {
+        // Check previous states
+        if (savedInstanceState == null) {
 
-    }
-
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.d(TAG,  "onServiceConnected()");
-            PlayerService.LocalBinder binder = (PlayerService.LocalBinder) service;
-            mPlayerService = binder.getService();
-            mPlaylistAdapter.setPlaylist(CursorFactory.getCopyInstance());
-            mRecyclerView.setAdapter(mPlaylistAdapter);
+        } else {
+            // Panel state
+            mAdditionalPanel.setVisibility(savedInstanceState.getInt(TAG_ADD_PANEL));
         }
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
 
         @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            Log.d(TAG,  "onServiceDisconnected()");
-            mPlayerService = null;
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                final String message = intent.getAction();
+                if (message != null) {
+
+                    // Update list
+                    if (message.equals(PlayerService.RECEIVER_PLAYLIST_ADD)) {
+                        setPlaylist();
+                    }
+
+                }
+            }
         }
     };
 
+    private void setPlaylist() {
+        mPlaylistAdapter.setPlaylist(CursorFactory.getCopyInstance());
+        mRecyclerView.scheduleLayoutAnimation();
+    }
+
+    private IntentFilter getIntentFilter() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(PlayerService.RECEIVER_PLAYLIST_ADD);
+        return intentFilter;
+    }
 
     private class OnScrollRecycleViewListener extends RecyclerView.OnScrollListener {
 
@@ -144,69 +201,9 @@ public class PlaylistFragment extends BaseFragment {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            if (mState == RecyclerView.SCROLL_STATE_DRAGGING && !mTranslateListener.isAnimating()) {
-                animateAddPanel(dy < 0);
+            if (mState == RecyclerView.SCROLL_STATE_DRAGGING && !mTranslationAnimation.isAnimating()) {
+                mTranslationAnimation.animate(dy < 0);
             }
-        }
-    }
-
-    /*
-    * Additional panel translation listener
-    * */
-    private class OnTranslationListener extends BaseAnimationListener {
-
-        private boolean isTranslation = false;
-
-        public OnTranslationListener(final View view) {
-            super(view);
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            super.onAnimationEnd(animation);
-            if (isTranslation) {
-                mView.setVisibility(View.INVISIBLE);
-            } else {
-                mView.setVisibility(View.VISIBLE);
-            }
-        }
-
-        public void setTranslationType(final boolean isDown) {
-            isTranslation = isDown;
-        }
-    }
-
-    /*
-    * Hide or show additional panel animation
-    * */
-    private void animateAddPanel(final boolean isHide) {
-        if ((isHide && mAdditionalPanel.getVisibility() == View.VISIBLE) ||
-                (!isHide && mAdditionalPanel.getVisibility() == View.INVISIBLE)) {
-
-            // Get view position
-            final Rect rect = new Rect();
-            mAdditionalPanel.getLocalVisibleRect(rect);
-
-            final int height = mAdditionalPanel.getHeight();
-            float fromTop;
-            float toTop;
-
-            // Get new coordinates
-            if (isHide) {
-                fromTop = rect.top;
-                toTop = rect.top - height;
-            } else {
-                fromTop = rect.top - height;
-                toTop = rect.top;
-            }
-
-            // Animate transition
-            mTranslateListener.setTranslationType(isHide);
-            mTranslateAnimation = new TranslateAnimation(rect.left, rect.left, fromTop, toTop);
-            mTranslateAnimation.setDuration(ANIMATION_TRANSLATION_DURATION);
-            mTranslateAnimation.setInterpolator(new LinearInterpolator());
-            mTranslateAnimation.setAnimationListener(mTranslateListener);
-            mAdditionalPanel.startAnimation(mTranslateAnimation);
         }
     }
 

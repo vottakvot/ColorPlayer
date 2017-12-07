@@ -99,11 +99,11 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
     protected void onExpandClick() {
         final boolean isExpand = !(mTimeLayout.getVisibility() == View.VISIBLE);
         setPartPanelVisibility(isExpand);
-        PreferenceTool.getInstance().setExpand(isExpand);
+        PreferenceTool.getInstance().setControlPanelExpand(isExpand);
     }
 
     private void init() {
-        setPartPanelVisibility(PreferenceTool.getInstance().isExpand());
+        setPartPanelVisibility(PreferenceTool.getInstance().getControlPanelExpand());
     }
 
     private void setPartPanelVisibility(final boolean isVisible) {

@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import ru.testsimpleapps.coloraudioplayer.R;
+import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ConfigAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.fragments.PagerFragment;
@@ -81,6 +82,12 @@ public class MainActivity extends BaseActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        PlayerConfig.save();
     }
 
     @Override

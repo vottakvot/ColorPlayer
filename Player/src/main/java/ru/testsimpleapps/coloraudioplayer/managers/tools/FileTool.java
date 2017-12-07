@@ -2,6 +2,7 @@ package ru.testsimpleapps.coloraudioplayer.managers.tools;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Environment;
 
 import java.io.File;
 import java.util.List;
@@ -34,6 +35,14 @@ public class FileTool {
 
     public static String getAppPath(final Context context) {
         return context.getFilesDir().getAbsolutePath() + "/";
+    }
+
+    public static String getCachePath(final Context context) {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable()) {
+            return context.getExternalCacheDir().getPath();
+        } else {
+            return context.getCacheDir().getPath();
+        }
     }
 
 }

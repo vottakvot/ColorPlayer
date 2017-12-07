@@ -1,25 +1,15 @@
 package ru.testsimpleapps.coloraudioplayer.ui.fragments;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.Parcelable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -34,23 +24,24 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ru.testsimpleapps.coloraudioplayer.R;
+import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.ConfigData;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.ContainerData;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.FolderData;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.ItemData;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.FoldersComparator;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.ItemsComparator;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.MediaExplorerManager;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
-import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.BaseListAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFilesAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFolderAdapter;
-import ru.testsimpleapps.coloraudioplayer.ui.animation.BaseAnimationListener;
+import ru.testsimpleapps.coloraudioplayer.ui.animation.OnTranslationAnimation;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.ExplorerDialog;
 
 
 public class ExplorerFragment extends BaseFragment implements BaseListAdapter.OnItemClickListener,
-        MediaExplorerManager.OnDataReady, BaseListAdapter.OnItemCheckListener, ExplorerDialog.OnRadioButtonsCheck {
+        MediaExplorerManager.OnDataReady, BaseListAdapter.OnItemCheckListener, ExplorerDialog.OnViewEvent {
 
     public static final String TAG = ExplorerFragment.class.getSimpleName();
     private static final String TAG_ADD_PANEL = "TAG_ADD_PANEL";
@@ -60,8 +51,6 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
     private static final String TAG_FOLDER_POSITION = "TAG_FOLDER_POSITION";
     private static final String TAG_FOLDER_CONTENT = "TAG_FOLDER_CONTENT";
     private static final String TAG_PREVIOUS_STATE_ADAPTER = "TAG_PREVIOUS_STATE_ADAPTER";
-
-    private static final int ANIMATION_TRANSLATION_DURATION = 200;
 
     protected Unbinder mUnbinder;
 
@@ -93,15 +82,13 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
     @BindView(R.id.explorer_folders_add)
     protected ImageButton mAddFoldersButton;
 
-    private PlayerService mPlayerService;
     private ExplorerFilesAdapter mExplorerFilesAdapter;
     private ExplorerFolderAdapter mExplorerFolderAdapter;
     private Parcelable mFolderStateAdapter;
     private int mFolderPosition = 1;
-
-    private TranslateAnimation mTranslateAnimation;
-    private OnTranslationListener mTranslateListener;
     private ExplorerDialog mExplorerDialog;
+    private OnTranslationAnimation mOnTranslationAnimation;
+
 
     public static ExplorerFragment newInstance() {
         ExplorerFragment fragment = new ExplorerFragment();
@@ -115,19 +102,6 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         mUnbinder = ButterKnife.bind(this, view);
         init(savedInstanceState);
         return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Intent intent = new Intent(getContext(), PlayerService.class);
-        getContext().bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        getContext().unbindService(mServiceConnection);
     }
 
     @Override
@@ -157,14 +131,14 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         mFolderStateAdapter = mRecyclerView.getLayoutManager().onSaveInstanceState();
         final FolderData folderData = mExplorerFolderAdapter.getItem(position);
         final ContainerData<ItemData> itemData = folderData.getContainerItemData();
-        mExplorerFilesAdapter.setItems(sortFiles(PreferenceTool.getInstance().getSortType(), itemData.getList()));
+        mExplorerFilesAdapter.setItems(sortFiles(PreferenceTool.getInstance().getExplorerSortType(), itemData.getList()));
         mRecyclerView.setAdapter(mExplorerFilesAdapter);
         mRecyclerView.scheduleLayoutAnimation();
     }
 
     @Override
     public void onItemCheck(View view, int position) {
-        animateAddPanel(false);
+        mOnTranslationAnimation.animate(false);
     }
 
     @OnClick(R.id.explorer_files_back)
@@ -192,7 +166,7 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
             showToast(R.string.explorer_add_to_playlist_nothing);
         } else {
             showToast(getString(R.string.explorer_add_to_playlist) + items.size());
-            mPlayerService.getPlaylist().add(items);
+            CursorFactory.getInstance().add(items);
         }
     }
 
@@ -211,7 +185,7 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
             showToast(R.string.explorer_add_to_playlist_nothing);
         } else {
             showToast(getString(R.string.explorer_add_to_playlist) + items.size());
-            mPlayerService.getPlaylist().add(items);
+            CursorFactory.getInstance().add(items);
         }
     }
 
@@ -245,8 +219,8 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
     public void onSuccess() {
         showToast(R.string.explorer_find_media_ok);
         mProgressBar.setVisibility(View.INVISIBLE);
-        final List<FolderData> folderDataList = groupFolders(PreferenceTool.getInstance().getGroupType());
-        sortFolders(PreferenceTool.getInstance().getSortType(), folderDataList);
+        final List<FolderData> folderDataList = groupFolders(PreferenceTool.getInstance().getExplorerGroupType());
+        sortFolders(PreferenceTool.getInstance().getExplorerSortType(), folderDataList);
         mExplorerFolderAdapter.setItems(folderDataList);
         mRecyclerView.setAdapter(mExplorerFolderAdapter);
         mRecyclerView.scheduleLayoutAnimation();
@@ -273,26 +247,26 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
 
     private List<FolderData> groupFolders(final int value) {
         switch (value) {
-            case PreferenceTool.GROUP_TYPE_ALBUMS:
+            case ConfigData.GROUP_TYPE_ALBUMS:
                 return MediaExplorerManager.getInstance().getAlbums();
-            case PreferenceTool.GROUP_TYPE_FOLDERS:
+            case ConfigData.GROUP_TYPE_FOLDERS:
                 return MediaExplorerManager.getInstance().getFolders();
-            case PreferenceTool.GROUP_TYPE_ARTISTS:
+            case ConfigData.GROUP_TYPE_ARTISTS:
                 return MediaExplorerManager.getInstance().getArtists();
+            default:
+                return MediaExplorerManager.getInstance().getFolders();
         }
-
-        return null;
     }
 
     private List<FolderData> sortFolders(final int value, final List<FolderData> list) {
         switch (value) {
-            case PreferenceTool.SORT_TYPE_AZ:
+            case ConfigData.SORT_TYPE_AZ:
                 Collections.sort(list, new FoldersComparator.NameAz());
                 break;
-            case PreferenceTool.SORT_TYPE_ZA:
+            case ConfigData.SORT_TYPE_ZA:
                 Collections.sort(list, new FoldersComparator.NameZa());
                 break;
-            case PreferenceTool.SORT_TYPE_VALUE:
+            case ConfigData.SORT_TYPE_VALUE:
                 Collections.sort(list, new FoldersComparator.Size());
                 break;
         }
@@ -302,16 +276,16 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
 
     private List<ItemData> sortFiles(final int value, final List<ItemData> list) {
         switch (value) {
-            case PreferenceTool.SORT_TYPE_AZ:
+            case ConfigData.SORT_TYPE_AZ:
                 Collections.sort(list, new ItemsComparator.NameAz());
                 break;
-            case PreferenceTool.SORT_TYPE_ZA:
+            case ConfigData.SORT_TYPE_ZA:
                 Collections.sort(list, new ItemsComparator.NameZa());
                 break;
-            case PreferenceTool.SORT_TYPE_VALUE:
+            case ConfigData.SORT_TYPE_VALUE:
                 Collections.sort(list, new ItemsComparator.Duration());
                 break;
-            case PreferenceTool.SORT_TYPE_DATE:
+            case ConfigData.SORT_TYPE_DATE:
                 Collections.sort(list, new ItemsComparator.DataAdded());
                 break;
         }
@@ -323,10 +297,10 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         MediaExplorerManager.getInstance().setFindCallback(this);
 
         typePanelVisibility(true);
-        mTranslateListener = new OnTranslationListener(mAdditionalPanel);
+        mOnTranslationAnimation = new OnTranslationAnimation(mAdditionalPanel, OnTranslationAnimation.DEFAULT_DURATION);
 
         mExplorerDialog = new ExplorerDialog(getContext());
-        mExplorerDialog.setOnRadioButtonsCheck(this);
+        mExplorerDialog.setOnViewEvent(this);
         mExplorerFilesAdapter = new ExplorerFilesAdapter(getContext());
         mExplorerFilesAdapter.setOnItemCheckListener(this);
         mExplorerFolderAdapter = new ExplorerFolderAdapter(getContext());
@@ -411,22 +385,6 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         return false;
     }
 
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.d(TAG,  "onServiceConnected()");
-            PlayerService.LocalBinder binder = (PlayerService.LocalBinder) service;
-            mPlayerService = binder.getService();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            Log.d(TAG,  "onServiceDisconnected()");
-            mPlayerService = null;
-        }
-    };
-
     private class OnScrollRecycleViewListener extends RecyclerView.OnScrollListener {
 
         private int mState = -1;
@@ -440,70 +398,9 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            if (mState == RecyclerView.SCROLL_STATE_DRAGGING && !mTranslateListener.isAnimating()) {
-                animateAddPanel(dy < 0);
+            if (mState == RecyclerView.SCROLL_STATE_DRAGGING && !mOnTranslationAnimation.isAnimating()) {
+                mOnTranslationAnimation.animate(dy < 0);
             }
-        }
-    }
-
-
-    /*
-    * Additional panel translation listener
-    * */
-    private class OnTranslationListener extends BaseAnimationListener {
-
-        private boolean isTranslation = false;
-
-        public OnTranslationListener(final View view) {
-            super(view);
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            super.onAnimationEnd(animation);
-            if (isTranslation) {
-                mView.setVisibility(View.INVISIBLE);
-            } else {
-                mView.setVisibility(View.VISIBLE);
-            }
-        }
-
-        public void setTranslationType(final boolean isDown) {
-            isTranslation = isDown;
-        }
-    }
-
-    /*
-    * Hide or show additional panel animation
-    * */
-    private void animateAddPanel(final boolean isHide) {
-        if ((isHide && mAdditionalPanel.getVisibility() == View.VISIBLE) ||
-                (!isHide && mAdditionalPanel.getVisibility() == View.INVISIBLE)) {
-
-            // Get view position
-            final Rect rect = new Rect();
-            mAdditionalPanel.getLocalVisibleRect(rect);
-
-            final int height = mAdditionalPanel.getHeight();
-            float fromTop;
-            float toTop;
-
-            // Get new coordinates
-            if (isHide) {
-                fromTop = rect.top;
-                toTop = rect.top - height;
-            } else {
-                fromTop = rect.top - height;
-                toTop = rect.top;
-            }
-
-            // Animate transition
-            mTranslateListener.setTranslationType(isHide);
-            mTranslateAnimation = new TranslateAnimation(rect.left, rect.left, fromTop, toTop);
-            mTranslateAnimation.setDuration(ANIMATION_TRANSLATION_DURATION);
-            mTranslateAnimation.setInterpolator(new LinearInterpolator());
-            mTranslateAnimation.setAnimationListener(mTranslateListener);
-            mAdditionalPanel.startAnimation(mTranslateAnimation);
         }
     }
 

@@ -1,44 +1,69 @@
 package ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor;
 
 import ru.testsimpleapps.coloraudioplayer.App;
+import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 
 public class CursorFactory {
 
-    private static CursorPlaylist sCursorPlaylist = null;
-    private static CursorPlaylist sCursorPlaylistForView = null;
+    private static volatile CursorPlaylist sCursorPlaylist = null;
+    private static volatile CursorPlaylist sCursorPlaylistForView = null;
 
-    private CursorFactory() {
-    }
+    private CursorFactory() {}
 
-    public static IPlaylist getInstance(final long playlistId, final String sort) {
+    public static IPlaylist getInstance() {
+        CursorPlaylist cursorPlaylist = sCursorPlaylist;
         if (sCursorPlaylist == null) {
-            sCursorPlaylist = new CursorPlaylist(App.getContext());
+            synchronized (CursorFactory.class) {
+                cursorPlaylist = sCursorPlaylist;
+                if (cursorPlaylist == null) {
+                    sCursorPlaylist = cursorPlaylist = new CursorPlaylist(App.getContext());
+                    sCursorPlaylist.setCursor(PlayerConfig.getInstance().getPlaylistId(), PlayerConfig.getInstance().getPlaylistSort(),
+                            PlayerConfig.getInstance().getPlaylistSortOrder());
+                }
+            }
         }
 
-        sCursorPlaylist.setCursor(playlistId, sort);
-        return sCursorPlaylist;
+        return cursorPlaylist;
+    }
+
+    public static IPlaylist newInstance() {
+        final CursorPlaylist cursorPlaylist = (CursorPlaylist) getInstance();
+        synchronized (CursorFactory.class) {
+            cursorPlaylist.setCursor(PlayerConfig.getInstance().getPlaylistId(), PlayerConfig.getInstance().getPlaylistSort(),
+                    PlayerConfig.getInstance().getPlaylistSortOrder());
+        }
+
+        return cursorPlaylist;
     }
 
     public static IPlaylist getCopyInstance() {
-        if (sCursorPlaylist != null) {
-            if (sCursorPlaylistForView != null) {
-                sCursorPlaylistForView.closeCursor();
+        final CursorPlaylist cursorPlaylist = sCursorPlaylist;
+        CursorPlaylist viewCursorPlaylist = sCursorPlaylistForView;
+        if (cursorPlaylist != null) {
+            synchronized (CursorFactory.class) {
+                if (viewCursorPlaylist != null) {
+                    viewCursorPlaylist.closeCursor();
+                }
+                sCursorPlaylistForView = viewCursorPlaylist = (CursorPlaylist) cursorPlaylist.clone();
             }
-            sCursorPlaylistForView = (CursorPlaylist) sCursorPlaylist.clone();
-            return sCursorPlaylistForView;
         }
 
-        return null;
+        return viewCursorPlaylist;
     }
 
     public static void close() {
-        if (sCursorPlaylist != null) {
-            sCursorPlaylist.closeCursor();
-        }
+        final CursorPlaylist cursorPlaylist = sCursorPlaylist;
+        final CursorPlaylist viewCursorPlaylist = sCursorPlaylistForView;
 
-        if (sCursorPlaylistForView != null) {
-            sCursorPlaylistForView.closeCursor();
+        if (cursorPlaylist != null) {
+            synchronized (CursorFactory.class) {
+                cursorPlaylist.closeCursor();
+                if (viewCursorPlaylist != null) {
+                    viewCursorPlaylist.closeCursor();
+                }
+            }
         }
     }
+
 }

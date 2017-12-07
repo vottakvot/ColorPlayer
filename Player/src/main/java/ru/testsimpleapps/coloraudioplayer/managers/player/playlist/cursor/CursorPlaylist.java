@@ -9,19 +9,23 @@ import java.io.File;
 import java.util.List;
 
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.CursorTool;
+import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 
 public class CursorPlaylist implements IPlaylist {
 
     private final Context mContext;
     private Cursor mPlaylist;
-    private long mPlaylistId = NOT_INIT;
-    private String mSortBy = CursorTool.SORT_NONE;
+    private long mPlaylistId;
+    private String mSortBy;
+    private String mSortOrder;
     private long mTotalTime;
 
     public CursorPlaylist(@NonNull final Context context) {
         mContext = context;
         mPlaylistId = NOT_INIT;
-        mSortBy = CursorTool.SORT_NONE;
+        mSortBy = CursorTool.FIELD_NONE;
+        mSortOrder = CursorTool.SORT_ORDER_ASC;
     }
 
     @Override
@@ -33,6 +37,7 @@ public class CursorPlaylist implements IPlaylist {
 
         final int count = CursorTool.addToPlaylist(mContext.getContentResolver(), mPlaylistId, itemsList);
         recountTotalTime();
+        PlayerService.sendPlaylistUpdate(mContext);
         return count > 0;
     }
 
@@ -40,6 +45,7 @@ public class CursorPlaylist implements IPlaylist {
     public boolean delete(long id) {
         final int count = CursorTool.deleteTrackFromPlaylist(mContext.getContentResolver(), mPlaylistId, id);
         recountTotalTime();
+        PlayerService.sendPlaylistUpdate(mContext);
         return count > 0;
     }
 
@@ -148,7 +154,7 @@ public class CursorPlaylist implements IPlaylist {
         if (mPlaylistId > IPlaylist.NOT_INIT) {
             try {
                 clone = (CursorPlaylist) super.clone();
-                clone.setPlaylist(CursorTool.getTracksFromPlaylist(mContext.getContentResolver(), mPlaylistId, mSortBy));
+                clone.setPlaylist(CursorTool.getTracksFromPlaylist(mContext.getContentResolver(), mPlaylistId, mSortBy, mSortOrder));
             } catch (CloneNotSupportedException e) {
                 throw new RuntimeException(e);
             }
@@ -173,14 +179,17 @@ public class CursorPlaylist implements IPlaylist {
         return mTotalTime;
     }
 
-    public IPlaylist setCursor(final long playlistId, final String sortBy) {
+    public IPlaylist setCursor(final long playlistId, final String sortBy, final String sortOrder) {
         if (playlistId > IPlaylist.NOT_INIT) {
             mPlaylistId = playlistId;
             mSortBy = sortBy;
-            Cursor activePlaylist = CursorTool.getTracksFromPlaylist(mContext.getContentResolver(), mPlaylistId, sortBy);
+            mSortOrder = sortOrder;
+            Cursor activePlaylist = CursorTool.getTracksFromPlaylist(mContext.getContentResolver(), mPlaylistId, sortBy, sortOrder);
             if (activePlaylist != null && activePlaylist.getCount() > 0) {
                 closeCursor();
                 mPlaylist = activePlaylist;
+                recountTotalTime();
+                PlayerService.sendPlaylistUpdate(mContext);
                 return this;
             }
         }

@@ -9,7 +9,7 @@ import android.view.animation.TranslateAnimation;
 
 public class OnTranslationAnimation extends BaseAnimationListener {
 
-    private static final int DEFAULT_DURATION = 200;
+    public static final int DEFAULT_DURATION = 200;
     private boolean mIsTranslation = false;
     private int mDuration = DEFAULT_DURATION;
 
@@ -31,7 +31,6 @@ public class OnTranslationAnimation extends BaseAnimationListener {
     public void animate(final boolean isHide) {
         if ((isHide && mView.getVisibility() == View.VISIBLE) ||
                 (!isHide && mView.getVisibility() == View.INVISIBLE)) {
-
             mIsTranslation = isHide;
 
             // Get view position
