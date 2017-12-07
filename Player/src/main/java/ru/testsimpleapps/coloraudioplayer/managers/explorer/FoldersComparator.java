@@ -7,24 +7,31 @@ import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.FolderData;
 
 public class FoldersComparator {
 
-    public static class NameAz implements Comparator<FolderData> {
-        @Override
-        public int compare(FolderData data1, FolderData data2) {
-            return data1.getName().compareTo(data2.getName());
-        }
-    }
+    public static class Name implements Comparator<FolderData> {
 
-    public static class NameZa implements Comparator<FolderData> {
+        private final int mSortOrder;
+
+        public Name(final int sortOrder) {
+            mSortOrder = sortOrder;
+        }
+
         @Override
         public int compare(FolderData data1, FolderData data2) {
-            return -data1.getName().compareTo(data2.getName());
+            return mSortOrder * data1.getName().compareTo(data2.getName());
         }
     }
 
     public static class Size implements Comparator<FolderData> {
+
+        private final int mSortOrder;
+
+        public Size(final int sortOrder) {
+            mSortOrder = sortOrder;
+        }
+
         @Override
         public int compare(FolderData data1, FolderData data2) {
-            return -Integer.valueOf(data1.size()).compareTo(data2.size());
+            return mSortOrder * Integer.valueOf(data1.size()).compareTo(data2.size());
         }
     }
 

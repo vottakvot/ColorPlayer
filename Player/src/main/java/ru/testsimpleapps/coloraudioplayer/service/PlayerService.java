@@ -42,8 +42,10 @@ import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 public class PlayerService extends Service implements Handler.Callback {
 
+    public static final String TAG = PlayerService.class.getSimpleName();
+
     /*
-    * NameAz for player service
+    * Name for player service
     * */
     public static final String NAME_PLAYBACK_SERVICE = "PLAYER_SERVICE";
 
@@ -59,12 +61,20 @@ public class PlayerService extends Service implements Handler.Callback {
     public static final String ACTION_AUDIO_EFFECTS = "ru.color_player.action.AUDIO_EFFECTS";
     public static final String ACTION_EXIT = "ru.color_player.action.EXIT";
 
+    /*
+    * Service commands extra
+    * */
+    public static final String EXTRA_PLAY_POSITION = "EXTRA_PLAY_POSITION";
+    public static final String EXTRA_PLAY_PAUSE = "EXTRA_PLAY_PAUSE";
+    public static final String EXTRA_PLAY_PROGRESS = "EXTRA_PLAY_PROGRESS";
+    public static final String EXTRA_PLAY_DURATION = "EXTRA_PLAY_DURATION";
 
     /*
     * State update
     * */
     public static final String RECEIVER_PLAYLIST_ADD = "ru.color_player.action.ADD";
-
+    public static final String RECEIVER_PLAY_PAUSE = "ru.color_player.action.PLAY_PAUSE";
+    public static final String RECEIVER_PLAY_PROGRESS = "ru.color_player.action.PROGRESS";
 
     /*
     * Keys for extras
@@ -87,7 +97,6 @@ public class PlayerService extends Service implements Handler.Callback {
     * Player's objects
     * */
     private AudioPlayer mMediaPlayer;
-    private IPlaylist mPlaylist;
     private Visualizer mVisualizerPlayer;
     private Equalizer mEqualizer;
     private BassBoost mBassBoost;
@@ -157,44 +166,41 @@ public class PlayerService extends Service implements Handler.Callback {
     public boolean handleMessage(Message msg) {
         boolean isHandled = false;
         if (msg != null) {
-            Intent intent = (Intent) msg.obj;
-            String command = intent.getAction();
+            synchronized (mMediaPlayer) {
+                final Intent intent = (Intent) msg.obj;
+                final String command = intent.getAction();
 
-            if (command.equals(ACTION_PLAY)) {
-                if (intent.hasExtra(KEY_PLAY_PAUSE)) {
-                    isHandled = mMediaPlayer.playPause();
-                    updatePlayButton(mMediaPlayer.isPlaying());
+                // Play/Pause action
+                if (command.equals(ACTION_PLAY)) {
+                    if (intent.hasExtra(EXTRA_PLAY_POSITION)) {
+                        if (CursorFactory.getInstance().goToId(intent.getLongExtra(EXTRA_PLAY_POSITION, IPlaylist.NOT_INIT))) {
+                            isHandled = mMediaPlayer.playNew();
+                        }
+                    } else if (intent.hasExtra(EXTRA_PLAY_PAUSE)) {
+                        isHandled = mMediaPlayer.playPause();
+                    }
+
+                    // Update views
+                    sendBroadcastPlayButton(mMediaPlayer.isPlaying());
+                    sendBroadcastDuration(mMediaPlayer.getDuration());
                 }
 
-                if (intent.hasExtra(KEY_PLAY_NEW)) {
-                    isHandled = mMediaPlayer.playNew();
-                    updatePlayButton(mMediaPlayer.isPlaying());
+                // Next action
+                if (command.equals(ACTION_NEXT)) {
+                    isHandled = mMediaPlayer.next();
                 }
-            }
 
-            if (command.equals(ACTION_NEXT)) {
-                isHandled = mMediaPlayer.next();
-                updatePlayButton(mMediaPlayer.isPlaying());
-            }
+                // Previous action
+                if (command.equals(ACTION_PREVIOUS)) {
+                    isHandled = mMediaPlayer.previous();
+                }
 
-            if (command.equals(ACTION_PREVIOUS)) {
-                isHandled = mMediaPlayer.previous();
-                updatePlayButton(mMediaPlayer.isPlaying());
-            }
-
-            if (command.equals(ACTION_SEEK)) {
-                int seek = intent.getIntExtra(KEY_SEEK, AudioPlayer.MIN_SEEK_POSITION);
-                isHandled = mMediaPlayer.seek(seek);
-            }
-
-            if (command.equals(ACTION_AUDIO_EFFECTS)) {
-
-            }
-
-            if (command.equals(ACTION_TIMER_START)) {
-            }
-
-            if (command.equals(ACTION_TIMER_RESET)) {
+                // Seek action
+                if (command.equals(ACTION_SEEK)) {
+                    if (intent.hasExtra(EXTRA_PLAY_PROGRESS)) {
+                        isHandled = mMediaPlayer.seek(intent.getIntExtra(EXTRA_PLAY_PROGRESS, AudioPlayer.MIN_SEEK_POSITION));
+                    }
+                }
             }
         }
 
@@ -215,8 +221,8 @@ public class PlayerService extends Service implements Handler.Callback {
         queueHandler = new Handler(playerLooper, this);
 
         // Player initialisation
-        mPlaylist = CursorFactory.getInstance();
-        mMediaPlayer = new AudioPlayer(getApplicationContext(), PlayerConfig.getInstance(), mPlaylist);
+        PlayerConfig.getInstance().setPlaylistId(2691);
+        mMediaPlayer = new AudioPlayer(getApplicationContext(), PlayerConfig.getInstance(), CursorFactory.getInstance());
         mSeekBarUpdater = new SeekBarUpdater();
         mSeekBarUpdater.execute();
 
@@ -228,6 +234,7 @@ public class PlayerService extends Service implements Handler.Callback {
     }
 
     private void destroy() {
+        mSeekBarUpdater.cancel(true);
         mMediaPlayer.release();
         playerLooper.quit();
 
@@ -237,12 +244,6 @@ public class PlayerService extends Service implements Handler.Callback {
         PlayerConfig.save();
         // Receiver for media buttons
         //unregisterMediaButtonsReceiver();
-    }
-
-    private void updatePlayButton(boolean isPlay) {
-//        Intent intentView = new Intent(ViewUpdaterReceiver.UPDATE_PLAY_BUTTON);
-//        intentView.putExtra(ViewUpdaterReceiver.UPDATE_PLAY_BUTTON, isPlay);
-//        LocalBroadcastManager.getInstance(this).sendBroadcast(intentView);
     }
 
     private void updateSeekBarPosition() {
@@ -404,8 +405,8 @@ public class PlayerService extends Service implements Handler.Callback {
         // Update track name
         if (trackName != null) {
             remoteView.setTextViewText(R.id.nameTrackNotification, trackName);
-        } else if (mPlaylist.getTrackName() != null) {
-            remoteView.setTextViewText(R.id.nameTrackNotification, mPlaylist.getTrackName());
+        } else if (CursorFactory.getInstance().getTrackName() != null) {
+            remoteView.setTextViewText(R.id.nameTrackNotification, CursorFactory.getInstance().getTrackName());
         }
 
         // Update play/pause icon
@@ -440,45 +441,88 @@ public class PlayerService extends Service implements Handler.Callback {
         protected Void doInBackground(Void... params) {
             try {
                 while (true) {
-                    if (mMediaPlayer.isPlaying())
-                        updateSeekBarPosition();
-                    Thread.sleep(500);
+                    synchronized (mMediaPlayer) {
+                        if (mMediaPlayer.isPlaying())
+                            sendBroadcastProgress(mMediaPlayer.getPosition());
+                    }
+
+                    Thread.sleep(1000);
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.i(TAG, e.getMessage());
             }
+
             return null;
         }
     }
 
-    public boolean addToPlaylist(final Object items) {
-        final boolean isAdd = mPlaylist.add(items);
-        if (isAdd) {
-
-        }
-
-        return isAdd;
+    /*
+    * For receiver
+    * */
+    public static void sendBroadcastPlaylistUpdate() {
+        Intent intent = new Intent(RECEIVER_PLAYLIST_ADD);
+        LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
     }
 
-    public IPlaylist getPlaylist() {
-        return mPlaylist;
+    public static void sendBroadcastPlayButton(final boolean isPlay) {
+        Intent intent = new Intent(RECEIVER_PLAY_PAUSE);
+        intent.putExtra(EXTRA_PLAY_PAUSE, isPlay);
+        LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
     }
 
-    public IPlaylist getCopyPlaylist() {
-        return CursorFactory.getCopyInstance();
+    public static void sendBroadcastProgress(final int progress) {
+        Intent intent = new Intent(RECEIVER_PLAY_PROGRESS);
+        intent.putExtra(EXTRA_PLAY_PROGRESS, progress);
+        LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
     }
 
-    public Equalizer getEqualizer() {
-        return mEqualizer;
+    public static void sendBroadcastDuration(final int duration) {
+        Intent intent = new Intent(RECEIVER_PLAY_PROGRESS);
+        intent.putExtra(EXTRA_PLAY_DURATION, duration);
+        LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
     }
 
-    public BassBoost getBassBoost() {
-        return mBassBoost;
+    /*
+    * For service command
+    * */
+    public static void sendCommandTrackSelect(final long id) {
+        Intent intent = new Intent(App.getContext(), PlayerService.class);
+        intent.setAction(ACTION_PLAY);
+        intent.putExtra(EXTRA_PLAY_POSITION, id);
+        App.getContext().startService(intent);
     }
 
-    public static void sendPlaylistUpdate(final Context context) {
-        Intent intentView = new Intent(RECEIVER_PLAYLIST_ADD);
-        LocalBroadcastManager.getInstance(context).sendBroadcast(intentView);
+    public static void sendCommandControlCheck() {
+        Intent intent = new Intent(App.getContext(), PlayerService.class);
+        intent.setAction(ACTION_PLAY);
+        App.getContext().startService(intent);
     }
+
+    public static void sendCommandPlayPause() {
+        Intent intent = new Intent(App.getContext(), PlayerService.class);
+        intent.setAction(ACTION_PLAY);
+        intent.putExtra(EXTRA_PLAY_PAUSE, EXTRA_PLAY_PAUSE);
+        App.getContext().startService(intent);
+    }
+
+    public static void sendCommandNext() {
+        Intent intent = new Intent(App.getContext(), PlayerService.class);
+        intent.setAction(ACTION_NEXT);
+        App.getContext().startService(intent);
+    }
+
+    public static void sendCommandPrevious() {
+        Intent intent = new Intent(App.getContext(), PlayerService.class);
+        intent.setAction(ACTION_PREVIOUS);
+        App.getContext().startService(intent);
+    }
+
+    public static void sendCommandSeek(final int progress) {
+        Intent intent = new Intent(App.getContext(), PlayerService.class);
+        intent.setAction(ACTION_SEEK);
+        intent.putExtra(EXTRA_PLAY_PROGRESS, progress);
+        App.getContext().startService(intent);
+    }
+
 
 }

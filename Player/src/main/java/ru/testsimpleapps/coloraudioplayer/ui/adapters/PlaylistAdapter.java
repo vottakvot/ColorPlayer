@@ -51,7 +51,7 @@ public class PlaylistAdapter extends BaseAdapter {
         if (mIPlaylist != null) {
             if (viewHolder instanceof ViewHolderItem) {
                 final ViewHolderItem mViewHolder = (ViewHolderItem) viewHolder;
-                mIPlaylist.goTo(i - 1);
+                mIPlaylist.goToPosition(i - 1);
 
                 // Main
                 mViewHolder.mImageTrack.setImageResource(R.drawable.item_track);
@@ -90,6 +90,15 @@ public class PlaylistAdapter extends BaseAdapter {
             return TYPE_HEADER;
         }
         return TYPE_ITEM;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (mIPlaylist != null && mIPlaylist.goToPosition(position)) {
+            return mIPlaylist.getTrackId();
+        }
+
+        return IPlaylist.NOT_INIT;
     }
 
     public void setPlaylist(final IPlaylist iPlaylist) {
@@ -157,7 +166,7 @@ public class PlaylistAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     if (mOnItemClickListener != null) {
-                        mOnItemClickListener.onItemClick(view, getLayoutPosition());
+                        mOnItemClickListener.onItemClick(view, getLayoutPosition() - 1);
                     }
                 }
             });

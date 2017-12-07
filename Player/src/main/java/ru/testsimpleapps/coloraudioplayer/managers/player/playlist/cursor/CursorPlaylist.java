@@ -37,7 +37,7 @@ public class CursorPlaylist implements IPlaylist {
 
         final int count = CursorTool.addToPlaylist(mContext.getContentResolver(), mPlaylistId, itemsList);
         recountTotalTime();
-        PlayerService.sendPlaylistUpdate(mContext);
+        PlayerService.sendBroadcastPlaylistUpdate();
         return count > 0;
     }
 
@@ -45,7 +45,7 @@ public class CursorPlaylist implements IPlaylist {
     public boolean delete(long id) {
         final int count = CursorTool.deleteTrackFromPlaylist(mContext.getContentResolver(), mPlaylistId, id);
         recountTotalTime();
-        PlayerService.sendPlaylistUpdate(mContext);
+        PlayerService.sendBroadcastPlaylistUpdate();
         return count > 0;
     }
 
@@ -60,8 +60,20 @@ public class CursorPlaylist implements IPlaylist {
     }
 
     @Override
-    public boolean goTo(long position) {
+    public boolean goToPosition(long position) {
         return mPlaylist != null ? mPlaylist.moveToPosition((int) position) : false;
+    }
+
+    @Override
+    public boolean goToId(long id) {
+        if (toFirst()) {
+            do {
+                if (getTrackId() == id)
+                    return true;
+            } while (toNext());
+        }
+
+        return false;
     }
 
     @Override
@@ -137,7 +149,7 @@ public class CursorPlaylist implements IPlaylist {
     @Override
     public long find(final long position, final String name) {
         if (name != null && !name.equals("")) {
-            if (goTo(position)) {
+            if (goToPosition(position)) {
                 do {
                     if (getTrackName().matches("(?i).*(" + name + ").*"))
                         return position();
@@ -189,7 +201,7 @@ public class CursorPlaylist implements IPlaylist {
                 closeCursor();
                 mPlaylist = activePlaylist;
                 recountTotalTime();
-                PlayerService.sendPlaylistUpdate(mContext);
+                PlayerService.sendBroadcastPlaylistUpdate();
                 return this;
             }
         }

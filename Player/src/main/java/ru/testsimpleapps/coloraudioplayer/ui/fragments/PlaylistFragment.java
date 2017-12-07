@@ -21,7 +21,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
 import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
@@ -31,7 +30,8 @@ import ru.testsimpleapps.coloraudioplayer.ui.dialogs.PlaylistSettingsDialog;
 import ru.testsimpleapps.coloraudioplayer.ui.views.RecycleViewLayoutManager;
 
 
-public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDialog.OnViewEvent {
+public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDialog.OnViewEvent,
+        PlaylistAdapter.OnItemClickListener {
 
     public static final String TAG = PlaylistFragment.class.getSimpleName();
     private static final String TAG_ADD_PANEL = "TAG_ADD_PANEL";
@@ -108,14 +108,12 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
 
     @Override
     public void onSort(String value) {
-        PlayerConfig.getInstance().setPlaylistSort(value);
         CursorFactory.newInstance();
         setPlaylist();
     }
 
     @Override
     public void onSortOrder(String value) {
-        PlayerConfig.getInstance().setPlaylistSortOrder(value);
         CursorFactory.newInstance();
         setPlaylist();
     }
@@ -124,6 +122,11 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
     public void onView(boolean isValue) {
         mPlaylistAdapter.setExpand(isValue);
         mRecyclerView.scheduleLayoutAnimation();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        PlayerService.sendCommandTrackSelect(mPlaylistAdapter.getItemId(position));
     }
 
     private void init(final Bundle savedInstanceState) {
@@ -139,6 +142,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
         mRecyclerView.setLayoutManager(mRecycleViewLayoutManager);
         mRecyclerView.addOnScrollListener(new OnScrollRecycleViewListener());
         mPlaylistAdapter = new PlaylistAdapter(getContext());
+        mPlaylistAdapter.setOnItemClickListener(this);
         mPlaylistAdapter.setExpand(PreferenceTool.getInstance().getPlaylistViewExpand());
         mRecyclerView.setAdapter(mPlaylistAdapter);
 
@@ -164,14 +168,13 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
-                final String message = intent.getAction();
-                if (message != null) {
+                final String action = intent.getAction();
+                if (action != null) {
 
-                    // Update list
-                    if (message.equals(PlayerService.RECEIVER_PLAYLIST_ADD)) {
+                    // Update list resize
+                    if (action.equals(PlayerService.RECEIVER_PLAYLIST_ADD)) {
                         setPlaylist();
                     }
-
                 }
             }
         }

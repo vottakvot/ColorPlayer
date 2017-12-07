@@ -2,6 +2,8 @@ package ru.testsimpleapps.coloraudioplayer.ui.dialogs;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -11,11 +13,12 @@ import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.ConfigData;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
 
-public class ExplorerDialog extends BaseDialog {
+public class ExplorerSettingsDialog extends BaseDialog {
 
     public interface OnViewEvent {
         void onGroup(int value);
         void onSort(int value);
+        void onSortOrder(int value);
     }
 
     private final Context mContext;
@@ -38,16 +41,20 @@ public class ExplorerDialog extends BaseDialog {
     protected RadioButton mRadioButtonArtists;
     @BindView(R.id.explorer_dialog_groups_folders)
     protected RadioButton mRadioButtonFolders;
-    @BindView(R.id.explorer_dialog_sort_name_az)
-    protected RadioButton mRadioButtonAz;
-    @BindView(R.id.explorer_dialog_sort_name_za)
-    protected RadioButton mRadioButtonZa;
+    @BindView(R.id.explorer_dialog_sort_name)
+    protected RadioButton mRadioButtonName;
     @BindView(R.id.explorer_dialog_sort_date)
     protected RadioButton mRadioButtonDate;
     @BindView(R.id.explorer_dialog_sort_value)
     protected RadioButton mRadioButtonValue;
 
-    public ExplorerDialog(Context context) {
+    /*
+    * Checkbox
+    * */
+    @BindView(R.id.explorer_dialog_sort_checkbox)
+    protected CheckBox mSortOrderCheckbox;
+
+    public ExplorerSettingsDialog(Context context) {
         super(context);
         mContext = context;
     }
@@ -59,9 +66,25 @@ public class ExplorerDialog extends BaseDialog {
     }
 
     private void init() {
-        setContentView(R.layout.dialog_explorer);
+        setContentView(R.layout.dialog_explorer_settings);
         ButterKnife.bind(this);
         setRadioButtons();
+        mSortOrderCheckbox.setChecked(false);
+        final int sortOrder = PreferenceTool.getInstance().getExplorerSortOrder();
+        if (sortOrder == ConfigData.SORT_ORDER_ASC) {
+            mSortOrderCheckbox.setChecked(false);
+        }
+
+        mSortOrderCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                final int sortOrder = isChecked? ConfigData.SORT_ORDER_ASC : ConfigData.SORT_ORDER_DESC;
+                PreferenceTool.getInstance().setExplorerSortOrder(sortOrder);
+                if (mOnViewEvent != null) {
+                    mOnViewEvent.onSortOrder(sortOrder);
+                }
+            }
+        });
     }
 
     private void setRadioButtons() {
@@ -83,11 +106,8 @@ public class ExplorerDialog extends BaseDialog {
 
         // Set sort
         switch (sortType) {
-            case ConfigData.SORT_TYPE_AZ:
-                mRadioButtonAz.setChecked(true);
-                break;
-            case ConfigData.SORT_TYPE_ZA:
-                mRadioButtonZa.setChecked(true);
+            case ConfigData.SORT_TYPE_NAME:
+                mRadioButtonName.setChecked(true);
                 break;
             case ConfigData.SORT_TYPE_DATE:
                 mRadioButtonDate.setChecked(true);
@@ -137,13 +157,9 @@ public class ExplorerDialog extends BaseDialog {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             switch (checkedId) {
-                case R.id.explorer_dialog_sort_name_az:
-                    PreferenceTool.getInstance().setExplorerSortType(ConfigData.SORT_TYPE_AZ);
-                    invokeCallback(ConfigData.SORT_TYPE_AZ);
-                    break;
-                case R.id.explorer_dialog_sort_name_za:
-                    PreferenceTool.getInstance().setExplorerSortType(ConfigData.SORT_TYPE_ZA);
-                    invokeCallback(ConfigData.SORT_TYPE_ZA);
+                case R.id.explorer_dialog_sort_name:
+                    PreferenceTool.getInstance().setExplorerSortType(ConfigData.SORT_TYPE_NAME);
+                    invokeCallback(ConfigData.SORT_TYPE_NAME);
                     break;
                 case R.id.explorer_dialog_sort_value:
                     PreferenceTool.getInstance().setExplorerSortType(ConfigData.SORT_TYPE_VALUE);

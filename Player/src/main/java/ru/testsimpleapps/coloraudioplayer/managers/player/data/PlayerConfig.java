@@ -141,12 +141,28 @@ public final class PlayerConfig implements Serializable {
         mIsRandom = random;
     }
 
+    public boolean setRandom() {
+        return mIsRandom = mIsRandom? false : true;
+    }
+
     public Repeat getRepeat() {
         return mRepeat;
     }
 
     public void setRepeat(final Repeat repeat) {
         mRepeat = repeat;
+    }
+
+    public Repeat setRepeat() {
+        if (mRepeat == Repeat.ALL) {
+            mRepeat = Repeat.ONE;
+        } else if (mRepeat == Repeat.ONE) {
+            mRepeat = Repeat.NONE;
+        } else {
+            mRepeat = Repeat.ALL;
+        }
+
+        return mRepeat;
     }
 
     public int getLastSeekPosition() {

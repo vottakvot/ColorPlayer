@@ -144,7 +144,7 @@
         <item name="android:layout_margin">@dimen/playlist_item_outer_layout_margin</item>
         <item name="android:paddingTop">@dimen/playlist_item_outer_layout_paddingTop</item>
         <item name="android:paddingBottom">@dimen/playlist_item_outer_layout_paddingBottom</item>
-        <item name="android:background">@drawable/selector_listview_item</item>
+        <item name="android:background">@drawable/selector_listview_playlist_item</item>
     </style>
 
     <style name="PlayerPlaylistItemLayoutDescriptions">

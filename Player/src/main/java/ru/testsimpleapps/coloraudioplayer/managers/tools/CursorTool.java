@@ -18,6 +18,8 @@ public class CursorTool {
     public static final String FIELD_NAME = MediaStore.Audio.Media.DATA;
     public static final String FIELD_DURATION = MediaStore.Audio.Media.DURATION;
     public static final String FIELD_MODIFY = MediaStore.Audio.Media.DATE_MODIFIED;
+    public static final String FIELD_ARTIST = MediaStore.Audio.Media.ARTIST;
+    public static final String FIELD_ALBUMS = MediaStore.Audio.Media.ALBUM;
     public static final String FIELD_NONE = null;
 
     public static Map<Long, String> getPlaylists(ContentResolver resolver) {

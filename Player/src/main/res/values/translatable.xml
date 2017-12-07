@@ -28,10 +28,10 @@
     <string name="explorer_sort_by_folders">Folders</string>
     <string name="explorer_sort_by_artists">Artists</string>
     <string name="explorer_sort_by_albums">Albums</string>
-    <string name="explorer_sort_by_AZ">A-Z</string>
-    <string name="explorer_sort_by_ZA">Z-A</string>
+    <string name="explorer_sort_by_name">Name</string>
     <string name="explorer_sort_by_size">Size/Duration</string>
     <string name="explorer_sort_by_date">Date</string>
+    <string name="explorer_sort_order">Sort order</string>
 
     <string name="explorer_clear_check">All check cleared!</string>
     <string name="explorer_update_music">Update music list</string>
@@ -61,6 +61,8 @@
     <string name="playlist_sort_by_name">Name</string>
     <string name="playlist_sort_by_size">Size/Duration</string>
     <string name="playlist_sort_by_date">Date</string>
+    <string name="playlist_sort_by_artist">Artist</string>
+    <string name="playlist_sort_by_albums">Album</string>
     <string name="playlist_view_expand">Expand view</string>
 
 

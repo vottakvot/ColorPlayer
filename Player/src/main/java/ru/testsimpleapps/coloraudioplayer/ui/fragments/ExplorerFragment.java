@@ -37,11 +37,11 @@ import ru.testsimpleapps.coloraudioplayer.ui.adapters.BaseListAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFilesAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFolderAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.animation.OnTranslationAnimation;
-import ru.testsimpleapps.coloraudioplayer.ui.dialogs.ExplorerDialog;
+import ru.testsimpleapps.coloraudioplayer.ui.dialogs.ExplorerSettingsDialog;
 
 
 public class ExplorerFragment extends BaseFragment implements BaseListAdapter.OnItemClickListener,
-        MediaExplorerManager.OnDataReady, BaseListAdapter.OnItemCheckListener, ExplorerDialog.OnViewEvent {
+        MediaExplorerManager.OnDataReady, BaseListAdapter.OnItemCheckListener, ExplorerSettingsDialog.OnViewEvent {
 
     public static final String TAG = ExplorerFragment.class.getSimpleName();
     private static final String TAG_ADD_PANEL = "TAG_ADD_PANEL";
@@ -86,7 +86,7 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
     private ExplorerFolderAdapter mExplorerFolderAdapter;
     private Parcelable mFolderStateAdapter;
     private int mFolderPosition = 1;
-    private ExplorerDialog mExplorerDialog;
+    private ExplorerSettingsDialog mExplorerDialog;
     private OnTranslationAnimation mOnTranslationAnimation;
 
 
@@ -131,7 +131,8 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         mFolderStateAdapter = mRecyclerView.getLayoutManager().onSaveInstanceState();
         final FolderData folderData = mExplorerFolderAdapter.getItem(position);
         final ContainerData<ItemData> itemData = folderData.getContainerItemData();
-        mExplorerFilesAdapter.setItems(sortFiles(PreferenceTool.getInstance().getExplorerSortType(), itemData.getList()));
+        mExplorerFilesAdapter.setItems(sortFiles(PreferenceTool.getInstance().getExplorerSortType(),
+                PreferenceTool.getInstance().getExplorerSortOrder(), itemData.getList()));
         mRecyclerView.setAdapter(mExplorerFilesAdapter);
         mRecyclerView.scheduleLayoutAnimation();
     }
@@ -220,7 +221,8 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         showToast(R.string.explorer_find_media_ok);
         mProgressBar.setVisibility(View.INVISIBLE);
         final List<FolderData> folderDataList = groupFolders(PreferenceTool.getInstance().getExplorerGroupType());
-        sortFolders(PreferenceTool.getInstance().getExplorerSortType(), folderDataList);
+        sortFolders(PreferenceTool.getInstance().getExplorerSortType(),
+                PreferenceTool.getInstance().getExplorerSortOrder(), folderDataList);
         mExplorerFolderAdapter.setItems(folderDataList);
         mRecyclerView.setAdapter(mExplorerFolderAdapter);
         mRecyclerView.scheduleLayoutAnimation();
@@ -240,7 +242,14 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
 
     @Override
     public void onSort(final int value) {
-        sortFolders(value, mExplorerFolderAdapter.getItemList());
+        sortFolders(value, PreferenceTool.getInstance().getExplorerSortOrder(), mExplorerFolderAdapter.getItemList());
+        mExplorerFolderAdapter.notifyDataSetChanged();
+        mRecyclerView.scheduleLayoutAnimation();
+    }
+
+    @Override
+    public void onSortOrder(int value) {
+        sortFolders(PreferenceTool.getInstance().getExplorerSortType(), value, mExplorerFolderAdapter.getItemList());
         mExplorerFolderAdapter.notifyDataSetChanged();
         mRecyclerView.scheduleLayoutAnimation();
     }
@@ -258,35 +267,29 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         }
     }
 
-    private List<FolderData> sortFolders(final int value, final List<FolderData> list) {
-        switch (value) {
-            case ConfigData.SORT_TYPE_AZ:
-                Collections.sort(list, new FoldersComparator.NameAz());
-                break;
-            case ConfigData.SORT_TYPE_ZA:
-                Collections.sort(list, new FoldersComparator.NameZa());
+    private List<FolderData> sortFolders(final int sortType, final int sortOrder, final List<FolderData> list) {
+        switch (sortType) {
+            case ConfigData.SORT_TYPE_NAME:
+                Collections.sort(list, new FoldersComparator.Name(sortOrder));
                 break;
             case ConfigData.SORT_TYPE_VALUE:
-                Collections.sort(list, new FoldersComparator.Size());
+                Collections.sort(list, new FoldersComparator.Size(sortOrder));
                 break;
         }
 
         return list;
     }
 
-    private List<ItemData> sortFiles(final int value, final List<ItemData> list) {
-        switch (value) {
-            case ConfigData.SORT_TYPE_AZ:
-                Collections.sort(list, new ItemsComparator.NameAz());
-                break;
-            case ConfigData.SORT_TYPE_ZA:
-                Collections.sort(list, new ItemsComparator.NameZa());
+    private List<ItemData> sortFiles(final int sortType, final int sortOrder, final List<ItemData> list) {
+        switch (sortType) {
+            case ConfigData.SORT_TYPE_NAME:
+                Collections.sort(list, new ItemsComparator.Name(sortOrder));
                 break;
             case ConfigData.SORT_TYPE_VALUE:
-                Collections.sort(list, new ItemsComparator.Duration());
+                Collections.sort(list, new ItemsComparator.Duration(sortOrder));
                 break;
             case ConfigData.SORT_TYPE_DATE:
-                Collections.sort(list, new ItemsComparator.DataAdded());
+                Collections.sort(list, new ItemsComparator.DataAdded(sortOrder));
                 break;
         }
 
@@ -299,7 +302,7 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         typePanelVisibility(true);
         mOnTranslationAnimation = new OnTranslationAnimation(mAdditionalPanel, OnTranslationAnimation.DEFAULT_DURATION);
 
-        mExplorerDialog = new ExplorerDialog(getContext());
+        mExplorerDialog = new ExplorerSettingsDialog(getContext());
         mExplorerDialog.setOnViewEvent(this);
         mExplorerFilesAdapter = new ExplorerFilesAdapter(getContext());
         mExplorerFilesAdapter.setOnItemCheckListener(this);

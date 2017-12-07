@@ -108,15 +108,13 @@
             style="@style/PlayerImageButtonCommon"
             android:id="@+id/control_expand"
             android:layout_weight="1"
-            android:background="@drawable/drawable_image_buttons_background"
-            android:src="@drawable/expand_inactive" />
+            android:background="@drawable/drawable_image_buttons_background"/>
 
         <ImageButton
             style="@style/PlayerImageButtonCommon"
             android:id="@+id/control_random"
             android:layout_weight="1"
-            android:background="@drawable/drawable_image_buttons_background"
-            android:src="@drawable/shuffle_inactive" />
+            android:background="@drawable/drawable_image_buttons_background" />
 
         <ImageButton
             style="@style/PlayerImageButtonCommon"
@@ -129,8 +127,7 @@
             style="@style/PlayerImageButtonCommon"
             android:id="@+id/control_play_pause"
             android:layout_weight="1"
-            android:background="@drawable/drawable_image_buttons_background"
-            android:src="@drawable/play" />
+            android:background="@drawable/drawable_image_buttons_background"/>
 
         <ImageButton
             style="@style/PlayerImageButtonCommon"
@@ -143,7 +140,7 @@
             style="@style/PlayerImageButtonCommon"
             android:id="@+id/control_repeat"
             android:layout_weight="1"
-            android:background="@drawable/drawable_image_buttons_background"
-            android:src="@drawable/repeat_inactive" />
+            android:background="@drawable/drawable_image_buttons_background" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

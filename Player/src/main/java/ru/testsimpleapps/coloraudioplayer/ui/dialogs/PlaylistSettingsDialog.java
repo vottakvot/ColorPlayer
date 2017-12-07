@@ -41,6 +41,10 @@ public class PlaylistSettingsDialog extends BaseDialog {
     protected RadioButton mRadioButtonDate;
     @BindView(R.id.playlist_dialog_sort_value)
     protected RadioButton mRadioButtonValue;
+    @BindView(R.id.playlist_dialog_sort_artist)
+    protected RadioButton mRadioButtonArtist;
+    @BindView(R.id.playlist_dialog_sort_albums)
+    protected RadioButton mRadioButtonAlbums;
 
     /*
     * Checkbox
@@ -110,6 +114,12 @@ public class PlaylistSettingsDialog extends BaseDialog {
             case CursorTool.FIELD_MODIFY:
                 mRadioButtonDate.setChecked(true);
                 break;
+            case CursorTool.FIELD_ARTIST:
+                mRadioButtonArtist.setChecked(true);
+                break;
+            case CursorTool.FIELD_ALBUMS:
+                mRadioButtonAlbums.setChecked(true);
+                break;
         }
 
         mRadioSort.setOnCheckedChangeListener(mRadioSortListener);
@@ -135,6 +145,14 @@ public class PlaylistSettingsDialog extends BaseDialog {
                 case R.id.playlist_dialog_sort_date:
                     PlayerConfig.getInstance().setPlaylistSort(CursorTool.FIELD_MODIFY);
                     invokeCallback(CursorTool.FIELD_MODIFY);
+                    break;
+                case R.id.playlist_dialog_sort_artist:
+                    PlayerConfig.getInstance().setPlaylistSort(CursorTool.FIELD_ARTIST);
+                    invokeCallback(CursorTool.FIELD_ARTIST);
+                    break;
+                case R.id.playlist_dialog_sort_albums:
+                    PlayerConfig.getInstance().setPlaylistSort(CursorTool.FIELD_ALBUMS);
+                    invokeCallback(CursorTool.FIELD_ALBUMS);
                     break;
             }
         }

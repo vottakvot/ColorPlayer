@@ -28,7 +28,6 @@
         android:layout_marginTop="8dp"
         android:text="@string/explorer_group_header"
         app:layout_constraintTop_toBottomOf="@+id/explorer_dialog_header"
-        app:layout_constraintBottom_toTopOf="@+id/explorer_dialog_groups"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -40,7 +39,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/explorer_dialog_sort_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,9 +76,17 @@
         android:layout_marginTop="8dp"
         android:text="@string/explorer_sort_header"
         app:layout_constraintTop_toBottomOf="@+id/explorer_dialog_groups"
-        app:layout_constraintBottom_toTopOf="@+id/explorer_dialog_sort"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/explorer_dialog_sort_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/explorer_sort_order"
+        app:layout_constraintTop_toBottomOf="@+id/explorer_dialog_sort_title"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <RadioGroup
         android:id="@+id/explorer_dialog_sort"
@@ -90,25 +96,18 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:orientation="vertical"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/explorer_dialog_sort_checkbox"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/explorer_dialog_sort_title">
+        app:layout_constraintStart_toStartOf="parent">
 
         <RadioButton
-            android:id="@+id/explorer_dialog_sort_name_az"
+            android:id="@+id/explorer_dialog_sort_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/explorer_sort_by_AZ" />
-
-        <RadioButton
-            android:id="@+id/explorer_dialog_sort_name_za"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/explorer_sort_by_ZA" />
+            android:text="@string/explorer_sort_by_name" />
 
         <RadioButton
             android:id="@+id/explorer_dialog_sort_value"

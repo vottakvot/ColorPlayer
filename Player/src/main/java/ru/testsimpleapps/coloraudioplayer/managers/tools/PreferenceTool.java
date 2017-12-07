@@ -18,11 +18,12 @@ public class PreferenceTool {
     private final String KEY_CONTROL_IS_EXPAND = "KEY_CONTROL_IS_EXPAND";
     private final String KEY_EXPLORER_GROUP = "KEY_EXPLORER_GROUP";
     private final String KEY_EXPLORER_SORT = "KEY_EXPLORER_SORT";
+    private final String KEY_EXPLORER_SORT_ORDER = "KEY_EXPLORER_SORT_ORDER";
     private final String KEY_CONTROL_PANEL = "KEY_CONTROL_PANEL";
     private final String KEY_CONTROL_INFO = "KEY_CONTROL_INFO";
     private final String KEY_PLAYLIST_EXPAND = "KEY_PLAYLIST_EXPAND";
 
-    private static PreferenceTool sPreferenceTool;
+    private static volatile PreferenceTool sPreferenceTool;
     private SharedPreferences mSharedPreferences;
 
     private PreferenceTool(@NonNull Context context) {
@@ -30,11 +31,17 @@ public class PreferenceTool {
     }
 
     public static PreferenceTool getInstance() {
-        if (sPreferenceTool == null) {
-            sPreferenceTool = new PreferenceTool(App.getContext());
+        PreferenceTool preferenceTool = sPreferenceTool;
+        if (preferenceTool == null) {
+            synchronized (PreferenceTool.class) {
+                preferenceTool = sPreferenceTool;
+                if (preferenceTool == null) {
+                    sPreferenceTool = preferenceTool = new PreferenceTool(App.getContext());
+                }
+            }
         }
 
-        return sPreferenceTool;
+        return preferenceTool;
     }
 
     public boolean getControlPanelExpand() {
@@ -58,7 +65,15 @@ public class PreferenceTool {
     }
 
     public int getExplorerSortType() {
-        return mSharedPreferences.getInt(KEY_EXPLORER_SORT, ConfigData.SORT_TYPE_AZ);
+        return mSharedPreferences.getInt(KEY_EXPLORER_SORT, ConfigData.SORT_TYPE_NAME);
+    }
+
+    public void setExplorerSortOrder(final int value) {
+        mSharedPreferences.edit().putInt(KEY_EXPLORER_SORT_ORDER, value).commit();
+    }
+
+    public int getExplorerSortOrder() {
+        return mSharedPreferences.getInt(KEY_EXPLORER_SORT_ORDER, ConfigData.SORT_ORDER_ASC);
     }
 
     public void setControlPanel(final boolean value) {

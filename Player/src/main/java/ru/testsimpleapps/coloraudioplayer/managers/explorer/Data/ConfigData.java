@@ -14,9 +14,14 @@ public final class ConfigData {
     /*
     * Sort types
     * */
-    public static final int SORT_TYPE_AZ = 0;
-    public static final int SORT_TYPE_ZA = 1;
-    public static final int SORT_TYPE_VALUE = 2;
-    public static final int SORT_TYPE_DATE = 3;
+    public static final int SORT_TYPE_NAME = 0;
+    public static final int SORT_TYPE_VALUE = 1;
+    public static final int SORT_TYPE_DATE = 2;
+
+    /*
+    * Sort order
+    * */
+    public static final int SORT_ORDER_ASC = 1;
+    public static final int SORT_ORDER_DESC = -1;
 
 }

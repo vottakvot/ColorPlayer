@@ -66,6 +66,20 @@
             android:text="@string/playlist_sort_by_size" />
 
         <RadioButton
+            android:id="@+id/playlist_dialog_sort_albums"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/playlist_sort_by_albums" />
+
+        <RadioButton
+            android:id="@+id/playlist_dialog_sort_artist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/playlist_sort_by_artist" />
+
+        <RadioButton
             android:id="@+id/playlist_dialog_sort_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

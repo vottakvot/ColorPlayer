@@ -3,7 +3,6 @@ package ru.testsimpleapps.coloraudioplayer.managers.player;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -16,14 +15,6 @@ import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListener,
         AudioManager.OnAudioFocusChangeListener {
 
-    /*
-    * Max seek position interval.
-    * */
-    public static final int MAX_SEEK_POSITION = 1000;
-
-    /*
-    * Min seek position interval
-    * */
     public static final int MIN_SEEK_POSITION = 0;
 
     /*
@@ -54,7 +45,7 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
     private State mState = State.INIT;
 
     /*
-    * Playlist
+    * Playlist/Config/Queue
     * */
     private StrictQueue<Integer> mListenedTracks;
     private RandomSet mTracksId;
@@ -102,15 +93,18 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
                     pause();
                 }
                 break;
+
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                 if (mState == State.PLAY) {
                     isAudioFocusLoss = true;
                     pause();
                 }
                 break;
+
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                 mMediaPlayer.setVolume(0.5f, 0.5f);
                 break;
+
             case AudioManager.AUDIOFOCUS_GAIN:
                 if (mState != State.PLAY && isAudioFocusLoss) {
                     play();
@@ -203,11 +197,10 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
     }
 
     @Override
-    public boolean seek(@IntRange(from = MIN_SEEK_POSITION, to = MAX_SEEK_POSITION) int position) {
-        if ((mState == State.PLAY || mState == State.PAUSE) && (position >= 0 && position <= MAX_SEEK_POSITION)) {
-            final int duration = mMediaPlayer.getDuration();
-            final int step = duration / MAX_SEEK_POSITION;
-            mMediaPlayer.seekTo(step * position);
+    public boolean seek(final int position) {
+        final int duration = mMediaPlayer.getDuration();
+        if ((mState == State.PLAY || mState == State.PAUSE) && (position > 0 && position < duration)) {
+            mMediaPlayer.seekTo(position);
             return true;
         }
 
@@ -229,13 +222,11 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
 
     @Override
     public PlayerConfig getConfig() {
-        int position = MIN_SEEK_POSITION;
+        mPlayerConfig.setLastSeekPosition(MIN_SEEK_POSITION);
         if (mState == State.PLAY || mState == State.PAUSE) {
-            final float part = (float) mMediaPlayer.getCurrentPosition() / (float) mMediaPlayer.getDuration();
-            position = (int) (part * MAX_SEEK_POSITION);
+            mPlayerConfig.setLastSeekPosition(getPosition());
         }
 
-        mPlayerConfig.setLastSeekPosition(position);
         return mPlayerConfig;
     }
 
@@ -263,7 +254,7 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
             if (mPlayerConfig.isRandom()) {
                 final Integer nextRandomTrack = mTracksId.getNextRandom();
                 if (nextRandomTrack != null)
-                    return mPlaylist.goTo(nextRandomTrack);
+                    return mPlaylist.goToPosition(nextRandomTrack);
 
                 return false;
             }
@@ -297,7 +288,7 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
         final Integer previousPosition = mListenedTracks.pop();
         if (previousPosition != null && mPlaylist != null) {
             isHasPrevious = true;
-            mPlaylist.goTo(previousPosition);
+            mPlaylist.goToPosition(previousPosition);
         }
 
         return isHasPrevious;
@@ -323,5 +314,13 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
 
     public int getAudioSessionId() {
         return mMediaPlayer.getAudioSessionId();
+    }
+
+    public int getDuration() {
+        return mMediaPlayer.getDuration();
+    }
+
+    public int getPosition() {
+        return mMediaPlayer.getCurrentPosition();
     }
 }

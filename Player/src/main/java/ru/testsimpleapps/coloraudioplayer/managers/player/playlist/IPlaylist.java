@@ -14,7 +14,9 @@ public interface IPlaylist extends Cloneable {
 
     boolean toLast();
 
-    boolean goTo(long position);
+    boolean goToPosition(long position);
+
+    boolean goToId(long id);
 
     boolean toNext();
 
