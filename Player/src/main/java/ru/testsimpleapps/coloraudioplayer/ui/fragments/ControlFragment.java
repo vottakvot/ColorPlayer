@@ -192,12 +192,11 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
 
                     // Update SeekBar
                     if (action.equals(PlayerService.RECEIVER_PLAY_PROGRESS)) {
-                        if (intent.hasExtra(PlayerService.EXTRA_PLAY_PROGRESS)) {
-                            setSeekBarProgress(intent.getIntExtra(PlayerService.EXTRA_PLAY_PROGRESS, AudioPlayer.MIN_SEEK_POSITION));
-                        }
-
-                        if (intent.hasExtra(PlayerService.EXTRA_PLAY_DURATION)) {
-                            setTrackDuration(intent.getIntExtra(PlayerService.EXTRA_PLAY_DURATION, AudioPlayer.MIN_SEEK_POSITION));
+                        if (intent.hasExtra(PlayerService.EXTRA_PLAY_PROGRESS) && intent.hasExtra(PlayerService.EXTRA_PLAY_DURATION)) {
+                            final int progress = intent.getIntExtra(PlayerService.EXTRA_PLAY_PROGRESS, AudioPlayer.MIN_SEEK_POSITION);
+                            final int duration = intent.getIntExtra(PlayerService.EXTRA_PLAY_DURATION, AudioPlayer.MIN_SEEK_POSITION);
+                            setSeekBarProgress(progress, duration);
+                            setTrackDuration(progress, duration);
                         }
                     }
                 }
@@ -205,16 +204,17 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
         }
     };
 
-    private void setSeekBarProgress(final int progress) {
+    private void setSeekBarProgress(final int progress, final int duration) {
         if (mSeekBar != null) {
+            mDuration = duration;
             final float part = (float) progress / (float) mDuration;
             mSeekBar.setProgress((int) (part * MAX_SEEK_POSITION));
             mCurrentTimeTextView.setText(TimeTool.getDuration(progress));
         }
     }
 
-    private void setTrackDuration(final int duration) {
-        mDuration = duration;
+    private void setTrackDuration(final int progress, final int duration) {
+        mCurrentTimeTextView.setText(TimeTool.getDuration(progress));
         mTotalTimeTextView.setText(TimeTool.getDuration(duration));
     }
 

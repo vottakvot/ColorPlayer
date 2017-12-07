@@ -179,10 +179,6 @@ public class PlayerService extends Service implements Handler.Callback {
                     } else if (intent.hasExtra(EXTRA_PLAY_PAUSE)) {
                         isHandled = mMediaPlayer.playPause();
                     }
-
-                    // Update views
-                    sendBroadcastPlayButton(mMediaPlayer.isPlaying());
-                    sendBroadcastDuration(mMediaPlayer.getDuration());
                 }
 
                 // Next action
@@ -201,6 +197,9 @@ public class PlayerService extends Service implements Handler.Callback {
                         isHandled = mMediaPlayer.seek(intent.getIntExtra(EXTRA_PLAY_PROGRESS, AudioPlayer.MIN_SEEK_POSITION));
                     }
                 }
+
+                // Update views
+                sendBroadcastPlayButton(mMediaPlayer.isPlaying());
             }
         }
 
@@ -443,7 +442,7 @@ public class PlayerService extends Service implements Handler.Callback {
                 while (true) {
                     synchronized (mMediaPlayer) {
                         if (mMediaPlayer.isPlaying())
-                            sendBroadcastProgress(mMediaPlayer.getPosition());
+                            sendBroadcastProgress(mMediaPlayer.getPosition(), mMediaPlayer.getDuration());
                     }
 
                     Thread.sleep(1000);
@@ -470,14 +469,9 @@ public class PlayerService extends Service implements Handler.Callback {
         LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
     }
 
-    public static void sendBroadcastProgress(final int progress) {
+    public static void sendBroadcastProgress(final int progress, final int duration) {
         Intent intent = new Intent(RECEIVER_PLAY_PROGRESS);
         intent.putExtra(EXTRA_PLAY_PROGRESS, progress);
-        LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
-    }
-
-    public static void sendBroadcastDuration(final int duration) {
-        Intent intent = new Intent(RECEIVER_PLAY_PROGRESS);
         intent.putExtra(EXTRA_PLAY_DURATION, duration);
         LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
     }
