@@ -15,6 +15,10 @@ import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListener,
         AudioManager.OnAudioFocusChangeListener {
 
+    public interface OnEvents {
+        void onPlay();
+    }
+
     public static final int MIN_SEEK_POSITION = 0;
 
     /*
@@ -47,6 +51,7 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
     /*
     * Playlist/Config/Queue
     * */
+    private OnEvents mOnEvents;
     private StrictQueue<Integer> mListenedTracks;
     private RandomSet mTracksId;
     private PlayerConfig mPlayerConfig;
@@ -145,6 +150,12 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
                 isAudioFocusLoss = false;
                 // Set player mState
                 mState = State.PLAY;
+
+                // Update listeners
+                if (mOnEvents != null) {
+                    mOnEvents.onPlay();
+                }
+
                 return true;
             } catch (Exception e) { // Path not found or bad file or bad path. Add log.
                 Log.e(App.TAG, getClass().getSimpleName() + " - play() - " + e.getMessage());
@@ -292,6 +303,10 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
         }
 
         return isHasPrevious;
+    }
+
+    public void setOnEvents(final OnEvents onEvents) {
+        mOnEvents = onEvents;
     }
 
     public boolean setConfigAndPlay(PlayerConfig playerConfig) {

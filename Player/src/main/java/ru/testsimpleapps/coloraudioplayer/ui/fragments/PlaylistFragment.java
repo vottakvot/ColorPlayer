@@ -121,6 +121,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
     @Override
     public void onView(boolean isValue) {
         mPlaylistAdapter.setExpand(isValue);
+        mRecyclerView.smoothScrollBy(0, 1);
         mRecyclerView.scheduleLayoutAnimation();
     }
 
@@ -170,7 +171,6 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
             if (intent != null) {
                 final String action = intent.getAction();
                 if (action != null) {
-
                     // Update list resize
                     if (action.equals(PlayerService.RECEIVER_PLAYLIST_ADD)) {
                         setPlaylist();
@@ -182,6 +182,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
 
     private void setPlaylist() {
         mPlaylistAdapter.setPlaylist(CursorFactory.getCopyInstance());
+        mRecyclerView.smoothScrollBy(0, 1);
         mRecyclerView.scheduleLayoutAnimation();
     }
 

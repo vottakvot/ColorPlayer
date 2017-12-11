@@ -18,7 +18,7 @@ import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.FolderData;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.ItemData;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.FileTool;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.MathTool;
-import ru.testsimpleapps.coloraudioplayer.managers.tools.StringTool;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.TextTool;
 
 
 public class MediaExplorerManager {
@@ -106,7 +106,7 @@ public class MediaExplorerManager {
                         final long id = cursor.getLong(cursor.getColumnIndex(MEDIA_ID));
                         final String path = cursor.getString(cursor.getColumnIndex(MEDIA_PATH));
                         String folder = FileTool.getFolderName(path);
-                        if (StringTool.isBadName(folder)) {
+                        if (TextTool.isBadName(folder)) {
                             folder = FileTool.getComplexName(path);
                         }
 

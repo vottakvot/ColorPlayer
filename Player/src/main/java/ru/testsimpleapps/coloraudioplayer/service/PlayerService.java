@@ -40,7 +40,7 @@ import ru.testsimpleapps.coloraudioplayer.receivers.MediaButtonsReceiver;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 
-public class PlayerService extends Service implements Handler.Callback {
+public class PlayerService extends Service implements Handler.Callback, AudioPlayer.OnEvents {
 
     public static final String TAG = PlayerService.class.getSimpleName();
 
@@ -68,11 +68,16 @@ public class PlayerService extends Service implements Handler.Callback {
     public static final String EXTRA_PLAY_PAUSE = "EXTRA_PLAY_PAUSE";
     public static final String EXTRA_PLAY_PROGRESS = "EXTRA_PLAY_PROGRESS";
     public static final String EXTRA_PLAY_DURATION = "EXTRA_PLAY_DURATION";
+    public static final String EXTRA_PLAYLIST_CURRENT = "EXTRA_PLAYLIST_CURRENT";
+    public static final String EXTRA_PLAYLIST_TOTAL = "EXTRA_PLAYLIST_TOTAL";
+    public static final String EXTRA_PLAYLIST_NAME = "EXTRA_PLAYLIST_NAME";
 
     /*
     * State update
     * */
     public static final String RECEIVER_PLAYLIST_ADD = "ru.color_player.action.ADD";
+    public static final String RECEIVER_PLAYLIST_TRACKS = "ru.color_player.action.TRACKS";
+    public static final String RECEIVER_PLAYLIST_NAME = "ru.color_player.action.NAME";
     public static final String RECEIVER_PLAY_PAUSE = "ru.color_player.action.PLAY_PAUSE";
     public static final String RECEIVER_PLAY_PROGRESS = "ru.color_player.action.PROGRESS";
 
@@ -206,6 +211,11 @@ public class PlayerService extends Service implements Handler.Callback {
         return isHandled;
     }
 
+    @Override
+    public void onPlay() {
+        sendBroadcastTrackName(CursorFactory.getInstance().getTrackName());
+    }
+
     public class LocalBinder extends Binder {
         public PlayerService getService() {
             return PlayerService.this;
@@ -222,6 +232,7 @@ public class PlayerService extends Service implements Handler.Callback {
         // Player initialisation
         PlayerConfig.getInstance().setPlaylistId(2691);
         mMediaPlayer = new AudioPlayer(getApplicationContext(), PlayerConfig.getInstance(), CursorFactory.getInstance());
+        mMediaPlayer.setOnEvents(this);
         mSeekBarUpdater = new SeekBarUpdater();
         mSeekBarUpdater.execute();
 
@@ -441,11 +452,13 @@ public class PlayerService extends Service implements Handler.Callback {
             try {
                 while (true) {
                     synchronized (mMediaPlayer) {
-                        if (mMediaPlayer.isPlaying())
+                        if (mMediaPlayer.isPlaying()) {
                             sendBroadcastProgress(mMediaPlayer.getPosition(), mMediaPlayer.getDuration());
+                            sendBroadcastTrackPosition(CursorFactory.getInstance().position() + 1, CursorFactory.getInstance().size());
+                        }
                     }
 
-                    Thread.sleep(1000);
+                    Thread.sleep(900);
                 }
             } catch (InterruptedException e) {
                 Log.i(TAG, e.getMessage());
@@ -473,6 +486,19 @@ public class PlayerService extends Service implements Handler.Callback {
         Intent intent = new Intent(RECEIVER_PLAY_PROGRESS);
         intent.putExtra(EXTRA_PLAY_PROGRESS, progress);
         intent.putExtra(EXTRA_PLAY_DURATION, duration);
+        LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
+    }
+
+    public static void sendBroadcastTrackPosition(final long current, final long total) {
+        Intent intent = new Intent(RECEIVER_PLAYLIST_TRACKS);
+        intent.putExtra(EXTRA_PLAYLIST_CURRENT, current);
+        intent.putExtra(EXTRA_PLAYLIST_TOTAL, total);
+        LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
+    }
+
+    public static void sendBroadcastTrackName(final String name) {
+        Intent intent = new Intent(RECEIVER_PLAYLIST_NAME);
+        intent.putExtra(EXTRA_PLAYLIST_NAME, name);
         LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
     }
 

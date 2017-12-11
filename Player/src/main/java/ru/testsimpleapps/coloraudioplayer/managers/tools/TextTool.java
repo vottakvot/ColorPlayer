@@ -1,7 +1,9 @@
 package ru.testsimpleapps.coloraudioplayer.managers.tools;
 
 
-public class StringTool {
+import android.graphics.Paint;
+
+public class TextTool {
 
     private static final String PATTERN_SHORT_NAME = "^[0-9]*|[a-zA-Z]{1,2}\\s*[0-9]*|[0-9]*\\s*[a-zA-Z]{1,2}$";
     private static final String PATTERN_NUMERIC = "^[0-9]*$";
@@ -12,6 +14,11 @@ public class StringTool {
 
     public static boolean isNumeric(String number) {
         return (number != null && number.trim().matches(PATTERN_NUMERIC) ? true : false);
+    }
+
+    public static int measureTextWidth(final String text) {
+        final Paint paint = new Paint();
+        return (int)paint.measureText(text);
     }
 
 }

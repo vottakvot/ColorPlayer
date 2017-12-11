@@ -97,7 +97,7 @@ public class PreferenceTool {
     }
 
     public void setPlaylistViewExpand(final boolean value) {
-        mSharedPreferences.edit().putBoolean(KEY_PLAYLIST_EXPAND, value);
+        mSharedPreferences.edit().putBoolean(KEY_PLAYLIST_EXPAND, value).commit();
     }
 
 }

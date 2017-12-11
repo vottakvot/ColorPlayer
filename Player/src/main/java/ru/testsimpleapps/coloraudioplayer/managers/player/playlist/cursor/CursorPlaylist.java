@@ -88,12 +88,12 @@ public class CursorPlaylist implements IPlaylist {
 
     @Override
     public long size() {
-        return mPlaylist != null ? mPlaylist.getCount() : 0;
+        return mPlaylist != null ? mPlaylist.getCount() : 0L;
     }
 
     @Override
     public long position() {
-        return mPlaylist != null ? mPlaylist.getPosition() : NOT_INIT;
+        return mPlaylist != null ? mPlaylist.getPosition() : 0L;
     }
 
     @Override

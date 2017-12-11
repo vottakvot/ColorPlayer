@@ -21,7 +21,9 @@ import butterknife.Unbinder;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.managers.player.AudioPlayer;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.TextTool;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.TimeTool;
 import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 
@@ -86,15 +88,15 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         // Broadcast
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, getIntentFilter());
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         // Broadcast
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
     }
@@ -157,6 +159,8 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
         setPartPanelVisibility(PreferenceTool.getInstance().getControlPanelExpand());
         setRepeatButton(PlayerConfig.getInstance().getRepeat());
         setRandomButton(PlayerConfig.getInstance().isRandom());
+        setTrackPosition(CursorFactory.getInstance().position(), CursorFactory.getInstance().size());
+        setRunningString();
         mSeekBar.setOnSeekBarChangeListener(this);
         mSeekBar.setMax(MAX_SEEK_POSITION);
         PlayerService.sendCommandControlCheck();
@@ -199,13 +203,57 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
                             setTrackDuration(progress, duration);
                         }
                     }
+
+                    // Update track position
+                    if (action.equals(PlayerService.RECEIVER_PLAYLIST_TRACKS)) {
+                        if (intent.hasExtra(PlayerService.EXTRA_PLAYLIST_CURRENT) && intent.hasExtra(PlayerService.EXTRA_PLAYLIST_TOTAL)) {
+                            setTrackPosition(intent.getLongExtra(PlayerService.EXTRA_PLAYLIST_CURRENT, 0L),
+                                    intent.getLongExtra(PlayerService.EXTRA_PLAYLIST_TOTAL, 0L));
+                        }
+                    }
+
+                    // Update track name
+                    if (action.equals(PlayerService.RECEIVER_PLAYLIST_NAME)) {
+                        if (intent.hasExtra(PlayerService.EXTRA_PLAYLIST_NAME)) {
+                            setTrackName(intent.getStringExtra(PlayerService.EXTRA_PLAYLIST_NAME));
+                        }
+                    }
                 }
             }
         }
     };
 
+    private void setRunningString() {
+        final int widthScreen = getDisplayWidth();
+        final int widthText = TextTool.measureTextWidth(NOTES);
+        final int n = widthScreen / widthScreen + 5;
+
+        if (n > 0) {
+            final StringBuilder runningString  = new StringBuilder(NOTES);
+            for(int i = 0; i < n + 5; i++){
+                runningString.append(NOTES);
+            }
+
+            setTrackName(runningString.toString());
+        }
+    }
+
+    private void setTrackName(final String name) {
+        if (mTrackNameTextView != null) {
+            mTrackNameTextView.setText(name);
+            mTrackNameTextView.setSelected(true);
+            mTrackNameTextView.requestFocus();
+        }
+    }
+
+    private void setTrackPosition(final long current, final long total) {
+        if (mTrackNumberTextView != null) {
+            mTrackNumberTextView.setText("" + (current > 0? current : 0) + "/" + total);
+        }
+    }
+
     private void setSeekBarProgress(final int progress, final int duration) {
-        if (mSeekBar != null) {
+        if (mSeekBar != null && mCurrentTimeTextView != null) {
             mDuration = duration;
             final float part = (float) progress / (float) mDuration;
             mSeekBar.setProgress((int) (part * MAX_SEEK_POSITION));
@@ -214,15 +262,19 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
     }
 
     private void setTrackDuration(final int progress, final int duration) {
-        mCurrentTimeTextView.setText(TimeTool.getDuration(progress));
-        mTotalTimeTextView.setText(TimeTool.getDuration(duration));
+        if (mCurrentTimeTextView != null && mTotalTimeTextView != null) {
+            mCurrentTimeTextView.setText(TimeTool.getDuration(progress));
+            mTotalTimeTextView.setText(TimeTool.getDuration(duration));
+        }
     }
 
     private void setPlayPauseButton(final boolean isPlay) {
-        if (isPlay) {
-            mPlayPauseButton.setImageResource(R.drawable.pause);
-        } else {
-            mPlayPauseButton.setImageResource(R.drawable.play);
+        if (mPlayPauseButton != null) {
+            if (isPlay) {
+                mPlayPauseButton.setImageResource(R.drawable.pause);
+            } else {
+                mPlayPauseButton.setImageResource(R.drawable.play);
+            }
         }
     }
 
@@ -252,6 +304,8 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(PlayerService.RECEIVER_PLAY_PAUSE);
         intentFilter.addAction(PlayerService.RECEIVER_PLAY_PROGRESS);
+        intentFilter.addAction(PlayerService.RECEIVER_PLAYLIST_TRACKS);
+        intentFilter.addAction(PlayerService.RECEIVER_PLAYLIST_NAME);
         return intentFilter;
     }
 
