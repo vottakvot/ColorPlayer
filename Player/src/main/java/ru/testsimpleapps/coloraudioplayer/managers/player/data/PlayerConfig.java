@@ -4,6 +4,7 @@ import android.support.annotation.IntRange;
 
 import java.io.Serializable;
 
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.CursorTool;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.SerializableTool;
 
@@ -51,7 +52,7 @@ public final class PlayerConfig implements Serializable {
     /*
     * Playlist id
     * */
-    private long mPlaylistId;
+    private long mPlaylistId = IPlaylist.NOT_INIT;
 
     /*
     * Playlist sort
@@ -66,7 +67,7 @@ public final class PlayerConfig implements Serializable {
     /*
     * Track id
     * */
-    private long mTrackId;
+    private long mTrackId = IPlaylist.NOT_INIT;
 
     /*
     * Set order

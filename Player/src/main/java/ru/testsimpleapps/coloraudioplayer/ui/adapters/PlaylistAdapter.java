@@ -1,6 +1,7 @@
 package ru.testsimpleapps.coloraudioplayer.ui.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.CursorTool;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.TimeTool;
 
@@ -23,10 +25,14 @@ public class PlaylistAdapter extends BaseAdapter {
     private final Context mContext;
     private IPlaylist mIPlaylist;
     private boolean mIsExpand = true;
-    private long mPreviousSearch = 0;
+    private long mPreviousSearchPosition = 0;
+    private long mSearchedPosition = IPlaylist.NOT_INIT;
+    private long mIdPosition = IPlaylist.NOT_INIT;
+    private int mViewPadding;
 
     public PlaylistAdapter(@NonNull Context context) {
         mContext = context;
+        mViewPadding = (int)context.getResources().getDimension(R.dimen.playlist_item_searched_position_padding);
     }
 
     @Override
@@ -68,6 +74,18 @@ public class PlaylistAdapter extends BaseAdapter {
                     mViewHolder.mDateTrack.setText(TimeTool.getDateTime(mIPlaylist.getTrackDateModified()));
                 } else {
                     mViewHolder.mInfoLayout.setVisibility(View.GONE);
+                }
+
+                // Background for current position or search
+                if (mIPlaylist.getTrackId() == CursorFactory.getInstance().getTrackId()) {
+                    mViewHolder.itemView.setBackgroundResource(R.drawable.drawable_listview_item_selection);
+                    mViewHolder.itemView.setPadding(mViewPadding, mViewPadding, mViewPadding, mViewPadding);
+                } else if (mSearchedPosition == i) {
+                    mViewHolder.itemView.setBackgroundResource(R.drawable.drawable_listview_item_find);
+                    mViewHolder.itemView.setPadding(mViewPadding, mViewPadding, mViewPadding, mViewPadding);
+                } else {
+                    mViewHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
+                    mViewHolder.itemView.setPadding(0, 0, 0, 0);
                 }
 
             } else if (viewHolder instanceof ViewHolderHeader) {
@@ -112,14 +130,29 @@ public class PlaylistAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public long searchMatch(final String text) {
+    public int searchMatch(final String text) {
         if (mIPlaylist != null) {
-            final long position = mIPlaylist.find(mPreviousSearch, text);
-            mPreviousSearch = position + 1;
-            return position;
+            final long position = mIPlaylist.find(mPreviousSearchPosition, text);
+            mPreviousSearchPosition = position + 1;
+            return (int)position;
         }
 
-        return IPlaylist.NOT_INIT;
+        return (int)IPlaylist.NOT_INIT;
+    }
+
+    public void setSearchedPosition(final long position) {
+        mSearchedPosition = position;
+    }
+
+    public int setIdPosition(final long id) {
+        if (mIPlaylist != null) {
+            mIdPosition = mIPlaylist.position() + 1;
+            if (mIPlaylist.goToId(id)) {
+                mIdPosition = mIPlaylist.position() + 1;
+            }
+        }
+
+        return (int)mIdPosition;
     }
 
     private long getTotalTime() {

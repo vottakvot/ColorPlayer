@@ -108,7 +108,9 @@ public class PagerFragment extends BaseFragment {
             @Override
             public void onSlide(@NonNull View view, float v) {
                 super.onSlide(view, v);
-                mControlInfoLayout.setAlpha(1.0f - v);
+                if (mControlInfoLayout != null) {
+                    mControlInfoLayout.setAlpha(1.0f - v);
+                }
             }
         });
 

@@ -21,6 +21,7 @@ import butterknife.Unbinder;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.managers.player.AudioPlayer;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.TextTool;
@@ -31,7 +32,7 @@ import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarChangeListener {
 
     public static final String TAG = ControlFragment.class.getSimpleName();
-    private static final String NOTES = "♫♪♭♩";
+    private static final String NOTES = " ♫ ♪ ♭ ♩";
     private static final int MAX_SEEK_POSITION = 1000;
 
     protected Unbinder mUnbinder;
@@ -166,7 +167,12 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
         setRepeatButton(PlayerConfig.getInstance().getRepeat());
         setRandomButton(PlayerConfig.getInstance().isRandom());
         setTrackPosition(CursorFactory.getInstance().position(), CursorFactory.getInstance().size());
-        setTrackName(getRunningString(NOTES, NOTES, mTrackNameTextView));
+
+        if (PlayerConfig.getInstance().getPlaylistId() == IPlaylist.NOT_INIT) {
+            setTrackName(getRunningString(NOTES, NOTES, mTrackNameTextView));
+        } else {
+            setTrackName(getRunningString(CursorFactory.getInstance().getTrackName(), " ", mTrackNameTextView));
+        }
 
         PlayerService.sendCommandControlCheck();
     }
@@ -176,7 +182,6 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
             mExpandButton.setImageResource(R.drawable.expand_inactive);
             mTimeLayout.setVisibility(View.VISIBLE);
             mTrackNameTextView.setVisibility(View.VISIBLE);
-
         } else {
             mExpandButton.setImageResource(R.drawable.expand_active);
             mTimeLayout.setVisibility(View.GONE);
@@ -211,8 +216,8 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
 
                     // Update track position
                     if (action.equals(PlayerService.RECEIVER_PLAYLIST_TRACKS)) {
-                        if (intent.hasExtra(PlayerService.EXTRA_PLAYLIST_CURRENT) && intent.hasExtra(PlayerService.EXTRA_PLAYLIST_TOTAL)) {
-                            setTrackPosition(intent.getLongExtra(PlayerService.EXTRA_PLAYLIST_CURRENT, 0L),
+                        if (intent.hasExtra(PlayerService.EXTRA_PLAYLIST_POSITION) && intent.hasExtra(PlayerService.EXTRA_PLAYLIST_TOTAL)) {
+                            setTrackPosition(intent.getLongExtra(PlayerService.EXTRA_PLAYLIST_POSITION, 0L),
                                     intent.getLongExtra(PlayerService.EXTRA_PLAYLIST_TOTAL, 0L));
                         }
                     }

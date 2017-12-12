@@ -36,7 +36,7 @@ import ru.testsimpleapps.coloraudioplayer.managers.player.AudioPlayer;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
-import ru.testsimpleapps.coloraudioplayer.receivers.MediaButtonsReceiver;
+import ru.testsimpleapps.coloraudioplayer.receiver.MediaButtonsReceiver;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 
 
@@ -68,7 +68,7 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
     public static final String EXTRA_PLAY_PAUSE = "EXTRA_PLAY_PAUSE";
     public static final String EXTRA_PLAY_PROGRESS = "EXTRA_PLAY_PROGRESS";
     public static final String EXTRA_PLAY_DURATION = "EXTRA_PLAY_DURATION";
-    public static final String EXTRA_PLAYLIST_CURRENT = "EXTRA_PLAYLIST_CURRENT";
+    public static final String EXTRA_PLAYLIST_POSITION = "EXTRA_PLAYLIST_POSITION";
     public static final String EXTRA_PLAYLIST_TOTAL = "EXTRA_PLAYLIST_TOTAL";
     public static final String EXTRA_PLAYLIST_NAME = "EXTRA_PLAYLIST_NAME";
 
@@ -78,6 +78,7 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
     public static final String RECEIVER_PLAYLIST_ADD = "ru.color_player.action.ADD";
     public static final String RECEIVER_PLAYLIST_TRACKS = "ru.color_player.action.TRACKS";
     public static final String RECEIVER_PLAYLIST_NAME = "ru.color_player.action.NAME";
+    public static final String RECEIVER_PLAYLIST_POSITION = "ru.color_player.action.POSITION";
     public static final String RECEIVER_PLAY_PAUSE = "ru.color_player.action.PLAY_PAUSE";
     public static final String RECEIVER_PLAY_PROGRESS = "ru.color_player.action.PROGRESS";
 
@@ -214,6 +215,7 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
     @Override
     public void onPlay() {
         sendBroadcastTrackName(CursorFactory.getInstance().getTrackName());
+        sendBroadcastPlaylistPosition();
     }
 
     public class LocalBinder extends Binder {
@@ -491,7 +493,7 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
 
     public static void sendBroadcastTrackPosition(final long current, final long total) {
         Intent intent = new Intent(RECEIVER_PLAYLIST_TRACKS);
-        intent.putExtra(EXTRA_PLAYLIST_CURRENT, current);
+        intent.putExtra(EXTRA_PLAYLIST_POSITION, current);
         intent.putExtra(EXTRA_PLAYLIST_TOTAL, total);
         LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
     }
@@ -501,6 +503,12 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
         intent.putExtra(EXTRA_PLAYLIST_NAME, name);
         LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
     }
+
+    public static void sendBroadcastPlaylistPosition() {
+        Intent intent = new Intent(RECEIVER_PLAYLIST_POSITION);
+        LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
+    }
+
 
     /*
     * For service command

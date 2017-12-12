@@ -73,6 +73,7 @@ public class CursorPlaylist implements IPlaylist {
             } while (toNext());
         }
 
+        toFirst();
         return false;
     }
 

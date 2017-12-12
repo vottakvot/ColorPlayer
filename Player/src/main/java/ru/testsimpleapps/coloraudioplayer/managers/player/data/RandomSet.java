@@ -25,6 +25,10 @@ public final class RandomSet {
         mSet.clear();
     }
 
+    public int getSize() {
+        return mSet.size();
+    }
+
     public Integer getNextRandom() {
         // Check size
         if (mSet.size() >= mMaxSize) {

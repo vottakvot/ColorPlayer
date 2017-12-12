@@ -16,6 +16,8 @@
     <integer name="playlist_item_second_weight_description">7</integer>
     <bool name="playlist_item_name_layout_align">false</bool>
 
+    <dimen name="playlist_item_searched_position_padding">2dp</dimen>
+
     <!-- For action bar-->
     <integer name="action_bar_app_name_orientation">1</integer>
     <dimen name="action_bar_app_name_text_size">12sp</dimen>

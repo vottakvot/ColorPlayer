@@ -21,21 +21,15 @@ public final class StrictQueue<T> {
 
     public void push(@Nullable T value) {
         if (mQueue.size() >= mMaxSize) {
-            mQueue.removeLast();
+            mQueue.removeFirst();
         }
 
-        mQueue.addFirst(value);
+        mQueue.addLast(value);
     }
 
     @Nullable
     public T pop() {
-        T value = null;
-        if (mQueue.size() > 0) {
-            value = mQueue.getFirst();
-            mQueue.removeFirst();
-        }
-
-        return value;
+        return mQueue.pollLast();
     }
 
 }

@@ -115,12 +115,16 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
                 mSearchTrackEditText.setVisibility(View.INVISIBLE);
                 mSearchTrackEditText.clearFocus();
                 mInputMethodManager.hideSoftInputFromWindow(mSearchTrackEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_HIDDEN);
+                mPlaylistAdapter.setSearchedPosition(IPlaylist.NOT_INIT);
+                mPlaylistAdapter.notifyDataSetChanged();
             } else {
 
                 // Go to position
                 if (TextTool.isNumeric(text)) {
                     final int position = Integer.valueOf(text);
                     if (position > 0 && position <= mPlaylistAdapter.getItemCount()) {
+                        mPlaylistAdapter.setSearchedPosition(position);
+                        mPlaylistAdapter.notifyDataSetChanged();
                         mRecyclerView.scrollToPosition(position);
                         mRecyclerView.smoothScrollBy(0, 1);
                         showToast(R.string.playlist_search_position);
@@ -129,15 +133,18 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
                 }
 
                 //  Go to text match
-                final long position = mPlaylistAdapter.searchMatch(text);
+                final int position = mPlaylistAdapter.searchMatch(text);
                 if (position > IPlaylist.NOT_INIT) {
-                    mRecyclerView.scrollToPosition((int)position + 1);
+                    mPlaylistAdapter.setSearchedPosition(position + 1);
+                    mPlaylistAdapter.notifyDataSetChanged();
+                    mRecyclerView.scrollToPosition(position + 1);
                     mRecyclerView.smoothScrollBy(0, 1);
                     showToast(R.string.playlist_search_text);
                     return;
                 }
             }
 
+            mPlaylistAdapter.setSearchedPosition(IPlaylist.NOT_INIT);
             showToast(R.string.playlist_search_no_match);
         }
     }
@@ -194,6 +201,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
         mPlaylistAdapter = new PlaylistAdapter(getContext());
         mPlaylistAdapter.setOnItemClickListener(this);
         mPlaylistAdapter.setExpand(PreferenceTool.getInstance().getPlaylistViewExpand());
+        mPlaylistAdapter.setIdPosition(CursorFactory.getInstance().getTrackId());
         mRecyclerView.setAdapter(mPlaylistAdapter);
 
         mPlaylistDialog = new PlaylistSettingsDialog(getContext());
@@ -227,6 +235,13 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
                     if (action.equals(PlayerService.RECEIVER_PLAYLIST_ADD)) {
                         setPlaylist();
                     }
+
+                    // Update current selection
+                    if (action.equals(PlayerService.RECEIVER_PLAYLIST_POSITION)) {
+                        mRecyclerView.scrollToPosition((int)CursorFactory.getInstance().position());
+                        mRecyclerView.smoothScrollBy(0, 1);
+                        mPlaylistAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         }
@@ -241,6 +256,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
     private IntentFilter getIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(PlayerService.RECEIVER_PLAYLIST_ADD);
+        intentFilter.addAction(PlayerService.RECEIVER_PLAYLIST_POSITION);
         return intentFilter;
     }
 
@@ -251,6 +267,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
                 mSearchTrackEditText.setText("");
                 mSearchTrackEditText.setVisibility(View.INVISIBLE);
                 mInputMethodManager.hideSoftInputFromWindow(mSearchTrackEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+                mPlaylistAdapter.setSearchedPosition(IPlaylist.NOT_INIT);
+                mPlaylistAdapter.notifyDataSetChanged();
             }
         }
     };

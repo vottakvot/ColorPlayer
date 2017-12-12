@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import ru.testsimpleapps.coloraudioplayer.App;
+import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.RandomSet;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.StrictQueue;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
@@ -53,8 +54,8 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
     * Playlist/Config/Queue
     * */
     private OnEvents mOnEvents;
-    private StrictQueue<Integer> mListenedTracks;
-    private RandomSet mTracksId;
+    private StrictQueue<Long> mListenedTracks;
+    private RandomSet mTracksSet;
     private String mPath;
 
     /*
@@ -65,7 +66,7 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
     public AudioPlayer(@NonNull Context context) {
         mContext = context;
         mListenedTracks = new StrictQueue<>();
-        mTracksId = new RandomSet();
+        mTracksSet = new RandomSet();
         mMediaPlayer = new MediaPlayer();
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         mMediaPlayer.setOnCompletionListener(this);
@@ -130,6 +131,7 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
                         mMediaPlayer.setDataSource(CursorFactory.getInstance().getTrackPath());
                         mMediaPlayer.prepare();
                         mMediaPlayer.seekTo(getInstance().getLastSeekPosition());
+                        PlayerConfig.getInstance().setTrackId(CursorFactory.getInstance().getTrackId());
                     }
                 }
 
@@ -230,32 +232,39 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
 
             // Separate, if random. Infinity cycle.
             if (getInstance().isRandom()) {
-                final Integer nextRandomTrack = mTracksId.getNextRandom();
-                if (nextRandomTrack != null)
-                    return CursorFactory.getInstance().goToPosition(nextRandomTrack);
+                final int playlistSize = (int)CursorFactory.getInstance().size();
+                if (mTracksSet.getSize() != playlistSize) {
+                    mTracksSet.setSize(playlistSize);
+                }
 
-                return false;
-            }
+                final Integer nextRandomTrack = mTracksSet.getNextRandom();
+                if (nextRandomTrack != null) {
+                    isHasNext = CursorFactory.getInstance().goToPosition(nextRandomTrack);
+                }
+            } else {
+                // If not random
+                switch (getInstance().getRepeat()) {
+                    case NONE:
+                        if (!CursorFactory.getInstance().toNext()) {
+                            CursorFactory.getInstance().toFirst();
+                            isHasNext = false;
+                        } else {
+                            isHasNext = true;
+                        }
 
-            // If not random
-            switch (getInstance().getRepeat()) {
-                case NONE:
-                    if (!CursorFactory.getInstance().toNext()) {
-                        CursorFactory.getInstance().toFirst();
-                        isHasNext = false;
-                    } else {
+                        break;
+                    case ONE:
                         isHasNext = true;
-                    }
-
-                    break;
-                case ONE:
-                    isHasNext = true;
-                    break;
-                case ALL:
-                    if (!CursorFactory.getInstance().toNext())
-                        CursorFactory.getInstance().toFirst();
-                    isHasNext = true;
+                        break;
+                    case ALL:
+                        if (!CursorFactory.getInstance().toNext()) {
+                            CursorFactory.getInstance().toFirst();
+                        }
+                        isHasNext = true;
+                }
             }
+
+            mListenedTracks.push(CursorFactory.getInstance().getTrackId());
         }
 
         return isHasNext;
@@ -263,10 +272,10 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
 
     private boolean previousInPlaylist() {
         boolean isHasPrevious = false;
-        final Integer previousPosition = mListenedTracks.pop();
-        if (previousPosition != null) {
+        final Long previousId = mListenedTracks.pop();
+        if (previousId != null) {
             isHasPrevious = true;
-            CursorFactory.getInstance().goToPosition(previousPosition);
+            CursorFactory.getInstance().goToId(previousId);
         }
 
         return isHasPrevious;
