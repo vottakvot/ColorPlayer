@@ -23,6 +23,7 @@ public class PlaylistAdapter extends BaseAdapter {
     private final Context mContext;
     private IPlaylist mIPlaylist;
     private boolean mIsExpand = true;
+    private long mPreviousSearch = 0;
 
     public PlaylistAdapter(@NonNull Context context) {
         mContext = context;
@@ -109,6 +110,16 @@ public class PlaylistAdapter extends BaseAdapter {
     public void setExpand(final boolean isExpand) {
         mIsExpand = isExpand;
         notifyDataSetChanged();
+    }
+
+    public long searchMatch(final String text) {
+        if (mIPlaylist != null) {
+            final long position = mIPlaylist.find(mPreviousSearch, text);
+            mPreviousSearch = position + 1;
+            return position;
+        }
+
+        return IPlaylist.NOT_INIT;
     }
 
     private long getTotalTime() {

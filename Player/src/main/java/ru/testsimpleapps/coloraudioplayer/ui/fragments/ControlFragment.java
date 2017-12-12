@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -70,8 +70,9 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
     @BindView(R.id.control_total_time)
     protected TextView mTotalTimeTextView;
     @BindView(R.id.control_time_layout)
-    protected RelativeLayout mTimeLayout;
+    protected LinearLayout mTimeLayout;
 
+    private boolean mIsTouchSeekBar = false;
     private int mDuration;
 
     public static ControlFragment newInstance() {
@@ -108,19 +109,21 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
     }
 
     @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        mIsTouchSeekBar = true;
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        final int step = mDuration / MAX_SEEK_POSITION;
+        mCurrentTimeTextView.setText(TimeTool.getDuration(step * seekBar.getProgress()));
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         final int step = mDuration / MAX_SEEK_POSITION;
         PlayerService.sendCommandSeek(step * seekBar.getProgress());
+        mIsTouchSeekBar = false;
     }
 
     @OnClick(R.id.control_expand)
@@ -156,13 +159,15 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
     }
 
     private void init() {
+        mSeekBar.setOnSeekBarChangeListener(this);
+        mSeekBar.setMax(MAX_SEEK_POSITION);
+
         setPartPanelVisibility(PreferenceTool.getInstance().getControlPanelExpand());
         setRepeatButton(PlayerConfig.getInstance().getRepeat());
         setRandomButton(PlayerConfig.getInstance().isRandom());
         setTrackPosition(CursorFactory.getInstance().position(), CursorFactory.getInstance().size());
-        setRunningString();
-        mSeekBar.setOnSeekBarChangeListener(this);
-        mSeekBar.setMax(MAX_SEEK_POSITION);
+        setTrackName(getRunningString(NOTES, NOTES, mTrackNameTextView));
+
         PlayerService.sendCommandControlCheck();
     }
 
@@ -215,7 +220,7 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
                     // Update track name
                     if (action.equals(PlayerService.RECEIVER_PLAYLIST_NAME)) {
                         if (intent.hasExtra(PlayerService.EXTRA_PLAYLIST_NAME)) {
-                            setTrackName(intent.getStringExtra(PlayerService.EXTRA_PLAYLIST_NAME));
+                            setTrackName(getRunningString(intent.getStringExtra(PlayerService.EXTRA_PLAYLIST_NAME), " ", mTrackNameTextView));
                         }
                     }
                 }
@@ -223,19 +228,21 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
         }
     };
 
-    private void setRunningString() {
+    private String getRunningString(final String text, final String symbols, final TextView textView) {
         final int widthScreen = getDisplayWidth();
-        final int widthText = TextTool.measureTextWidth(NOTES);
-        final int n = widthScreen / widthScreen + 5;
+        final int widthText = TextTool.measureTextWidth(text, textView);
+        final int widthSymbols = TextTool.measureTextWidth(symbols, textView);
+        final int delta = widthScreen - widthText;
+        final StringBuilder runningString  = new StringBuilder(text);
 
-        if (n > 0) {
-            final StringBuilder runningString  = new StringBuilder(NOTES);
+        if (delta >= 0) {
+            final int n = delta / widthSymbols + 5;
             for(int i = 0; i < n + 5; i++){
-                runningString.append(NOTES);
+                runningString.append(symbols);
             }
-
-            setTrackName(runningString.toString());
         }
+
+        return runningString.toString();
     }
 
     private void setTrackName(final String name) {
@@ -253,7 +260,7 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
     }
 
     private void setSeekBarProgress(final int progress, final int duration) {
-        if (mSeekBar != null && mCurrentTimeTextView != null) {
+        if (mSeekBar != null && mCurrentTimeTextView != null && !mIsTouchSeekBar) {
             mDuration = duration;
             final float part = (float) progress / (float) mDuration;
             mSeekBar.setProgress((int) (part * MAX_SEEK_POSITION));
@@ -263,8 +270,10 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
 
     private void setTrackDuration(final int progress, final int duration) {
         if (mCurrentTimeTextView != null && mTotalTimeTextView != null) {
-            mCurrentTimeTextView.setText(TimeTool.getDuration(progress));
             mTotalTimeTextView.setText(TimeTool.getDuration(duration));
+            if (!mIsTouchSeekBar) {
+                mCurrentTimeTextView.setText(TimeTool.getDuration(progress));
+            }
         }
     }
 

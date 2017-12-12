@@ -7,10 +7,11 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import ru.testsimpleapps.coloraudioplayer.App;
-import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.RandomSet;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.StrictQueue;
-import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
+
+import static ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig.getInstance;
 
 public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListener,
         AudioManager.OnAudioFocusChangeListener {
@@ -54,36 +55,20 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
     private OnEvents mOnEvents;
     private StrictQueue<Integer> mListenedTracks;
     private RandomSet mTracksId;
-    private PlayerConfig mPlayerConfig;
-    private IPlaylist mPlaylist;
     private String mPath;
-    private boolean mIsPlaylist;
 
     /*
     * Triggers
     * */
     private boolean isAudioFocusLoss = false;
 
-    public AudioPlayer(@NonNull Context context, @NonNull PlayerConfig playerConfig) {
+    public AudioPlayer(@NonNull Context context) {
         mContext = context;
-        mPlayerConfig = playerConfig;
         mListenedTracks = new StrictQueue<>();
         mTracksId = new RandomSet();
         mMediaPlayer = new MediaPlayer();
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         mMediaPlayer.setOnCompletionListener(this);
-    }
-
-    public AudioPlayer(@NonNull Context context, @NonNull PlayerConfig playerConfig, @NonNull IPlaylist playlist) {
-        this(context, playerConfig);
-        mPlaylist = playlist;
-        mIsPlaylist = true;
-    }
-
-    public AudioPlayer(@NonNull Context context, @NonNull PlayerConfig playerConfig, @NonNull String path) {
-        this(context, playerConfig);
-        mPath = path;
-        mIsPlaylist = false;
     }
 
     /*
@@ -137,9 +122,15 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
             try {
                 // Prepare player
                 if (mState != State.PAUSE) {
-                    mMediaPlayer.setDataSource(getPath());
-                    mMediaPlayer.prepare();
-                    mMediaPlayer.seekTo(mPlayerConfig.getLastSeekPosition());
+                    if (mPath != null) {
+                        mMediaPlayer.setDataSource(mPath);
+                        mMediaPlayer.prepare();
+                        mPath = null;
+                    } else {
+                        mMediaPlayer.setDataSource(CursorFactory.getInstance().getTrackPath());
+                        mMediaPlayer.prepare();
+                        mMediaPlayer.seekTo(getInstance().getLastSeekPosition());
+                    }
                 }
 
                 // Play source
@@ -226,55 +217,31 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
         }
     }
 
-    @Override
-    public void setConfig(PlayerConfig playerConfig) {
-        mPlayerConfig = playerConfig;
-    }
-
-    @Override
-    public PlayerConfig getConfig() {
-        mPlayerConfig.setLastSeekPosition(MIN_SEEK_POSITION);
-        if (mState == State.PLAY || mState == State.PAUSE) {
-            mPlayerConfig.setLastSeekPosition(getPosition());
-        }
-
-        return mPlayerConfig;
-    }
-
-    @Override
-    public void setPlaylist(@NonNull final IPlaylist playlist) {
-        mPlaylist = playlist;
-        mIsPlaylist = true;
-    }
 
     @Override
     public void setTrackPath(@NonNull final String path) {
         mPath = path;
-        mIsPlaylist = false;
     }
 
-    private String getPath() {
-        return mIsPlaylist? mPlaylist.getTrackPath() : mPath;
-    }
 
     private boolean nextInPlaylist() {
         boolean isHasNext = false;
-        if (mPlaylist != null && mPlaylist.size() > 0) {
+        if (CursorFactory.getInstance().size() > 0) {
 
             // Separate, if random. Infinity cycle.
-            if (mPlayerConfig.isRandom()) {
+            if (getInstance().isRandom()) {
                 final Integer nextRandomTrack = mTracksId.getNextRandom();
                 if (nextRandomTrack != null)
-                    return mPlaylist.goToPosition(nextRandomTrack);
+                    return CursorFactory.getInstance().goToPosition(nextRandomTrack);
 
                 return false;
             }
 
             // If not random
-            switch (mPlayerConfig.getRepeat()) {
+            switch (getInstance().getRepeat()) {
                 case NONE:
-                    if (!mPlaylist.toNext()) {
-                        mPlaylist.toFirst();
+                    if (!CursorFactory.getInstance().toNext()) {
+                        CursorFactory.getInstance().toFirst();
                         isHasNext = false;
                     } else {
                         isHasNext = true;
@@ -285,8 +252,8 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
                     isHasNext = true;
                     break;
                 case ALL:
-                    if (!mPlaylist.toNext())
-                        mPlaylist.toFirst();
+                    if (!CursorFactory.getInstance().toNext())
+                        CursorFactory.getInstance().toFirst();
                     isHasNext = true;
             }
         }
@@ -297,9 +264,9 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
     private boolean previousInPlaylist() {
         boolean isHasPrevious = false;
         final Integer previousPosition = mListenedTracks.pop();
-        if (previousPosition != null && mPlaylist != null) {
+        if (previousPosition != null) {
             isHasPrevious = true;
-            mPlaylist.goToPosition(previousPosition);
+            CursorFactory.getInstance().goToPosition(previousPosition);
         }
 
         return isHasPrevious;
@@ -307,11 +274,6 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
 
     public void setOnEvents(final OnEvents onEvents) {
         mOnEvents = onEvents;
-    }
-
-    public boolean setConfigAndPlay(PlayerConfig playerConfig) {
-        setConfig(playerConfig);
-        return playNew();
     }
 
     public boolean playPause() {

@@ -13,16 +13,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ru.testsimpleapps.coloraudioplayer.R;
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.TextTool;
 import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.PlaylistAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.animation.OnTranslationAnimation;
@@ -56,6 +60,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
     private PlaylistAdapter mPlaylistAdapter;
     private RecycleViewLayoutManager mRecycleViewLayoutManager;
     private OnTranslationAnimation mTranslationAnimation;
+    private InputMethodManager mInputMethodManager;
 
     public static PlaylistFragment newInstance() {
         PlaylistFragment fragment = new PlaylistFragment();
@@ -64,6 +69,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_playlist, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         init(savedInstanceState);
@@ -93,12 +99,54 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mSearchTrackEditText.setOnFocusChangeListener(null);
         mUnbinder.unbind();
     }
 
     @OnClick(R.id.playlist_search_button)
     protected void onSearchClickButton() {
+        if (mSearchTrackEditText.getVisibility() == View.INVISIBLE) {
+            mSearchTrackEditText.setVisibility(View.VISIBLE);
+            mSearchTrackEditText.requestFocus();
+            mInputMethodManager.showSoftInput(mSearchTrackEditText, InputMethodManager.SHOW_IMPLICIT);
+        } else {
+            final String text = mSearchTrackEditText.getText().toString();
+            if (text.equals("")) {
+                mSearchTrackEditText.setVisibility(View.INVISIBLE);
+                mSearchTrackEditText.clearFocus();
+                mInputMethodManager.hideSoftInputFromWindow(mSearchTrackEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_HIDDEN);
+            } else {
 
+                // Go to position
+                if (TextTool.isNumeric(text)) {
+                    final int position = Integer.valueOf(text);
+                    if (position > 0 && position <= mPlaylistAdapter.getItemCount()) {
+                        mRecyclerView.scrollToPosition(position);
+                        mRecyclerView.smoothScrollBy(0, 1);
+                        showToast(R.string.playlist_search_position);
+                        return;
+                    }
+                }
+
+                //  Go to text match
+                final long position = mPlaylistAdapter.searchMatch(text);
+                if (position > IPlaylist.NOT_INIT) {
+                    mRecyclerView.scrollToPosition((int)position + 1);
+                    mRecyclerView.smoothScrollBy(0, 1);
+                    showToast(R.string.playlist_search_text);
+                    return;
+                }
+            }
+
+            showToast(R.string.playlist_search_no_match);
+        }
+    }
+
+    @OnLongClick(R.id.playlist_search_button)
+    protected boolean onSearchLongClickButton() {
+        final long position = CursorFactory.getInstance().position();
+        mRecyclerView.smoothScrollToPosition((int)position);
+        return true;
     }
 
     @OnClick(R.id.playlist_settings_button)
@@ -131,6 +179,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
     }
 
     private void init(final Bundle savedInstanceState) {
+        mInputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycle_layout_animation);
         mTranslationAnimation = new OnTranslationAnimation(mAdditionalPanel, OnTranslationAnimation.DEFAULT_DURATION);
         mRecycleViewLayoutManager = new RecycleViewLayoutManager(getContext());
@@ -149,6 +198,9 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
 
         mPlaylistDialog = new PlaylistSettingsDialog(getContext());
         mPlaylistDialog.setOnViewEvent(this);
+
+        mSearchTrackEditText.setVisibility(View.INVISIBLE);
+        mSearchTrackEditText.setOnFocusChangeListener(mOnFocusChangeListener);
 
         setPlaylist();
         restoreStates(savedInstanceState);
@@ -191,6 +243,17 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
         intentFilter.addAction(PlayerService.RECEIVER_PLAYLIST_ADD);
         return intentFilter;
     }
+
+    private View.OnFocusChangeListener mOnFocusChangeListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (!hasFocus) {
+                mSearchTrackEditText.setText("");
+                mSearchTrackEditText.setVisibility(View.INVISIBLE);
+                mInputMethodManager.hideSoftInputFromWindow(mSearchTrackEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+            }
+        }
+    };
 
     private class OnScrollRecycleViewListener extends RecyclerView.OnScrollListener {
 

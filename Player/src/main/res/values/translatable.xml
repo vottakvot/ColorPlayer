@@ -81,6 +81,8 @@
     <string name="playlist_delete_track">Delete track</string>
     <string name="playlist_search_empty">Input text for search</string>
     <string name="playlist_search_first_position">Move to first</string>
+    <string name="playlist_search_position">Matched by number position!</string>
+    <string name="playlist_search_text">Matched by text!</string>
     <string name="playlist_search_no_match">No matches</string>
     <string name="playlist_search_hint">Search...</string>
     <string name="playlist_header">Choose or create playlist!</string>

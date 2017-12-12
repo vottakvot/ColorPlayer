@@ -54,6 +54,7 @@ public class PagerFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_pager, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         init(savedInstanceState);

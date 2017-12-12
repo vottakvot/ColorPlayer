@@ -20,6 +20,7 @@ public class CursorFactory {
                     sCursorPlaylist = cursorPlaylist = new CursorPlaylist(App.getContext());
                     sCursorPlaylist.setCursor(PlayerConfig.getInstance().getPlaylistId(), PlayerConfig.getInstance().getPlaylistSort(),
                             PlayerConfig.getInstance().getPlaylistSortOrder());
+                    sCursorPlaylist.goToPosition(0);
                 }
             }
         }

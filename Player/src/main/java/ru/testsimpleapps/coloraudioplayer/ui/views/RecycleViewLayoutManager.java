@@ -88,6 +88,10 @@ public class RecycleViewLayoutManager extends LinearLayoutManager {
         return center;
     }
 
+    public int getCountVisiblePosition() {
+        return findLastVisibleItemPosition() - findFirstVisibleItemPosition();
+    }
+
     public void setDynamicCenter(final boolean isDynamic) {
         mIsDynamic = isDynamic;
     }
