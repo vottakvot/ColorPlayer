@@ -27,7 +27,6 @@ public class PlaylistAdapter extends BaseAdapter {
     private boolean mIsExpand = true;
     private long mPreviousSearchPosition = 0;
     private long mSearchedPosition = IPlaylist.NOT_INIT;
-    private long mIdPosition = IPlaylist.NOT_INIT;
     private int mViewPadding;
 
     public PlaylistAdapter(@NonNull Context context) {
@@ -142,17 +141,6 @@ public class PlaylistAdapter extends BaseAdapter {
 
     public void setSearchedPosition(final long position) {
         mSearchedPosition = position;
-    }
-
-    public int setIdPosition(final long id) {
-        if (mIPlaylist != null) {
-            mIdPosition = mIPlaylist.position() + 1;
-            if (mIPlaylist.goToId(id)) {
-                mIdPosition = mIPlaylist.position() + 1;
-            }
-        }
-
-        return (int)mIdPosition;
     }
 
     private long getTotalTime() {

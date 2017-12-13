@@ -86,25 +86,13 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
         final View view = inflater.inflate(R.layout.fragment_control, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         init();
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, getIntentFilter());
         return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        // Broadcast
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, getIntentFilter());
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        // Broadcast
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
-    }
-
-    @Override
     public void onDestroyView() {
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
         super.onDestroyView();
         mUnbinder.unbind();
     }

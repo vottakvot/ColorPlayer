@@ -73,14 +73,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
         final View view = inflater.inflate(R.layout.fragment_playlist, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         init(savedInstanceState);
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Broadcast
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, getIntentFilter());
+        return view;
     }
 
     @Override
@@ -90,14 +84,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        // Broadcast
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
-    }
-
-    @Override
     public void onDestroyView() {
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
         super.onDestroyView();
         mSearchTrackEditText.setOnFocusChangeListener(null);
         mUnbinder.unbind();
@@ -193,7 +181,6 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
         mRecycleViewLayoutManager.setShrinkAmount(RECYCLE_SHRINK_AMOUNT);
         mRecycleViewLayoutManager.setShrinkDistance(RECYCLE_SHRINK_CENTER);
         mRecycleViewLayoutManager.setDynamicCenter(true);
-        mRecycleViewLayoutManager.scrollToPositionWithOffsetCenter((int)CursorFactory.getInstance().position());
 
         mRecyclerView.setLayoutAnimation(animation);
         mRecyclerView.setLayoutManager(mRecycleViewLayoutManager);
@@ -201,7 +188,6 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
         mPlaylistAdapter = new PlaylistAdapter(getContext());
         mPlaylistAdapter.setOnItemClickListener(this);
         mPlaylistAdapter.setExpand(PreferenceTool.getInstance().getPlaylistViewExpand());
-        mPlaylistAdapter.setIdPosition(CursorFactory.getInstance().getTrackId());
         mRecyclerView.setAdapter(mPlaylistAdapter);
 
         mPlaylistDialog = new PlaylistSettingsDialog(getContext());
@@ -210,8 +196,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
         mSearchTrackEditText.setVisibility(View.INVISIBLE);
         mSearchTrackEditText.setOnFocusChangeListener(mOnFocusChangeListener);
 
-        setPlaylist();
         restoreStates(savedInstanceState);
+        setPlaylist();
     }
 
     private void restoreStates(final Bundle savedInstanceState) {
@@ -219,6 +205,8 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
         if (savedInstanceState != null) {
             // Panel state
             mAdditionalPanel.setVisibility(savedInstanceState.getInt(TAG_ADD_PANEL));
+        } else {
+            mRecycleViewLayoutManager.scrollToPositionWithOffsetCenter((int)CursorFactory.getInstance().position());
         }
     }
 
