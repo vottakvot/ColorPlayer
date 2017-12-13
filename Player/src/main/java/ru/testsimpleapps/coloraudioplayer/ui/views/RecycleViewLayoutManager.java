@@ -8,12 +8,14 @@ import android.view.View;
 public class RecycleViewLayoutManager extends LinearLayoutManager {
 
     private final float DEFAULT_CENTER = 1.0f;
-    private final float DEFAULT_MAX_CENTER = 1.8f;
+    private final float DEFAULT_MIN_CENTER = 0.0f;
+    private final float DEFAULT_MAX_CENTER = 2.0f;
+    private final float THRESHOLD_CENTER = 10.0f;
 
     private float mShrinkAmount = 0.5f;
     private float mShrinkDistance = 0.9f;
-    private float mCenter = DEFAULT_CENTER;
-    private boolean mIsDynamic = false;
+    private float mCenter = DEFAULT_MIN_CENTER;
+    private boolean mIsDynamic = true;
 
     public RecycleViewLayoutManager(Context context) {
         super(context);
@@ -36,7 +38,7 @@ public class RecycleViewLayoutManager extends LinearLayoutManager {
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
                 final float childMidpoint = (getDecoratedBottom(child) + getDecoratedTop(child)) / 2.f;
-                final float d = Math.min(d1, Math.abs(midpoint * getDynamicCenter() - childMidpoint));
+                final float d = Math.min(d1, Math.abs(midpoint * getDynamicCenterBorders() - childMidpoint));
                 final float scale = s0 + (s1 - s0) * (d - d0) / (d1 - d0);
                 child.setScaleX(scale);
                 child.setScaleY(scale);
@@ -60,7 +62,7 @@ public class RecycleViewLayoutManager extends LinearLayoutManager {
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
                 final float childMidpoint = (getDecoratedRight(child) + getDecoratedLeft(child)) / 2.f;
-                final float d = Math.min(d1, Math.abs(midpoint - childMidpoint));
+                final float d = Math.min(d1, Math.abs(midpoint * getDynamicCenterBorders() - childMidpoint));
                 final float scale = s0 + (s1 - s0) * (d - d0) / (d1 - d0);
                 child.setScaleX(scale);
                 child.setScaleY(scale);
@@ -71,16 +73,22 @@ public class RecycleViewLayoutManager extends LinearLayoutManager {
         }
     }
 
-    private float getDynamicCenter() {
+    private float getDynamicCenterBorders() {
         float center = DEFAULT_CENTER;
         if (mIsDynamic) {
-            final int totalItemCount = getItemCount();
-            if (totalItemCount > 0) {
-                final int visibleItemCount = getChildCount();
-                final int centerVisibleItemPosition = findFirstVisibleItemPosition() + visibleItemCount / 2;
-                final float delta = DEFAULT_MAX_CENTER / (float) totalItemCount;
-                center = delta * centerVisibleItemPosition;
+            final int totalItemCount = getItemCount() - 1;
+            final int firstPosition = findFirstVisibleItemPosition();
+            final int lastPosition = findLastVisibleItemPosition();
+            final int topBorder = firstPosition - (int) THRESHOLD_CENTER;
+            final int bottomBorder = lastPosition + (int) THRESHOLD_CENTER;
+            final float delta = DEFAULT_CENTER / THRESHOLD_CENTER;
+
+            if (topBorder <= 0) {
+                center = delta * firstPosition;
+            } else if (bottomBorder >= totalItemCount) {
+                center = DEFAULT_MAX_CENTER - delta * (totalItemCount - lastPosition);
             }
+
         } else {
             center = mCenter;
         }
@@ -88,8 +96,19 @@ public class RecycleViewLayoutManager extends LinearLayoutManager {
         return center;
     }
 
-    public int getCountVisiblePosition() {
-        return findLastVisibleItemPosition() - findFirstVisibleItemPosition();
+    private float getDynamicCenterPosition() {
+        float center;
+        if (mIsDynamic) {
+            final int totalItemCount = getItemCount();
+            final int visibleItemCount = getChildCount();
+            final int centerVisibleItemPosition = findFirstVisibleItemPosition() + visibleItemCount / 2;
+            final float delta = DEFAULT_MAX_CENTER / (float) totalItemCount;
+            center = delta * centerVisibleItemPosition;
+        } else {
+            center = mCenter;
+        }
+
+        return center;
     }
 
     public void setDynamicCenter(final boolean isDynamic) {
