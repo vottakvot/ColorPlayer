@@ -36,7 +36,7 @@ public class RecycleViewLayoutManager extends LinearLayoutManager {
             final float s0 = 1.f;
             final float s1 = 1.f - mShrinkAmount;
             for (int i = 0; i < getChildCount(); i++) {
-                View child = getChildAt(i);
+                final View child = getChildAt(i);
                 final float childMidpoint = (getDecoratedBottom(child) + getDecoratedTop(child)) / 2.f;
                 final float d = Math.min(d1, Math.abs(midpoint * getDynamicCenterBorders() - childMidpoint));
                 final float scale = s0 + (s1 - s0) * (d - d0) / (d1 - d0);
@@ -60,7 +60,7 @@ public class RecycleViewLayoutManager extends LinearLayoutManager {
             final float s0 = 1.f;
             final float s1 = 1.f - mShrinkAmount;
             for (int i = 0; i < getChildCount(); i++) {
-                View child = getChildAt(i);
+                final View child = getChildAt(i);
                 final float childMidpoint = (getDecoratedRight(child) + getDecoratedLeft(child)) / 2.f;
                 final float d = Math.min(d1, Math.abs(midpoint * getDynamicCenterBorders() - childMidpoint));
                 final float scale = s0 + (s1 - s0) * (d - d0) / (d1 - d0);
@@ -71,6 +71,17 @@ public class RecycleViewLayoutManager extends LinearLayoutManager {
         } else {
             return 0;
         }
+    }
+
+    public void scrollToPositionWithOffsetCenter(int position) {
+        final int visibleCenter = getChildCount() / 2 - 2;
+        final View view = getChildAt(visibleCenter);
+        int offset = 0;
+        if (view != null) {
+            offset = view.getHeight() * visibleCenter;
+        }
+
+        super.scrollToPositionWithOffset(position, offset);
     }
 
     private float getDynamicCenterBorders() {

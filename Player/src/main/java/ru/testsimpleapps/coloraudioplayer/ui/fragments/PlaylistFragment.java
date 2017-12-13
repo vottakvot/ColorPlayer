@@ -125,8 +125,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
                     if (position > 0 && position <= mPlaylistAdapter.getItemCount()) {
                         mPlaylistAdapter.setSearchedPosition(position);
                         mPlaylistAdapter.notifyDataSetChanged();
-                        mRecyclerView.scrollToPosition(position);
-                        mRecyclerView.smoothScrollBy(0, 1);
+                        mRecycleViewLayoutManager.scrollToPositionWithOffsetCenter(position + 1);
                         showToast(R.string.playlist_search_position);
                         return;
                     }
@@ -137,8 +136,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
                 if (position > IPlaylist.NOT_INIT) {
                     mPlaylistAdapter.setSearchedPosition(position + 1);
                     mPlaylistAdapter.notifyDataSetChanged();
-                    mRecyclerView.scrollToPosition(position + 1);
-                    mRecyclerView.smoothScrollBy(0, 1);
+                    mRecycleViewLayoutManager.scrollToPositionWithOffsetCenter(position + 1);
                     showToast(R.string.playlist_search_text);
                     return;
                 }
@@ -176,6 +174,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
     @Override
     public void onView(boolean isValue) {
         mPlaylistAdapter.setExpand(isValue);
+        mRecycleViewLayoutManager.scrollToPositionWithOffsetCenter((int)CursorFactory.getInstance().position());
         mRecyclerView.smoothScrollBy(0, 1);
         mRecyclerView.scheduleLayoutAnimation();
     }
@@ -194,6 +193,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
         mRecycleViewLayoutManager.setShrinkAmount(RECYCLE_SHRINK_AMOUNT);
         mRecycleViewLayoutManager.setShrinkDistance(RECYCLE_SHRINK_CENTER);
         mRecycleViewLayoutManager.setDynamicCenter(true);
+        mRecycleViewLayoutManager.scrollToPositionWithOffsetCenter((int)CursorFactory.getInstance().position());
 
         mRecyclerView.setLayoutAnimation(animation);
         mRecyclerView.setLayoutManager(mRecycleViewLayoutManager);
@@ -216,9 +216,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
 
     private void restoreStates(final Bundle savedInstanceState) {
         // Check previous states
-        if (savedInstanceState == null) {
-
-        } else {
+        if (savedInstanceState != null) {
             // Panel state
             mAdditionalPanel.setVisibility(savedInstanceState.getInt(TAG_ADD_PANEL));
         }
@@ -238,7 +236,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
 
                     // Update current selection
                     if (action.equals(PlayerService.RECEIVER_PLAYLIST_POSITION)) {
-                        mRecyclerView.scrollToPosition((int)CursorFactory.getInstance().position());
+                        mRecycleViewLayoutManager.scrollToPositionWithOffsetCenter((int)CursorFactory.getInstance().position());
                         mRecyclerView.smoothScrollBy(0, 1);
                         mPlaylistAdapter.notifyDataSetChanged();
                     }

@@ -166,7 +166,7 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
         setPartPanelVisibility(PreferenceTool.getInstance().getControlPanelExpand());
         setRepeatButton(PlayerConfig.getInstance().getRepeat());
         setRandomButton(PlayerConfig.getInstance().isRandom());
-        setTrackPosition(CursorFactory.getInstance().position(), CursorFactory.getInstance().size());
+        setTrackPosition(CursorFactory.getInstance().position() + 1, CursorFactory.getInstance().size());
 
         if (PlayerConfig.getInstance().getPlaylistId() == IPlaylist.NOT_INIT) {
             setTrackName(getRunningString(NOTES, NOTES, mTrackNameTextView));
