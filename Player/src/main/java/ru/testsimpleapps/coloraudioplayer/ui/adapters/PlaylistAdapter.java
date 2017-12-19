@@ -2,6 +2,7 @@ package ru.testsimpleapps.coloraudioplayer.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +32,7 @@ public class PlaylistAdapter extends BaseAdapter {
 
     public PlaylistAdapter(@NonNull Context context) {
         mContext = context;
-        mViewPadding = (int)context.getResources().getDimension(R.dimen.playlist_item_searched_position_padding);
+        mViewPadding = (int)context.getResources().getDimension(R.dimen.playlist_item_selection_padding);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class PlaylistAdapter extends BaseAdapter {
                 mIPlaylist.goToPosition(i - 1);
 
                 // Main
-                mViewHolder.mImageTrack.setImageResource(R.drawable.item_track);
+                mViewHolder.mImageTrack.setImageResource(R.drawable.image_item_track);
                 mViewHolder.mCountTrack.setText(String.valueOf(i));
                 mViewHolder.mNameTrack.setText(String.valueOf(mIPlaylist.getTrackName()));
 
@@ -75,13 +76,19 @@ public class PlaylistAdapter extends BaseAdapter {
                     mViewHolder.mInfoLayout.setVisibility(View.GONE);
                 }
 
-                // Background for current position or search
+                // Background for current position or image_search
                 if (mIPlaylist.getTrackId() == CursorFactory.getInstance().getTrackId()) {
-                    mViewHolder.itemView.setBackgroundResource(R.drawable.drawable_listview_item_selection);
+                    mViewHolder.itemView.setBackgroundResource(R.drawable.drawable_recycleview_item_selection);
                     mViewHolder.itemView.setPadding(mViewPadding, mViewPadding, mViewPadding, mViewPadding);
+
+                    // TODO set image_color for selection
+                    mViewHolder.itemView.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC);
                 } else if (mSearchedPosition == i) {
-                    mViewHolder.itemView.setBackgroundResource(R.drawable.drawable_listview_item_find);
+                    mViewHolder.itemView.setBackgroundResource(R.drawable.drawable_recycleview_item_find);
                     mViewHolder.itemView.setPadding(mViewPadding, mViewPadding, mViewPadding, mViewPadding);
+
+                    // TODO set image_color for find
+                    mViewHolder.itemView.getBackground().setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC);
                 } else {
                     mViewHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
                     mViewHolder.itemView.setPadding(0, 0, 0, 0);

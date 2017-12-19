@@ -4,10 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/drawable_dialog"
-    android:padding="10dp">
+    android:background="@drawable/drawable_common_dialog"
+    android:padding="@dimen/dialog_padding">
 
     <TextView
+        style="@style/BigTextView"
         android:id="@+id/playlist_dialog_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,6 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/MediumTextView"
         android:id="@+id/playlist_dialog_groups_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,6 +32,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
+        style="@style/MediumTextCheckBox"
         android:id="@+id/playlist_dialog_sort_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,34 +55,35 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <RadioButton
+            style="@style/MediumTextRadioButton"
             android:id="@+id/playlist_dialog_sort_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/playlist_sort_by_name" />
-
         <RadioButton
+            style="@style/MediumTextRadioButton"
             android:id="@+id/playlist_dialog_sort_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/playlist_sort_by_size" />
-
         <RadioButton
+            style="@style/MediumTextRadioButton"
             android:id="@+id/playlist_dialog_sort_albums"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/playlist_sort_by_albums" />
-
         <RadioButton
+            style="@style/MediumTextRadioButton"
             android:id="@+id/playlist_dialog_sort_artist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/playlist_sort_by_artist" />
-
         <RadioButton
+            style="@style/MediumTextRadioButton"
             android:id="@+id/playlist_dialog_sort_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,6 +92,7 @@
     </RadioGroup>
 
     <CheckBox
+        style="@style/MediumTextCheckBox"
         android:id="@+id/playlist_dialog_view_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

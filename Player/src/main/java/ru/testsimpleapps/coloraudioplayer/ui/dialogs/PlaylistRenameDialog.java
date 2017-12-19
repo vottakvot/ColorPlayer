@@ -25,7 +25,7 @@ public class PlaylistRenameDialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.playlist_rename_dialog);
+        setContentView(R.layout.dialog_playlist_rename);
 
         renameButton = (Button) findViewById(R.id.playlistRename_create);
         cancelButton = (Button) findViewById(R.id.playlistRename_cancel);

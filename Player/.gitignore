@@ -73,7 +73,7 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 ### Android template
-# Built application files
+# Built image_application files
 *.apk
 *.ap_
 

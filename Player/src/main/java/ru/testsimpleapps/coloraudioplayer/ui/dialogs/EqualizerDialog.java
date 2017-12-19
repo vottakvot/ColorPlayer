@@ -54,7 +54,7 @@ public class EqualizerDialog
         this.context = context;
         equalizerDialogAdapter = new EqualizerDialogAdapter();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        equalizerView = (View) inflater.inflate(R.layout.equalizer_dialog, null);
+        equalizerView = (View) inflater.inflate(R.layout.dialog_equalizer, null);
         setConfigListView = (ListView) equalizerView.findViewById(R.id.equalizerSettings);
         setConfigListView.setAdapter(equalizerDialogAdapter);
         chooseMode = (Spinner) equalizerView.findViewById(R.id.equalizerChooseMode);
@@ -137,7 +137,7 @@ public class EqualizerDialog
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        Log.i(MainActivity.LOG_ACTIVITY, this.getClass().getName().toString() + "onStopTrackingTouch - tag: " + seekBar.getTag());
+        Log.i(MainActivity.TAG, this.getClass().getName().toString() + "onStopTrackingTouch - tag: " + seekBar.getTag());
         if (bassBoost != null && (int) seekBar.getTag() == 0) {
             bassBoost.setStrength((short) (seekBar.getProgress() * 50));
 //            App.getContext().setBassBoostStrength(bassBoost.getRoundedStrength());

@@ -33,7 +33,7 @@ public class PlaylistChooseDialog
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         playlistDialogAdapter = new PlaylistDialogAdapter();
 
-        playlistView = (View) inflater.inflate(R.layout.playlist_get_dialog, null);
+        playlistView = (View) inflater.inflate(R.layout.dialog_playlist_get, null);
         playlistListView = (ListView) playlistView.findViewById(R.id.playlistGet_list);
         playlistListView.setAdapter(playlistDialogAdapter);
         playlistListView.setOnItemClickListener(playlistDialogAdapter);

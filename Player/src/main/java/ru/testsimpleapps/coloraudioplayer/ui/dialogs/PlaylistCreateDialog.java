@@ -25,7 +25,7 @@ public class PlaylistCreateDialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.playlist_create_dialog);
+        setContentView(R.layout.dialog_playlist_create);
 
         createButton = (Button) findViewById(R.id.playlistCreate_create);
         cancelButton = (Button) findViewById(R.id.playlistCreate_cancel);

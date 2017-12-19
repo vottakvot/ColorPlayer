@@ -7,15 +7,16 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:padding="5dp"
-    android:background="@drawable/selector_listview_explorer_item">
+    android:background="@drawable/drawable_selector_recycleview_explorer_item">
 
     <!-- 1 view files-->
     <ImageView
-        style="@style/PlayerImageViewCommon"
+        style="@style/CommonImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/explorer_file_image"
-        android:src="@drawable/album"
+        android:src="@drawable/image_album"
+        android:background="@color/common_transparent"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginBottom="8dp"
@@ -25,7 +26,7 @@
 
     <!-- 2 view duration of the content media-file -->
     <TextView
-        style="@style/PlayerTextViewCommon"
+        style="@style/BigTextView"
         android:id="@+id/explorer_file_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +39,7 @@
 
     <!-- 3 view name of the content media-file -->
     <TextView
-        style="@style/PlayerTextViewCommon"
+        style="@style/BigTextView"
         android:id="@+id/explorer_file_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -53,8 +54,9 @@
         app:layout_constraintRight_toLeftOf="@+id/explorer_file_check"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 4 view check for add in active playlist -->
+    <!-- 4 view check image_add add in active playlist -->
     <CheckBox
+        style="@style/CommonCheckBox"
         android:id="@+id/explorer_file_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

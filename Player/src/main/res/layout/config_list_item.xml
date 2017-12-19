@@ -6,7 +6,7 @@
 
     <!-- 1 view drawer -->
     <ImageView
-        style="@style/PlayerImageViewCommon"
+        style="@style/CommonImageView"
         android:id="@+id/imageConfig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,11 +15,11 @@
 
     <!-- 2 view name drawer-->
     <TextView
-        style="@style/PlayerTextViewCommon"
+        style="@style/BigTextView"
         android:id="@+id/nameConfig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imageConfig"
-        android:textColor="@color/common_text_drawer" />
+        android:textColor="@color/drawer_text_color" />
 
 </RelativeLayout>

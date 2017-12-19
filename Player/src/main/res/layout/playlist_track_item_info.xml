@@ -15,6 +15,7 @@
 
     <!-- Duration -->
     <TextView
+        style="@style/SmallTextView"
         android:id="@+id/playlist_track_duration_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,6 +29,7 @@
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
+        style="@style/SmallTextView"
         android:id="@+id/playlist_track_duration_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,6 +43,7 @@
 
     <!-- Artists -->
     <TextView
+        style="@style/SmallTextView"
         android:id="@+id/playlist_track_artist_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,6 +56,7 @@
         app:layout_constraintLeft_toLeftOf="@+id/playlist_track_duration_label"/>
 
     <TextView
+        style="@style/SmallTextView"
         android:id="@+id/playlist_track_artist_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,6 +70,7 @@
 
     <!-- Albums -->
     <TextView
+        style="@style/SmallTextView"
         android:id="@+id/playlist_track_albums_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -78,6 +83,7 @@
         app:layout_constraintLeft_toLeftOf="@+id/playlist_track_duration_label"/>
 
     <TextView
+        style="@style/SmallTextView"
         android:id="@+id/playlist_track_albums_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -91,6 +97,7 @@
 
     <!-- Date -->
     <TextView
+        style="@style/SmallTextView"
         android:id="@+id/playlist_track_date_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -105,6 +112,7 @@
         app:layout_constraintLeft_toLeftOf="@+id/playlist_track_duration_label"/>
 
     <TextView
+        style="@style/SmallTextView"
         android:id="@+id/playlist_track_date_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

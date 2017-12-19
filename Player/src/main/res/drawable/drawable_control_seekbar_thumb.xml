@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <size
+        android:width="@dimen/controls_seek_thumb"
+        android:height="@dimen/controls_seek_thumb"/>
+    <solid android:color="@color/control_seek_bar_thumb"/>
+</shape>

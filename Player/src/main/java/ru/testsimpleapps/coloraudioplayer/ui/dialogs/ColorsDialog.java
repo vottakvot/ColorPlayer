@@ -24,7 +24,7 @@ public class ColorsDialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.colors_dialog);
+        setContentView(R.layout.dialog_colors);
 
         greenButton = (Button) findViewById(R.id.colors_green);
         redButton = (Button) findViewById(R.id.colors_red);

@@ -310,7 +310,7 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         mExplorerFolderAdapter.setOnItemClickListener(this);
         mExplorerFolderAdapter.setOnItemCheckListener(this);
 
-        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycle_layout_animation);
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycleview_layout_animation);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setLayoutAnimation(animation);
         mRecyclerView.addOnScrollListener(new OnScrollRecycleViewListener());
@@ -319,15 +319,15 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
     }
 
     private void restoreStates(final Bundle savedInstanceState) {
-        // Check previous states
+        // Check image_previous states
         if (savedInstanceState == null) {
             MediaExplorerManager.getInstance().findMediaAsync();
         } else {
-            // State for adapter back press
+            // State for adapter image_back press
             mFolderStateAdapter = savedInstanceState.getParcelable(TAG_FOLDER_STATE_ADAPTER);
             // Panel state
             mAdditionalPanel.setVisibility(savedInstanceState.getInt(TAG_ADD_PANEL));
-            // Restore folder adapter every time
+            // Restore image_folder adapter every time
             final ArrayList<FolderData> folderDataList = (ArrayList<FolderData>) savedInstanceState.getSerializable(TAG_FOLDER_CONTENT);
             if (folderDataList != null) {
                 mExplorerFolderAdapter.setItems(folderDataList);
@@ -358,7 +358,7 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
             }
         }
 
-        // Show progress for async data search
+        // Show progress for async data image_search
         if (MediaExplorerManager.getInstance().isProcessing()) {
             mProgressBar.setVisibility(View.VISIBLE);
         } else {

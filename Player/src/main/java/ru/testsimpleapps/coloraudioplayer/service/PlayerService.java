@@ -30,8 +30,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.R;
+import ru.testsimpleapps.coloraudioplayer.app.App;
 import ru.testsimpleapps.coloraudioplayer.managers.player.AudioPlayer;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
@@ -334,7 +334,7 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
     }
 
     /*
-    * This method is used init audio effects for player.
+    * This method is used init image_audio effects for player.
     * First, init mEqualizer, then bass boost and visualizer
     * */
     private void initEffects() {
@@ -392,13 +392,13 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        // Intent play/pause
+        // Intent image_play/image_pause
         Intent playIntent = new Intent(this, PlayerService.class);
         playIntent.setAction(ACTION_PLAY);
         playIntent.putExtra(KEY_PLAY_PAUSE, KEY_PLAY_PAUSE);
         PendingIntent playPendingIntent = PendingIntent.getService(this, 0, playIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // Intent next
+        // Intent image_next
         Intent nextIntent = new Intent(this, PlayerService.class);
         nextIntent.setAction(ACTION_NEXT);
         PendingIntent nextPendingIntent = PendingIntent.getService(this, 0, nextIntent, 0);
@@ -421,11 +421,11 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
             remoteView.setTextViewText(R.id.nameTrackNotification, CursorFactory.getInstance().getTrackName());
         }
 
-        // Update play/pause icon
+        // Update image_play/image_pause icon
         if (mMediaPlayer.isPlaying()) {
-            remoteView.setImageViewResource(R.id.playPauseNotification, R.drawable.pause_notification);
+            remoteView.setImageViewResource(R.id.playPauseNotification, R.drawable.image_pause_notification);
         } else {
-            remoteView.setImageViewResource(R.id.playPauseNotification, R.drawable.play_notification);
+            remoteView.setImageViewResource(R.id.playPauseNotification, R.drawable.image_play_notification);
         }
 
         // Create custom notification
@@ -434,7 +434,7 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
                 .setColor(Color.RED)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)
-                .setSmallIcon(R.drawable.icon_notification_mini)
+                .setSmallIcon(R.drawable.image_icon_notification_mini)
                 .setContentText(getString(R.string.notification_header))
                 .setTicker(getString(R.string.app_name))
                 .setContentText(getString(R.string.app_name))

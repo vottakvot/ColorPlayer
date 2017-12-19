@@ -174,7 +174,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
 
     private void init(final Bundle savedInstanceState) {
         mInputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycle_layout_animation);
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycleview_layout_animation);
         mTranslationAnimation = new OnTranslationAnimation(mAdditionalPanel, OnTranslationAnimation.DEFAULT_DURATION);
         mRecycleViewLayoutManager = new RecycleViewLayoutManager(getContext());
         mRecycleViewLayoutManager.setCenter(RECYCLE_CENTER);
@@ -201,7 +201,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
     }
 
     private void restoreStates(final Bundle savedInstanceState) {
-        // Check previous states
+        // Check image_previous states
         if (savedInstanceState != null) {
             // Panel state
             mAdditionalPanel.setVisibility(savedInstanceState.getInt(TAG_ADD_PANEL));

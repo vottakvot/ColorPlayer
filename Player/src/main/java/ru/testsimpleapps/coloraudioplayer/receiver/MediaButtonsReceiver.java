@@ -7,7 +7,7 @@ import android.media.AudioManager;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import ru.testsimpleapps.coloraudioplayer.App;
+import ru.testsimpleapps.coloraudioplayer.app.App;
 import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 
 public class MediaButtonsReceiver extends BroadcastReceiver {

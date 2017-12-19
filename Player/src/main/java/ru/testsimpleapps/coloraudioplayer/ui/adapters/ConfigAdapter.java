@@ -113,28 +113,28 @@ public class ConfigAdapter extends BaseAdapter implements ListView.OnItemClickLi
         for (int i = 0; i < nameItems.length; i++) {
             switch (i) {
                 case 0:
-                    configList.add(new DrawerDataItem(R.drawable.add_playlist, nameItems[i]));
+                    configList.add(new DrawerDataItem(R.drawable.image_add_playlist, nameItems[i]));
                     break;
                 case 1:
-                    configList.add(new DrawerDataItem(R.drawable.choose_playlist, nameItems[i]));
+                    configList.add(new DrawerDataItem(R.drawable.image_choose_playlist, nameItems[i]));
                     break;
                 case 2:
-                    configList.add(new DrawerDataItem(R.drawable.equalizer, nameItems[i]));
+                    configList.add(new DrawerDataItem(R.drawable.image_equalizer, nameItems[i]));
                     break;
                 case 3:
-                    configList.add(new DrawerDataItem(R.drawable.timer, nameItems[i]));
+                    configList.add(new DrawerDataItem(R.drawable.image_timer, nameItems[i]));
                     break;
                 case 4:
-                    configList.add(new DrawerDataItem(R.drawable.preference, nameItems[i]));
+                    configList.add(new DrawerDataItem(R.drawable.image_preference, nameItems[i]));
                     break;
                 case 5:
-                    configList.add(new DrawerDataItem(R.drawable.color, nameItems[i]));
+                    configList.add(new DrawerDataItem(R.drawable.image_color, nameItems[i]));
                     break;
                 case 6:
-                    configList.add(new DrawerDataItem(R.drawable.door, nameItems[i]));
+                    configList.add(new DrawerDataItem(R.drawable.image_door, nameItems[i]));
                     break;
                 default:
-                    configList.add(new DrawerDataItem(R.drawable.door, nameItems[i]));
+                    configList.add(new DrawerDataItem(R.drawable.image_door, nameItems[i]));
                     break;
             }
         }

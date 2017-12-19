@@ -1,6 +1,6 @@
 package ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor;
 
-import ru.testsimpleapps.coloraudioplayer.App;
+import ru.testsimpleapps.coloraudioplayer.app.App;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 

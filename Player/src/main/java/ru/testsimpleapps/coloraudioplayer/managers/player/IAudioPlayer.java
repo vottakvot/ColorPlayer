@@ -18,7 +18,7 @@ public interface IAudioPlayer {
     boolean next();
 
     /*
-    * Previous with result, has previous.
+    * Previous with result, has image_previous.
     * */
     boolean previous();
 

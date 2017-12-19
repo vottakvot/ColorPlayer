@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/drawable_dialog">
+    android:background="@drawable/drawable_common_dialog">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,7 +11,7 @@
         android:orientation="horizontal">
 
         <TextView
-            style="@style/PlayerTextViewCommon"
+            style="@style/BigTextView"
             android:id="@+id/widgetCurrentTrackName"
             android:layout_width="match_parent"
             android:singleLine="true"
@@ -23,7 +23,6 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:duplicateParentState="true">
-
             <requestFocus
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -39,25 +38,28 @@
         android:background="@color/common_transparent">
 
         <ImageButton
-            style="@style/PlayerImageButtonCommon"
+            style="@style/CommonImageButton"
             android:id="@+id/widgetPrevious"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/drawable_image_buttons_background"
-            android:src="@drawable/previous" />
-
+            android:src="@drawable/image_previous" />
         <ImageButton
-            style="@style/PlayerImageButtonCommon"
+            style="@style/CommonImageButton"
             android:id="@+id/widgetPlayPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/drawable_image_buttons_background"
-            android:src="@drawable/play" />
-
+            android:src="@drawable/image_play" />
         <ImageButton
-            style="@style/PlayerImageButtonCommon"
+            style="@style/CommonImageButton"
             android:id="@+id/widgetNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/drawable_image_buttons_background"
-            android:src="@drawable/next" />
-
+            android:src="@drawable/image_next" />
     </LinearLayout>
 </LinearLayout>

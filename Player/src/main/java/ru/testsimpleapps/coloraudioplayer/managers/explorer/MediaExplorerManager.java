@@ -13,7 +13,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.testsimpleapps.coloraudioplayer.App;
+import ru.testsimpleapps.coloraudioplayer.app.App;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.FolderData;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.ItemData;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.FileTool;

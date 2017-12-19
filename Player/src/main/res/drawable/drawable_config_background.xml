@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@color/common_config_drawer_begin" />
+    <solid android:color="@color/drawer_background_begin" />
     <stroke android:width="0dp" />
     <padding
         android:left="0dp"
@@ -10,7 +10,7 @@
         android:bottom="0dp" />
     <gradient
         android:angle="0"
-        android:endColor="@color/common_config_drawer_end"
-        android:startColor="@color/common_config_drawer_begin"
+        android:endColor="@color/drawer_background_end"
+        android:startColor="@color/drawer_background_begin"
         android:type="linear" />
 </shape>

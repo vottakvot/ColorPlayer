@@ -6,10 +6,11 @@
     android:orientation="horizontal">
 
     <TextView
-        style="@style/PlayerTextViewCommon"
+        style="@style/MediumTextView"
         android:id="@+id/playlistGet_item"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="left"
-        android:textColor="@color/common_text_playlists" />
+        android:textColor="@color/common_button_dark" />
 
 </LinearLayout>

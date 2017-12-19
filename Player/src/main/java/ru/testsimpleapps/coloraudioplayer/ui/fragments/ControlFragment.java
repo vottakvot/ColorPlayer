@@ -167,11 +167,11 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
 
     private void setPartPanelVisibility(final boolean isVisible) {
         if (isVisible) {
-            mExpandButton.setImageResource(R.drawable.expand_inactive);
+            mExpandButton.setImageResource(R.drawable.image_expand_inactive);
             mTimeLayout.setVisibility(View.VISIBLE);
             mTrackNameTextView.setVisibility(View.VISIBLE);
         } else {
-            mExpandButton.setImageResource(R.drawable.expand_active);
+            mExpandButton.setImageResource(R.drawable.image_expand_active);
             mTimeLayout.setVisibility(View.GONE);
             mTrackNameTextView.setVisibility(View.GONE);
         }
@@ -185,7 +185,7 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
                 final String action = intent.getAction();
                 if (action != null) {
 
-                    // Update play/pause button
+                    // Update image_play/image_pause button
                     if (action.equals(PlayerService.RECEIVER_PLAY_PAUSE)) {
                         if (intent.hasExtra(PlayerService.EXTRA_PLAY_PAUSE)) {
                             setPlayPauseButton(intent.getBooleanExtra(PlayerService.EXTRA_PLAY_PAUSE, false));
@@ -273,9 +273,9 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
     private void setPlayPauseButton(final boolean isPlay) {
         if (mPlayPauseButton != null) {
             if (isPlay) {
-                mPlayPauseButton.setImageResource(R.drawable.pause);
+                mPlayPauseButton.setImageResource(R.drawable.image_pause);
             } else {
-                mPlayPauseButton.setImageResource(R.drawable.play);
+                mPlayPauseButton.setImageResource(R.drawable.image_play);
             }
         }
     }
@@ -283,22 +283,22 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
     private void setRepeatButton(final PlayerConfig.Repeat repeat) {
         switch (repeat) {
             case ALL:
-                mRepeatButton.setImageResource(R.drawable.repeat_active);
+                mRepeatButton.setImageResource(R.drawable.image_repeat_active);
                 break;
             case ONE:
-                mRepeatButton.setImageResource(R.drawable.repeat_active_one);
+                mRepeatButton.setImageResource(R.drawable.image_repeat_active_one);
                 break;
             case NONE:
-                mRepeatButton.setImageResource(R.drawable.repeat_inactive);
+                mRepeatButton.setImageResource(R.drawable.image_repeat_inactive);
                 break;
         }
     }
 
     private void setRandomButton(final boolean isRandom) {
         if (isRandom) {
-            mRandomButton.setImageResource(R.drawable.shuffle_active);
+            mRandomButton.setImageResource(R.drawable.image_shuffle_active);
         } else {
-            mRandomButton.setImageResource(R.drawable.shuffle_inactive);
+            mRandomButton.setImageResource(R.drawable.image_shuffle_inactive);
         }
     }
 

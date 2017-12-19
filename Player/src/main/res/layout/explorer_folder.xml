@@ -7,15 +7,16 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:padding="5dp"
-    android:background="@drawable/selector_listview_explorer_item">
+    android:background="@drawable/drawable_selector_recycleview_explorer_item">
 
-    <!-- 1 view folder-->
+    <!-- 1 vimage_folderlder-->
     <ImageView
-        style="@style/PlayerImageViewCommon"
+        style="@style/CommonImageView"
         android:id="@+id/explorer_folder_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/folder"
+        android:src="@drawable/image_folder"
+        android:background="@color/common_transparent"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -25,7 +26,7 @@
 
     <!-- 2 view count of media-files in album -->
     <TextView
-        style="@style/PlayerTextViewCommon"
+        style="@style/BigTextView"
         android:id="@+id/explorer_folder_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,7 +38,7 @@
 
     <!-- 3 view name of the content media-album -->
     <TextView
-        style="@style/PlayerTextViewCommon"
+        style="@style/BigTextView"
         android:id="@+id/explorer_folder_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

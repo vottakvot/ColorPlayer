@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="0dp"
-    android:background="@drawable/drawable_listview_header_inactive"
+    android:clickable="true"
+    android:background="@drawable/drawable_selector_recycleview_explorer_header"
     android:orientation="vertical"
     android:padding="6dp">
 
     <TextView
+        style="@style/SmallTextView"
         android:id="@+id/explorer_header_files_count_folders_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,6 +23,7 @@
         app:layout_constraintHorizontal_bias="1.0"/>
 
     <TextView
+        style="@style/SmallTextView"
         android:id="@+id/explorer_header_files_total_time_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,6 +42,7 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <TextView
+        style="@style/SmallTextView"
         android:id="@+id/explorer_header_files_count_files_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,6 +54,7 @@
         app:layout_constraintTop_toTopOf="@+id/explorer_header_files_count_folders_label" />
 
     <TextView
+        style="@style/SmallTextView"
         android:id="@+id/explorer_header_files_total_time_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

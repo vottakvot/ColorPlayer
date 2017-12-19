@@ -5,45 +5,53 @@
     android:background="@drawable/drawable_notification_background">
 
     <ImageView
+        android:id="@+id/imageNotification"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/imageNotification"
         android:layout_marginLeft="5dp"
         android:focusable="false"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/icon_notification" />
+        android:src="@drawable/image_icon_notification" />
 
     <TextView
-        style="@style/PlayerNotificationTrackName"
+        style="@style/CommonImageButton"
         android:id="@+id/nameTrackNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/imageNotification"
         android:layout_toLeftOf="@+id/playPauseNotification"
         android:text="This is service" />
 
     <ImageButton
-        style="@style/PlayerImageButtonCommon"
+        style="@style/CommonImageButton"
         android:id="@+id/exitNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/drawable_image_buttons_background"
-        android:src="@drawable/close_notification" />
+        android:src="@drawable/image_close_notification" />
 
     <ImageButton
-        style="@style/PlayerImageButtonCommon"
+        style="@style/CommonImageButton"
         android:id="@+id/nextNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/exitNotification"
         android:background="@drawable/drawable_image_buttons_background"
-        android:src="@drawable/next" />
+        android:src="@drawable/image_next" />
 
     <ImageButton
-        style="@style/PlayerImageButtonCommon"
+        style="@style/CommonImageButton"
         android:id="@+id/playPauseNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/nextNotification"
         android:background="@drawable/drawable_image_buttons_background"
-        android:src="@drawable/play" />
+        android:src="@drawable/image_play" />
 
 </RelativeLayout>

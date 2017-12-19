@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import ru.testsimpleapps.coloraudioplayer.App;
 import ru.testsimpleapps.coloraudioplayer.R;
+import ru.testsimpleapps.coloraudioplayer.app.App;
 import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 
 
@@ -57,9 +57,9 @@ public class PlayerWidget extends AppWidgetProvider {
 //        }
 
         if (playPause) {
-            remoteView.setImageViewResource(R.id.widgetPlayPause, R.drawable.pause);
+            remoteView.setImageViewResource(R.id.widgetPlayPause, R.drawable.image_pause);
         } else {
-            remoteView.setImageViewResource(R.id.widgetPlayPause, R.drawable.play);
+            remoteView.setImageViewResource(R.id.widgetPlayPause, R.drawable.image_play);
         }
 
         appWidgetManager.updateAppWidget(widgetID, remoteView);

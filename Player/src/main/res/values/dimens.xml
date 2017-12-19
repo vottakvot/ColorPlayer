@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Fragment animation -->
+    <integer name="fragment_replace_animation_duration">100</integer>
+
+    <!-- Playlist arguments -->
+    <dimen name="playlist_item_selection_padding">2dp</dimen>
+
+    <!-- For controls-->
+    <dimen name="controls_seek_height">5dp</dimen>
+    <dimen name="controls_seek_thumb">20dp</dimen>
+    <dimen name="controls_seek_corners">50dp</dimen>
+    <dimen name="controls_peek_height">70dp</dimen>
+
+    <!-- Playlist -->
+    <dimen name="playlist_header_corners_radius">100dp</dimen>
+    <dimen name="playlist_items_selection_corners">10dp</dimen>
+    <dimen name="playlist_padding">10dp</dimen>
+
+    <!-- Dialogs -->
+    <dimen name="dialog_padding">30dp</dimen>
+
+</resources>

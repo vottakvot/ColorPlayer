@@ -33,7 +33,7 @@ public class TimerDialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.timer_dialog);
+        setContentView(R.layout.dialog_timer);
 
         createButton = (Button) findViewById(R.id.timer_create);
         resetButton = (Button) findViewById(R.id.timer_reset);

@@ -6,7 +6,7 @@ import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import ru.testsimpleapps.coloraudioplayer.App;
+import ru.testsimpleapps.coloraudioplayer.app.App;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.RandomSet;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.StrictQueue;
@@ -34,7 +34,7 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
     private final MediaPlayer mMediaPlayer;
 
     /*
-    * For audio focus
+    * For image_audio focus
     * */
     private final AudioManager mAudioManager;
 
@@ -137,9 +137,9 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
 
                 // Play source
                 mMediaPlayer.start();
-                // Get audio focus
+                // Get image_audio focus
                 mAudioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
-                // Reset audio focus trigger
+                // Reset image_audio focus trigger
                 isAudioFocusLoss = false;
                 // Set player mState
                 mState = State.PLAY;
@@ -151,7 +151,7 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
 
                 return true;
             } catch (Exception e) { // Path not found or bad file or bad path. Add log.
-                Log.e(App.TAG, getClass().getSimpleName() + " - play() - " + e.getMessage());
+                Log.e(App.TAG, getClass().getSimpleName() + " - image_play() - " + e.getMessage());
                 mMediaPlayer.reset();
             }
         }

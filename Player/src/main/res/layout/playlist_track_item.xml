@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/selector_listview_playlist_item">
+    android:background="@drawable/drawable_selector_recycleview_playlist_item">
 
     <include
         layout="@layout/playlist_track_item_main"

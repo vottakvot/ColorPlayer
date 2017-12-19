@@ -1,265 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Green theme. -->
-    <style name="GreenTheme" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/greenPrimary</item>
-        <item name="colorPrimaryDark">@color/greenPrimaryDark</item>
-        <item name="colorAccent">@color/greenAccent</item>
-        <item name="android:textColorHint">@color/greenHints</item>
-        <item name="android:textColor">@color/greenText</item>
-        <item name="android:windowBackground">@color/greenPrimary</item>
-        <!--<item name="android:itemBackground">@color/greenBackground</item>-->
+    <!-- ======================================================================================= -->
+    <!-- Base themes -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light"/>
+
+    <!-- Base widgets -->
+    <style name="CommonTextView" parent="android:Widget.TextView">
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">false</item>
     </style>
 
-    <style name="BlueTheme" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/bluePrimary</item>
-        <item name="colorPrimaryDark">@color/bluePrimaryDark</item>
-        <item name="colorAccent">@color/blueAccent</item>
-        <item name="android:textColorHint">@color/blueHints</item>
-        <item name="android:textColor">@color/blueText</item>
-        <item name="android:windowBackground">@color/bluePrimary</item>
-        <!--<item name="android:itemBackground">@color/blueBackground</item>-->
+    <style name="CommonEditText" parent="android:Widget.EditText"/>
+    <style name="CommonButton" parent="android:Widget.Button"/>
+    <style name="CommonImageButton" parent="android:Widget.ImageButton"/>
+    <style name="CommonImageView" parent="android:Widget.ImageWell"/>
+    <style name="CommonCheckBox" parent="android:Widget.CompoundButton.CheckBox">
+        <item name="android:textColor">?android:textColor</item>
+    </style>
+    <style name="CommonRadioButton" parent="android:Widget.CompoundButton.RadioButton">
+        <item name="android:textColor">?android:textColor</item>
+    </style>
+    <style name="CommonRecycleView"/>
+
+    <!-- ======================================================================================= -->
+    <!-- Color theme -->
+    <style name="ColorTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/defaultPrimary</item>
+        <item name="colorPrimaryDark">@color/defaultPrimaryDark</item>
+        <item name="colorAccent">@color/defaultAccent</item>
+        <item name="android:textColorHint">@color/defaultHints</item>
+        <item name="android:textColor">@color/defaultText</item>
+        <item name="android:windowBackground">@color/defaultPrimary</item>
+        <item name="android:itemBackground">@color/defaultBackground</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="RedTheme" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/redPrimary</item>
-        <item name="colorPrimaryDark">@color/redPrimaryDark</item>
-        <item name="colorAccent">@color/redAccent</item>
-        <item name="android:textColorHint">@color/redHints</item>
-        <item name="android:textColor">@color/redText</item>
-        <item name="android:windowBackground">@color/redPrimary</item>
-        <!--<item name="android:itemBackground">@color/redBackground</item>-->
+    <!-- ======================================================================================= -->
+    <!-- Comimage_backgroundound -->
+    <style name="CustomBackground">
+        <item name="android:background">@color/defaultPrimary</item>
     </style>
 
-    <!-- Begin common styles -->
-    <style name="PlayerEditCommon" parent="android:Widget.EditText">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">5dp</item>
-        <item name="android:layout_alignParentTop">true</item>
-        <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:maxLength">50</item>
-        <item name="android:minLines">1</item>
+    <!-- ======================================================================================= -->
+    <!-- Custom widgets styles -->
+    <!-- TextView style -->
+    <style name="BigTextView" parent="CommonTextView">
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:maxLines">1</item>
-        <item name="android:editable">true</item>
-        <item name="android:inputType">textAutoComplete</item>
-        <item name="android:maxHeight">40dp</item>
-        <item name="android:minHeight">40dp</item>
-        <item name="android:focusable">true</item>
-        <item name="android:visibility">visible</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:cursorVisible">false</item>
-    </style>
-
-    <style name="PlayerTextViewCommon" parent="android:Widget.TextView">
-        <item name="android:gravity">center</item>
-        <item name="android:layout_margin">5dp</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:focusable">false</item>
-        <item name="android:clickable">false</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:singleLine">true</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">5</item>
     </style>
 
-    <style name="PlayerImageButtonCommon" parent="android:Widget.ImageButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:scaleType">fitCenter</item>
-        <item name="android:clickable">true</item>
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
-    <style name="PlayerImageViewCommon" parent="android:Widget.ImageWell">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:clickable">false</item>
-        <item name="android:focusable">false</item>
-        <item name="android:scaleType">fitCenter</item>
-    </style>
-
-    <style name="PlayerButtonCommon" parent="android:Widget.Button">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:visibility">visible</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
-    <style name="PlayerListCommon" parent="android:Widget.ListView">
-        <item name="android:dividerHeight">0dp</item>
-        <item name="android:cacheColorHint">@color/common_transparent</item>
-        <item name="android:listSelector">@color/common_transparent</item>
-        <item name="android:background">@color/common_white_background</item>
-        <item name="android:focusable">false</item>
-        <item name="android:focusableInTouchMode">true</item>
-        <item name="android:clickable">true</item>
-        <item name="android:choiceMode">singleChoice</item>
-    </style>
-
-    <style name="PlayerRadioButtonCommon" parent="android:Widget.CompoundButton.RadioButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">5dp</item>
-        <item name="android:checked">false</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:textColor">@color/common_text_timer</item>
-    </style>
-    <!-- End common styles -->
-
-    <!-- Custom buttons for dialogs-->
-    <style name="PlayerButtonDialog" parent="PlayerButtonCommon">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:clickable">true</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:minHeight">40dp</item>
-        <item name="android:background">@drawable/drawable_common_buttons</item>
-        <item name="android:textColor">@color/common_text_button</item>
-    </style>
-
-    <!-- Custom buttons for timer-->
-    <style name="PlayerButtonTimerDialog" parent="PlayerButtonDialog">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="PlayerButtonColor" parent="PlayerButtonCommon">
-        <item name="android:layout_width">80dp</item>
-        <item name="android:layout_height">80dp</item>
-        <item name="android:minHeight">80dp</item>
-        <item name="android:minWidth">80dp</item>
-        <item name="android:maxHeight">80dp</item>
-        <item name="android:maxWidth">80dp</item>
-        <item name="android:background">@drawable/drawable_colors_button_green</item>
-    </style>
-
-    <style name="PlayerPlaylistItemLayout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_margin">@dimen/playlist_item_outer_layout_margin</item>
-        <item name="android:paddingTop">@dimen/playlist_item_outer_layout_paddingTop</item>
-        <item name="android:paddingBottom">@dimen/playlist_item_outer_layout_paddingBottom</item>
-        <item name="android:background">@drawable/selector_listview_playlist_item</item>
-    </style>
-
-    <style name="PlayerPlaylistItemLayoutDescriptions">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:weightSum">@integer/playlist_item_weight_sum_description</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_margin">0dp</item>
-        <item name="android:padding">0dp</item>
-        <item name="android:orientation">horizontal</item>
-    </style>
-
-    <style name="PlayerPlaylistItemTextName" parent="PlayerTextViewCommon">
-        <item name="android:layout_marginLeft">@dimen/playlist_item_left_margin_into</item>
-        <item name="android:paddingBottom">0dp</item>
-        <item name="android:minLines">2</item>
-        <item name="android:maxLines">2</item>
-        <item name="android:textSize">@dimen/playlist_item_track_name</item>
+    <style name="MediumTextView" parent="CommonTextView">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:layout_centerVertical">@bool/playlist_item_name_layout_align</item>
-        <item name="android:layout_gravity">top</item>
-        <item name="android:gravity">left</item>
-        <item name="android:shadowColor">@color/common_text_shadow</item>
-        <item name="android:shadowDx">2</item>
-        <item name="android:shadowDy">0</item>
-        <item name="android:shadowRadius">4</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">5</item>
     </style>
 
-    <style name="PlayerPlaylistItemTextDescription" parent="PlayerTextViewCommon">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_margin">0dp</item>
-        <item name="android:padding">0dp</item>
+    <style name="SmallTextView" parent="CommonTextView">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:maxLines">1</item>
-        <item name="android:textSize">@dimen/playlist_item_text_size_description</item>
-        <item name="android:textColor">@color/common_artist_playlist</item>
-        <item name="android:ellipsize">marquee</item>
-        <item name="android:gravity">left</item>
-    </style>
-
-    <style name="PlayerNotificationTrackName" parent="PlayerTextViewCommon">
-        <item name="android:minLines">1</item>
-        <item name="android:maxLines">3</item>
-        <item name="android:textSize">@dimen/player_notification_track_name_size</item>
-        <item name="android:layout_marginLeft">5dp</item>
-        <item name="android:layout_marginRight">5dp</item>
-        <item name="android:gravity">center|center_vertical</item>
-        <item name="android:minHeight">30dp</item>
-        <item name="android:textColor">@color/common_notification_track_name</item>
-    </style>
-
-    <style name="PlayerActionBarTextAppName" parent="PlayerTextViewCommon">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:paddingRight">5dp</item>
-        <item name="android:layout_margin">0dp</item>
-        <item name="android:textSize">@dimen/action_bar_app_name_text_size</item>
-        <item name="android:textStyle">italic</item>
-        <item name="android:shadowColor">@color/common_text_shadow</item>
-        <item name="android:shadowDx">2</item>
-        <item name="android:shadowDy">2</item>
-        <item name="android:shadowRadius">5</item>
-    </style>
-
-    <style name="PlayerPlaylistItemTextTextMains" parent="PlayerTextViewCommon">
-        <item name="android:shadowColor">@color/common_text_shadow</item>
-        <item name="android:shadowDx">2</item>
-        <item name="android:shadowDy">2</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">2</item>
-        <item name="android:paddingRight">@dimen/playlist_item_outer_layout_paddingRight</item>
     </style>
 
-    <style name="PlayerListviewHeaders" parent="PlayerTextViewCommon">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_gravity">center_horizontal|top</item>
-        <item name="android:layout_margin">0dp</item>
-        <item name="android:background">@drawable/selector_listview_header</item>
-        <item name="android:paddingLeft">@dimen/listview_header_paddings</item>
-        <item name="android:paddingRight">@dimen/listview_header_paddings</item>
-        <item name="android:focusable">true</item>
-        <item name="android:minHeight">@dimen/listview_header_min_height</item>
-        <item name="android:maxHeight">@dimen/listview_header_max_height</item>
-        <item name="android:gravity">center_horizontal|center_vertical</item>
-        <item name="android:textSize">@dimen/listview_header_text_size</item>
-        <item name="android:ellipsize">marquee</item>
-        <item name="android:minLines">1</item>
-        <item name="android:maxLines">2</item>
-        <item name="android:shadowColor">@color/common_text_shadow</item>
+    <!-- ======================================================================================= -->
+    <!-- Button style -->
+    <style name="BigTextButton" parent="CommonButton">
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:shadowDx">2</item>
         <item name="android:shadowDy">2</item>
         <item name="android:shadowRadius">5</item>
     </style>
 
-    <style name="PlayerControlTrackInfo" parent="PlayerTextViewCommon">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">0dp</item>
-        <item name="android:gravity">center_horizontal|center_vertical</item>
-        <item name="android:background">@color/common_transparent</item>
-        <item name="android:textSize">@dimen/player_controls_track_info_textsize</item>
-        <!--<item name="android:shadowColor">@color/common_text_shadow</item>-->
-        <!--<item name="android:shadowDx">2</item>-->
-        <!--<item name="android:shadowDy">2</item>-->
-        <!--<item name="android:shadowRadius">1</item>-->
+    <style name="MediumTextButton" parent="CommonButton">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">5</item>
     </style>
 
-    <style name="PlayerButtonColorGreen" parent="PlayerButtonColor">
-        <item name="android:background">@drawable/drawable_colors_button_green</item>
+    <style name="SmallTextButton" parent="CommonButton">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
     </style>
 
-    <style name="PlayerButtonColorRed" parent="PlayerButtonColor">
-        <item name="android:background">@drawable/drawable_colors_button_red</item>
+    <!-- ======================================================================================= -->
+    <!-- Edit style -->
+    <style name="BigTextEdit" parent="CommonEditText">
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">5</item>
     </style>
 
-    <style name="PlayerButtonColorBlue" parent="PlayerButtonColor">
-        <item name="android:background">@drawable/drawable_colors_button_blue</item>
+    <style name="MediumTextEdit" parent="CommonEditText">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">5</item>
+    </style>
+
+    <style name="SmallTextEdit" parent="CommonEditText">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <!-- ======================================================================================= -->
+    <!-- RadioButton -->
+    <style name="BigTextRadioButton" parent="CommonRadioButton">
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">5</item>
+    </style>
+
+    <style name="MediumTextRadioButton" parent="CommonRadioButton">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">5</item>
+    </style>
+
+    <style name="SmallTextRadioButton" parent="CommonRadioButton">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <!-- ======================================================================================= -->
+    <!-- RadioButton -->
+    <style name="BigTextCheckBox" parent="CommonCheckBox">
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">5</item>
+    </style>
+
+    <style name="MediumTextCheckBox" parent="CommonCheckBox">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">5</item>
+    </style>
+
+    <style name="SmallTextCheckBox" parent="CommonCheckBox">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
     </style>
 
 </resources>

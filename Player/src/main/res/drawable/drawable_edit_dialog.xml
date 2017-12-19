@@ -8,7 +8,7 @@
         <shape android:shape="rectangle">
             <stroke
                 android:width="2dp"
-                android:color="@color/common_underline_edit" />
+                android:color="@color/common_edit_underline" />
             <solid android:color="@color/common_transparent" />
         </shape>
     </item>
