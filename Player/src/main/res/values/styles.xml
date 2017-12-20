@@ -28,6 +28,7 @@
         <item name="colorPrimary">@color/defaultPrimary</item>
         <item name="colorPrimaryDark">@color/defaultPrimaryDark</item>
         <item name="colorAccent">@color/defaultAccent</item>
+        <item name="colorControlNormal">@color/defaultForeground</item>
         <item name="android:textColorHint">@color/defaultHints</item>
         <item name="android:textColor">@color/defaultText</item>
         <item name="android:windowBackground">@color/defaultPrimary</item>
@@ -37,9 +38,9 @@
     </style>
 
     <!-- ======================================================================================= -->
-    <!-- Comimage_backgroundound -->
+    <!-- Custom layout_background -->
     <style name="CustomBackground">
-        <item name="android:background">@color/defaultPrimary</item>
+        <item name="android:background">?android:colorPrimary</item>
     </style>
 
     <!-- ======================================================================================= -->

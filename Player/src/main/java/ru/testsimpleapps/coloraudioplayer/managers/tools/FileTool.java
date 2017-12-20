@@ -18,7 +18,7 @@ public class FileTool {
 
     public static String getFolderName(final String path) {
         if (path != null)
-            return new File(path).getParent();
+            return new File(path).getParentFile().getName();
         return null;
     }
 

@@ -2,5 +2,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners android:radius="@dimen/playlist_items_selection_corners" />
-    <solid android:color="@color/common_playlist_selection" />
+    <solid android:color="?itemBackground" />
 </shape>

@@ -4,5 +4,5 @@
     <size
         android:width="@dimen/controls_seek_thumb"
         android:height="@dimen/controls_seek_thumb"/>
-    <solid android:color="@color/control_seek_bar_thumb"/>
+    <solid android:color="?colorPrimaryDark"/>
 </shape>

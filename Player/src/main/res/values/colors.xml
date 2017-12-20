@@ -3,10 +3,11 @@
 
     <!-- Default color -->
     <color name="defaultPrimary">#28c904</color>
-    <color name="defaultPrimaryDark">#1f4300</color>
-    <color name="defaultAccent">#408918</color>
+    <color name="defaultPrimaryDark">#2e6400</color>
+    <color name="defaultAccent">#65ff10</color>
     <color name="defaultHints">#afffa1</color>
-    <color name="defaultBackground">#75ff5e</color>
+    <color name="defaultBackground">#5ee947</color>
+    <color name="defaultForeground">#8bff78</color>
     <color name="defaultText">#148e00</color>
 
     <!-- Common colors -->

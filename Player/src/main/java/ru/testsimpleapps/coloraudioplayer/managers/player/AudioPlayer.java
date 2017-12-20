@@ -202,10 +202,12 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
 
     @Override
     public boolean seek(final int position) {
-        final int duration = mMediaPlayer.getDuration();
-        if ((mState == State.PLAY || mState == State.PAUSE) && (position > 0 && position < duration)) {
-            mMediaPlayer.seekTo(position);
-            return true;
+        if (mState == State.PLAY || mState == State.PAUSE) {
+            final int duration = mMediaPlayer.getDuration();
+            if (position >= 0 && position < duration) {
+                mMediaPlayer.seekTo(position);
+                return true;
+            }
         }
 
         return false;
@@ -224,7 +226,6 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
     public void setTrackPath(@NonNull final String path) {
         mPath = path;
     }
-
 
     private boolean nextInPlaylist() {
         boolean isHasNext = false;

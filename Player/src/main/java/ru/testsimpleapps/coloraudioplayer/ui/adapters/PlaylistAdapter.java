@@ -2,7 +2,6 @@ package ru.testsimpleapps.coloraudioplayer.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -80,15 +79,9 @@ public class PlaylistAdapter extends BaseAdapter {
                 if (mIPlaylist.getTrackId() == CursorFactory.getInstance().getTrackId()) {
                     mViewHolder.itemView.setBackgroundResource(R.drawable.drawable_recycleview_item_selection);
                     mViewHolder.itemView.setPadding(mViewPadding, mViewPadding, mViewPadding, mViewPadding);
-
-                    // TODO set image_color for selection
-                    mViewHolder.itemView.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC);
                 } else if (mSearchedPosition == i) {
                     mViewHolder.itemView.setBackgroundResource(R.drawable.drawable_recycleview_item_find);
                     mViewHolder.itemView.setPadding(mViewPadding, mViewPadding, mViewPadding, mViewPadding);
-
-                    // TODO set image_color for find
-                    mViewHolder.itemView.getBackground().setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC);
                 } else {
                     mViewHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
                     mViewHolder.itemView.setPadding(0, 0, 0, 0);
