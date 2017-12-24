@@ -1,11 +1,11 @@
 package ru.testsimpleapps.coloraudioplayer.data;
 
-public class DrawerDataItem {
+public class DrawerItem {
 
     private int image;
     private String name;
 
-    public DrawerDataItem(int image, String name) {
+    public DrawerItem(int image, String name) {
         this.image = image;
         this.name = name;
     }

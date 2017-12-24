@@ -38,8 +38,10 @@ public abstract class BaseFragment extends Fragment {
     }
 
     private void setSnackBar(final ViewGroup container) {
-        mSnackBar = Snackbar.make(container, "", Snackbar.LENGTH_SHORT);
-        mSnackBar.setDuration(Snackbar.LENGTH_SHORT);
+        if (container != null) {
+            mSnackBar = Snackbar.make(container, "", Snackbar.LENGTH_SHORT);
+            mSnackBar.setDuration(Snackbar.LENGTH_SHORT);
+        }
     }
 
     private void setToast() {
@@ -48,13 +50,14 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void showSnackBar(final int resource) {
-        mSnackBar.setText(getResources().getString(resource));
-        mSnackBar.show();
+        showSnackBar(getString(resource));
     }
 
     protected void showSnackBar(final String string) {
-        mSnackBar.setText(string);
-        mSnackBar.show();
+        if (mSnackBar != null) {
+            mSnackBar.setText(string);
+            mSnackBar.show();
+        }
     }
 
     protected void showToast(final int resource) {

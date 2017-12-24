@@ -1,56 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/drawable_common_dialog"
-    android:orientation="vertical"
-    android:padding="15dp">
+    android:padding="@dimen/dialog_padding">
 
     <TextView
         style="@style/BigTextView"
-        android:id="@+id/playlistCreate_header"
+        android:id="@+id/playlist_create_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/playlist_create_header"
-        android:singleLine="true" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <EditText
+        style="@style/MediumTextEdit"
+        android:id="@+id/playlist_create_edit"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_marginTop="8dp"
+        android:background="@drawable/drawable_edit_dialog"
+        android:hint="@string/playlist_create_hint"
+        android:textColor="@color/common_edit_text"
+        app:layout_constraintTop_toBottomOf="@+id/playlist_create_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-        <EditText
-            style="@style/MediumTextEdit"
-            android:id="@+id/playlistCreate_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/playlist_create_hint"
-            android:background="@drawable/drawable_edit_dialog"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/common_edit_text" />
+    <Button
+        style="@style/MediumTextButton"
+        android:id="@+id/playlist_create_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/drawable_common_buttons"
+        android:layout_marginTop="8dp"
+        android:text="@string/playlist_create_create"
+        app:layout_constraintTop_toBottomOf="@+id/playlist_create_edit"
+        app:layout_constraintEnd_toStartOf="@+id/playlist_create_cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/playlistCreate_edit">
+    <Button
+        style="@style/MediumTextButton"
+        android:id="@+id/playlist_create_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/drawable_common_buttons"
+        android:layout_marginTop="8dp"
+        android:text="@string/playlist_create_cancel"
+        app:layout_constraintStart_toEndOf="@+id/playlist_create_ok"
+        app:layout_constraintTop_toBottomOf="@+id/playlist_create_edit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-            <Button
-                style="@style/MediumTextButton"
-                android:id="@+id/playlistCreate_create"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="10dp"
-                android:text="@string/playlist_create_create" />
-            <Button
-                style="@style/MediumTextButton"
-                android:id="@+id/playlistCreate_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
-                android:text="@string/playlist_create_cancel" />
-        </LinearLayout>
-    </RelativeLayout>
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

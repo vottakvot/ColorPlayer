@@ -26,7 +26,7 @@ public class PlaylistAdapter extends BaseAdapter {
     private IPlaylist mIPlaylist;
     private boolean mIsExpand = true;
     private long mPreviousSearchPosition = 0;
-    private long mSearchedPosition = IPlaylist.NOT_INIT;
+    private long mSearchedPosition = IPlaylist.ERROR_CODE;
     private int mViewPadding;
 
     public PlaylistAdapter(@NonNull Context context) {
@@ -43,7 +43,7 @@ public class PlaylistAdapter extends BaseAdapter {
             }
 
             case TYPE_ITEM: {
-                final View viewItem = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.playlist_track_layout, viewGroup, false);
+                final View viewItem = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.playlist_item_layout, viewGroup, false);
                 return new ViewHolderItem(viewItem);
             }
 
@@ -116,7 +116,7 @@ public class PlaylistAdapter extends BaseAdapter {
             return mIPlaylist.getTrackId();
         }
 
-        return IPlaylist.NOT_INIT;
+        return IPlaylist.ERROR_CODE;
     }
 
     public void setPlaylist(final IPlaylist iPlaylist) {
@@ -136,7 +136,7 @@ public class PlaylistAdapter extends BaseAdapter {
             return (int)position;
         }
 
-        return (int)IPlaylist.NOT_INIT;
+        return (int)IPlaylist.ERROR_CODE;
     }
 
     public void setSearchedPosition(final long position) {

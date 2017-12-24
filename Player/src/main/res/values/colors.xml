@@ -41,6 +41,7 @@
     <!-- Drawer -->
     <color name="drawer_background_begin">#dc000000</color>
     <color name="drawer_background_end">#32000000</color>
+    <color name="drawer_background_item">#8d707070</color>
     <color name="drawer_text_color">#bababa</color>
 
 

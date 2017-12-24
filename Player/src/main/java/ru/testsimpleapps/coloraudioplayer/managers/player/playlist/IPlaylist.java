@@ -4,7 +4,7 @@ public interface IPlaylist extends Cloneable {
 
     String TEMP_PLAYLIST = "Temp_playlist";
 
-    long NOT_INIT = -1L;
+    long ERROR_CODE = -1L;
 
     boolean add(Object items);
 

@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ru.testsimpleapps.coloraudioplayer.R;
-import ru.testsimpleapps.coloraudioplayer.data.DrawerDataItem;
+import ru.testsimpleapps.coloraudioplayer.data.DrawerItem;
 import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.PreferencesActivity;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.ColorsDialog;
@@ -37,7 +37,7 @@ public class ConfigAdapter extends BaseAdapter implements ListView.OnItemClickLi
     * Name items of config
     * */
     private String[] nameItems;
-    private ArrayList<DrawerDataItem> configList;
+    private ArrayList<DrawerItem> configList;
     private final PlaylistCreateDialog createPlaylistDialog;
     private final EqualizerDialog equalizerDialog;
     private final TimerDialog timerDialog;
@@ -57,7 +57,7 @@ public class ConfigAdapter extends BaseAdapter implements ListView.OnItemClickLi
         timerDialog = new TimerDialog(context);
         colorsDialog = new ColorsDialog(context);
 
-        nameItems = context.getResources().getStringArray(R.array.config_drawer_items);
+        nameItems = context.getResources().getStringArray(R.array.drawer_items);
         setConfigItems();
     }
 
@@ -98,7 +98,7 @@ public class ConfigAdapter extends BaseAdapter implements ListView.OnItemClickLi
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        DrawerDataItem drawerDataItem = configList.get(position);
+        DrawerItem drawerDataItem = configList.get(position);
         viewHolder.imageConfig.setImageResource(drawerDataItem.getImage());
         viewHolder.nameConfig.setText(drawerDataItem.getName());
 
@@ -113,28 +113,28 @@ public class ConfigAdapter extends BaseAdapter implements ListView.OnItemClickLi
         for (int i = 0; i < nameItems.length; i++) {
             switch (i) {
                 case 0:
-                    configList.add(new DrawerDataItem(R.drawable.image_add_playlist, nameItems[i]));
+                    configList.add(new DrawerItem(R.drawable.image_playlist_create, nameItems[i]));
                     break;
                 case 1:
-                    configList.add(new DrawerDataItem(R.drawable.image_choose_playlist, nameItems[i]));
+                    configList.add(new DrawerItem(R.drawable.image_playlist_choose, nameItems[i]));
                     break;
                 case 2:
-                    configList.add(new DrawerDataItem(R.drawable.image_equalizer, nameItems[i]));
+                    configList.add(new DrawerItem(R.drawable.image_equalizer, nameItems[i]));
                     break;
                 case 3:
-                    configList.add(new DrawerDataItem(R.drawable.image_timer, nameItems[i]));
+                    configList.add(new DrawerItem(R.drawable.image_timer, nameItems[i]));
                     break;
                 case 4:
-                    configList.add(new DrawerDataItem(R.drawable.image_preference, nameItems[i]));
+                    configList.add(new DrawerItem(R.drawable.image_settings, nameItems[i]));
                     break;
                 case 5:
-                    configList.add(new DrawerDataItem(R.drawable.image_color, nameItems[i]));
+                    configList.add(new DrawerItem(R.drawable.image_color, nameItems[i]));
                     break;
                 case 6:
-                    configList.add(new DrawerDataItem(R.drawable.image_door, nameItems[i]));
+                    configList.add(new DrawerItem(R.drawable.image_exit, nameItems[i]));
                     break;
                 default:
-                    configList.add(new DrawerDataItem(R.drawable.image_door, nameItems[i]));
+                    configList.add(new DrawerItem(R.drawable.image_exit, nameItems[i]));
                     break;
             }
         }

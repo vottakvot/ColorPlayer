@@ -52,7 +52,7 @@ public final class PlayerConfig implements Serializable {
     /*
     * Playlist id
     * */
-    private long mPlaylistId = IPlaylist.NOT_INIT;
+    private long mPlaylistId = IPlaylist.ERROR_CODE;
 
     /*
     * Playlist sort
@@ -67,7 +67,7 @@ public final class PlayerConfig implements Serializable {
     /*
     * Track id
     * */
-    private long mTrackId = IPlaylist.NOT_INIT;
+    private long mTrackId = IPlaylist.ERROR_CODE;
 
     /*
     * Set order

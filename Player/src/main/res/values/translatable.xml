@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- ................................................................................... -->
+    <!-- ======================================================================================= -->
     <!-- Main -->
     <string name="app_name">Color audio player</string>
     <string name="app_name_action_bar_color">COLOR</string>
@@ -13,7 +13,7 @@
     <string name="drawer_open">Drawer open</string>
     <string name="drawer_close">Drawer close</string>
 
-    <!-- ................................................................................... -->
+    <!-- ======================================================================================= -->
     <!-- Explorer -->
     <string name="explorer_list_header">List of music</string>
     <string name="explorer_root_message">You are in root!</string>
@@ -45,15 +45,23 @@
     <string name="explorer_find_media_ok">Music list is update!</string>
     <string name="explorer_find_media_error">Error for update music list :(</string>
 
-    <!-- ................................................................................... -->
+    <!-- ======================================================================================= -->
     <!-- Player control -->
     <string name="player_control_hide_notification">Slide to up for show control panel</string>
 
 
-    <!-- ................................................................................... -->
+    <!-- ======================================================================================= -->
     <!-- Playlist -->
 
-    <!-- Dialog -->
+    <!-- Dialog create -->
+    <string name="playlist_create_header">Input playlist name</string>
+    <string name="playlist_create_create">Create</string>
+    <string name="playlist_create_cancel">Cancel</string>
+    <string name="playlist_create_done">Playlist created!</string>
+    <string name="playlist_create_wrong_name">Input name!</string>
+    <string name="playlist_create_hint">Input playlist name...</string>
+
+
     <string name="playlist_dialog_header">Config music list</string>
     <string name="playlist_sort_header">Sort type</string>
     <string name="playlist_sort_order">Sort order</string>
@@ -65,12 +73,6 @@
     <string name="playlist_view_expand">Expand view</string>
 
 
-    <string name="playlist_create_header">Input playlist name</string>
-    <string name="playlist_create_create">Create</string>
-    <string name="playlist_create_cancel">Cancel</string>
-    <string name="playlist_create_done">Playlist created!</string>
-    <string name="playlist_create_wrong_name">Input name!</string>
-    <string name="playlist_create_hint">Input playlist name...</string>
     <string name="playlist_get_header">Choose or delete</string>
     <string name="playlist_get_chose">Chosen playlist:</string>
     <string name="playlist_get_empty">No playlists found</string>
@@ -144,20 +146,20 @@
     <string name="acra_crush_message_comment">Additional information.</string>
     <string name="acra_crush_ok">Send crash report by email.</string>
 
-    <string-array name="config_drawer_items">
-        <item>Create playlist</item>
-        <item>Get playlist</item>
-        <item>Equalizer</item>
-        <item>Timer</item>
-        <item>Settings</item>
-        <item>Choose theme color</item>
-        <item>Exit</item>
-    </string-array>
-
     <string name="preferences_visualizer_title">Visualizer</string>
     <string name="preferences_visualizer_summary">Choose visualizer for background of active playing song...</string>
     <string name="permissions_write_warning">For work with playlist - you need allow write permission...</string>
     <string name="permissions_record_warning">For visualizer work - you need allow record audio permission...</string>
+
+    <string-array name="drawer_items">
+        <item>Create playlist</item>
+        <item>Get playlist</item>
+        <item>Equalizer</item>
+        <item>Timer</item>
+        <item>Choose theme color</item>
+        <item>Settings</item>
+        <item>Exit</item>
+    </string-array>
 
     <string-array name="visualizer_items">
         <item>None</item>

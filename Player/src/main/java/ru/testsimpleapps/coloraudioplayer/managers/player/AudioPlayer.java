@@ -11,6 +11,7 @@ import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.RandomSet;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.StrictQueue;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
+import ru.testsimpleapps.coloraudioplayer.managers.tools.FileTool;
 
 import static ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig.getInstance;
 
@@ -18,7 +19,7 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
         AudioManager.OnAudioFocusChangeListener {
 
     public interface OnEvents {
-        void onPlay();
+        void onPlay(final String track);
     }
 
     public static final int MIN_SEEK_POSITION = 0;
@@ -57,6 +58,7 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
     private StrictQueue<Long> mListenedTracks;
     private RandomSet mTracksSet;
     private String mPath;
+    private String mTrackName;
 
     /*
     * Triggers
@@ -120,40 +122,26 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
     @Override
     public boolean play() {
         if (mState != State.RELEASE) {
-            try {
-                // Prepare player
-                if (mState != State.PAUSE) {
-                    if (mPath != null) {
-                        mMediaPlayer.setDataSource(mPath);
-                        mMediaPlayer.prepare();
-                        mPath = null;
-                    } else {
-                        mMediaPlayer.setDataSource(CursorFactory.getInstance().getTrackPath());
-                        mMediaPlayer.prepare();
-                        mMediaPlayer.seekTo(getInstance().getLastSeekPosition());
-                        PlayerConfig.getInstance().setTrackId(CursorFactory.getInstance().getTrackId());
-                    }
-                }
-
-                // Play source
-                mMediaPlayer.start();
-                // Get image_audio focus
-                mAudioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
-                // Reset image_audio focus trigger
-                isAudioFocusLoss = false;
-                // Set player mState
-                mState = State.PLAY;
-
-                // Update listeners
-                if (mOnEvents != null) {
-                    mOnEvents.onPlay();
-                }
-
-                return true;
-            } catch (Exception e) { // Path not found or bad file or bad path. Add log.
-                Log.e(App.TAG, getClass().getSimpleName() + " - image_play() - " + e.getMessage());
-                mMediaPlayer.reset();
+            // Prepare player track and position
+            if (mState != State.PAUSE && !preparePlayer()) {
+                return false;
             }
+
+            // Play source
+            mMediaPlayer.start();
+            // Get image_audio focus
+            mAudioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+            // Reset image_audio focus trigger
+            isAudioFocusLoss = false;
+            // Set player mState
+            mState = State.PLAY;
+
+            // Update listeners
+            if (mOnEvents != null) {
+                mOnEvents.onPlay(mTrackName);
+            }
+
+            return true;
         }
 
         return false;
@@ -280,6 +268,44 @@ public class AudioPlayer implements IAudioPlayer, MediaPlayer.OnCompletionListen
         }
 
         return isHasPrevious;
+    }
+
+    private boolean preparePlayer() {
+        // Values for player prepare
+        String trackPath;
+        int position = MIN_SEEK_POSITION;
+
+        if (mPath != null) {
+            trackPath = mPath;
+            mPath = null;
+        } else {
+            trackPath = CursorFactory.getInstance().getTrackPath();
+            position = PlayerConfig.getInstance().getLastSeekPosition();
+            PlayerConfig.getInstance().setTrackId(CursorFactory.getInstance().getTrackId());
+        }
+
+        // Save current track for callback
+        mTrackName = FileTool.getFileName(trackPath);
+        // Try prepare player
+        return preparePlayer(trackPath, position);
+    }
+
+    private boolean preparePlayer(final String path, final int position) {
+        try {
+            mMediaPlayer.setDataSource(path);
+            mMediaPlayer.prepare();
+            final int duration = mMediaPlayer.getDuration();
+            if (position > 0 && position < duration) {
+                mMediaPlayer.seekTo(position);
+            }
+
+            return true;
+        } catch (Exception e) { // Path not found or bad file or bad path. Add log.
+            Log.e(App.TAG, getClass().getSimpleName() + " - preparePlayer() - " + e.getMessage());
+            mMediaPlayer.reset();
+        }
+
+        return false;
     }
 
     public void setOnEvents(final OnEvents onEvents) {

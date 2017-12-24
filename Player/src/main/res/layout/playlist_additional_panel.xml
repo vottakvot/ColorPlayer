@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:background="@color/common_transparent"
-        android:src="@drawable/image_preference"
+        android:src="@drawable/image_settings"
         app:layout_constraintRight_toLeftOf="@+id/playlist_search_edit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

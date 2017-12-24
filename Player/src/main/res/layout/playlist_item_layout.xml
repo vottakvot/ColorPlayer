@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
 
     <!-- Info layout -->
-    <include layout="@layout/playlist_track_item"/>
+    <include layout="@layout/playlist_item"/>
 
     <!-- Visualizer -->
     <ru.testsimpleapps.coloraudioplayer.ui.views.VisualizerView

@@ -9,6 +9,7 @@ import android.widget.RadioGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.Data.ConfigData;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
@@ -65,6 +66,13 @@ public class ExplorerSettingsDialog extends BaseDialog {
         init();
     }
 
+    @OnCheckedChanged(R.id.explorer_dialog_sort_checkbox)
+    protected void onCheckedSortCheckBox(CompoundButton buttonView, boolean isChecked) {
+        final int sortOrder = isChecked? ConfigData.SORT_ORDER_ASC : ConfigData.SORT_ORDER_DESC;
+        PreferenceTool.getInstance().setExplorerSortOrder(sortOrder);
+        invokeSortOrderCallback(sortOrder);
+    }
+
     private void init() {
         setContentView(R.layout.dialog_explorer_settings);
         ButterKnife.bind(this);
@@ -74,17 +82,6 @@ public class ExplorerSettingsDialog extends BaseDialog {
         if (sortOrder == ConfigData.SORT_ORDER_ASC) {
             mSortOrderCheckbox.setChecked(false);
         }
-
-        mSortOrderCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                final int sortOrder = isChecked? ConfigData.SORT_ORDER_ASC : ConfigData.SORT_ORDER_DESC;
-                PreferenceTool.getInstance().setExplorerSortOrder(sortOrder);
-                if (mOnViewEvent != null) {
-                    mOnViewEvent.onSortOrder(sortOrder);
-                }
-            }
-        });
     }
 
     private void setRadioButtons() {
@@ -125,6 +122,24 @@ public class ExplorerSettingsDialog extends BaseDialog {
         mOnViewEvent = onRadioButtonsCheck;
     }
 
+    private void invokeSortOrderCallback(final int value) {
+        if (mOnViewEvent != null) {
+            mOnViewEvent.onSortOrder(value);
+        }
+    }
+
+    private void invokeGroupCallback(final int value) {
+        if (mOnViewEvent != null) {
+            mOnViewEvent.onGroup(value);
+        }
+    }
+
+    private void invokeSortCallback(final int value) {
+        if (mOnViewEvent != null) {
+            mOnViewEvent.onSort(value);
+        }
+    }
+
     private RadioGroup.OnCheckedChangeListener mRadioGroupsListener = new RadioGroup.OnCheckedChangeListener() {
 
         @Override
@@ -132,22 +147,16 @@ public class ExplorerSettingsDialog extends BaseDialog {
             switch (checkedId) {
                 case R.id.explorer_dialog_groups_albums:
                     PreferenceTool.getInstance().setExplorerGroupType(ConfigData.GROUP_TYPE_ALBUMS);
-                    invokeCallback(ConfigData.GROUP_TYPE_ALBUMS);
+                    invokeGroupCallback(ConfigData.GROUP_TYPE_ALBUMS);
                     break;
                 case R.id.explorer_dialog_groups_artists:
                     PreferenceTool.getInstance().setExplorerGroupType(ConfigData.GROUP_TYPE_ARTISTS);
-                    invokeCallback(ConfigData.GROUP_TYPE_ARTISTS);
+                    invokeGroupCallback(ConfigData.GROUP_TYPE_ARTISTS);
                     break;
                 case R.id.explorer_dialog_groups_folders:
                     PreferenceTool.getInstance().setExplorerGroupType(ConfigData.GROUP_TYPE_FOLDERS);
-                    invokeCallback(ConfigData.GROUP_TYPE_FOLDERS);
+                    invokeGroupCallback(ConfigData.GROUP_TYPE_FOLDERS);
                     break;
-            }
-        }
-
-        private void invokeCallback(final int value) {
-            if (mOnViewEvent != null) {
-                mOnViewEvent.onGroup(value);
             }
         }
     };
@@ -159,22 +168,16 @@ public class ExplorerSettingsDialog extends BaseDialog {
             switch (checkedId) {
                 case R.id.explorer_dialog_sort_name:
                     PreferenceTool.getInstance().setExplorerSortType(ConfigData.SORT_TYPE_NAME);
-                    invokeCallback(ConfigData.SORT_TYPE_NAME);
+                    invokeSortCallback(ConfigData.SORT_TYPE_NAME);
                     break;
                 case R.id.explorer_dialog_sort_value:
                     PreferenceTool.getInstance().setExplorerSortType(ConfigData.SORT_TYPE_VALUE);
-                    invokeCallback(ConfigData.SORT_TYPE_VALUE);
+                    invokeSortCallback(ConfigData.SORT_TYPE_VALUE);
                     break;
                 case R.id.explorer_dialog_sort_date:
                     PreferenceTool.getInstance().setExplorerSortType(ConfigData.SORT_TYPE_DATE);
-                    invokeCallback(ConfigData.SORT_TYPE_DATE);
+                    invokeSortCallback(ConfigData.SORT_TYPE_DATE);
                     break;
-            }
-        }
-
-        private void invokeCallback(final int value) {
-            if (mOnViewEvent != null) {
-                mOnViewEvent.onSort(value);
             }
         }
     };

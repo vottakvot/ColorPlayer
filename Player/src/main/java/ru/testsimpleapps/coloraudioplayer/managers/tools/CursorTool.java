@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
+
 public class CursorTool {
 
     public static final String SORT_ORDER_ASC = " ASC";
@@ -57,15 +59,16 @@ public class CursorTool {
     }
 
     public static long getPlaylistIdByName(ContentResolver resolver, String name) {
-        long id = -1;
+        long id = IPlaylist.ERROR_CODE;
         Cursor cursor = resolver.query(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI,
                 new String[]{MediaStore.Audio.Playlists._ID},
-                MediaStore.Audio.Playlists.NAME + "=?",
-                new String[]{name}, null);
+                MediaStore.Audio.Playlists.NAME + " =? ",
+                new String[] { name }, null);
 
         if (cursor != null) {
-            if (cursor.moveToNext())
+            if (cursor.moveToNext()) {
                 id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Playlists._ID));
+            }
             cursor.close();
         }
 
@@ -104,17 +107,17 @@ public class CursorTool {
         return null;
     }
 
-    public static long createPlaylist(ContentResolver resolver, String name) {
+    public static long createPlaylist(final ContentResolver resolver, final String name) {
         long id = CursorTool.getPlaylistIdByName(resolver, name);
-        if (id == -1) {
-            // We need to create a new playlist.
-            ContentValues values = new ContentValues(1);
+
+        // Create new playlist or clear existing
+        if (id == IPlaylist.ERROR_CODE) {
+            final ContentValues values = new ContentValues(1);
             values.put(MediaStore.Audio.Playlists.NAME, name);
-            Uri uri = resolver.insert(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, values);
+            final Uri uri = resolver.insert(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, values);
             id = Long.parseLong(uri.getLastPathSegment());
         } else {
-            // We are overwriting an existing playlist. Clear existing songs.
-            Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", id);
+            final Uri uri = MediaStore.Audio.Playlists.Members.getContentUri(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI.toString(), id);
             resolver.delete(uri, null, null);
         }
 

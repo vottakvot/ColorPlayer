@@ -9,6 +9,7 @@ import android.widget.RadioGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.CursorTool;
@@ -66,38 +67,30 @@ public class PlaylistSettingsDialog extends BaseDialog {
         init();
     }
 
+    @OnCheckedChanged(R.id.playlist_dialog_view_checkbox)
+    protected void onCheckedExpandCheckBox(CompoundButton buttonView, boolean isChecked) {
+        PreferenceTool.getInstance().setPlaylistViewExpand(isChecked);
+        invokeViewCallback(isChecked);
+    }
+
+    @OnCheckedChanged(R.id.playlist_dialog_sort_checkbox)
+    protected void onCheckedSortCheckBox(CompoundButton buttonView, boolean isChecked) {
+        final String sortOrder = isChecked? CursorTool.SORT_ORDER_ASC : CursorTool.SORT_ORDER_DESC;
+        PlayerConfig.getInstance().setPlaylistSortOrder(sortOrder);
+        invokeSortOrderCallback(sortOrder);
+    }
+
     private void init() {
         setContentView(R.layout.dialog_playlist_settings);
         ButterKnife.bind(this);
         setRadioButtons();
 
         mExpandCheckbox.setChecked(PreferenceTool.getInstance().getPlaylistViewExpand());
-        mExpandCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                PreferenceTool.getInstance().setPlaylistViewExpand(isChecked);
-                if (mOnViewEvent != null) {
-                    mOnViewEvent.onView(isChecked);
-                }
-            }
-        });
-
         mSortOrderCheckbox.setChecked(false);
         final String sortOrder = PlayerConfig.getInstance().getPlaylistSortOrder();
         if (sortOrder.equals(CursorTool.SORT_ORDER_ASC)) {
             mSortOrderCheckbox.setChecked(true);
         }
-
-        mSortOrderCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                final String sortOrder = isChecked? CursorTool.SORT_ORDER_ASC : CursorTool.SORT_ORDER_DESC;
-                PlayerConfig.getInstance().setPlaylistSortOrder(sortOrder);
-                if (mOnViewEvent != null) {
-                    mOnViewEvent.onSortOrder(sortOrder);
-                }
-            }
-        });
     }
 
     private void setRadioButtons() {
@@ -129,6 +122,24 @@ public class PlaylistSettingsDialog extends BaseDialog {
         mOnViewEvent = onRadioButtonsCheck;
     }
 
+    private void invokeSortOrderCallback(final String value) {
+        if (mOnViewEvent != null) {
+            mOnViewEvent.onSortOrder(value);
+        }
+    }
+
+    private void invokeViewCallback(final boolean value) {
+        if (mOnViewEvent != null) {
+            mOnViewEvent.onView(value);
+        }
+    }
+
+    private void invokeSortCallback(final String value) {
+        if (mOnViewEvent != null) {
+            mOnViewEvent.onSort(value);
+        }
+    }
+
     private RadioGroup.OnCheckedChangeListener mRadioSortListener = new RadioGroup.OnCheckedChangeListener() {
 
         @Override
@@ -136,30 +147,24 @@ public class PlaylistSettingsDialog extends BaseDialog {
             switch (checkedId) {
                 case R.id.playlist_dialog_sort_name:
                     PlayerConfig.getInstance().setPlaylistSort(CursorTool.FIELD_NAME);
-                    invokeCallback(CursorTool.FIELD_NAME);
+                    invokeSortCallback(CursorTool.FIELD_NAME);
                     break;
                 case R.id.playlist_dialog_sort_value:
                     PlayerConfig.getInstance().setPlaylistSort(CursorTool.FIELD_DURATION);
-                    invokeCallback(CursorTool.FIELD_DURATION);
+                    invokeSortCallback(CursorTool.FIELD_DURATION);
                     break;
                 case R.id.playlist_dialog_sort_date:
                     PlayerConfig.getInstance().setPlaylistSort(CursorTool.FIELD_MODIFY);
-                    invokeCallback(CursorTool.FIELD_MODIFY);
+                    invokeSortCallback(CursorTool.FIELD_MODIFY);
                     break;
                 case R.id.playlist_dialog_sort_artist:
                     PlayerConfig.getInstance().setPlaylistSort(CursorTool.FIELD_ARTIST);
-                    invokeCallback(CursorTool.FIELD_ARTIST);
+                    invokeSortCallback(CursorTool.FIELD_ARTIST);
                     break;
                 case R.id.playlist_dialog_sort_albums:
                     PlayerConfig.getInstance().setPlaylistSort(CursorTool.FIELD_ALBUMS);
-                    invokeCallback(CursorTool.FIELD_ALBUMS);
+                    invokeSortCallback(CursorTool.FIELD_ALBUMS);
                     break;
-            }
-        }
-
-        private void invokeCallback(final String value) {
-            if (mOnViewEvent != null) {
-                mOnViewEvent.onSort(value);
             }
         }
     };

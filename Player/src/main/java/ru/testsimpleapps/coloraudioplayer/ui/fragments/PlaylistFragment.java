@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,13 @@ import android.view.animation.LayoutAnimationController;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnEditorAction;
+import butterknife.OnFocusChange;
 import butterknife.OnLongClick;
 import butterknife.Unbinder;
 import ru.testsimpleapps.coloraudioplayer.R;
@@ -51,7 +55,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
     protected EditText mSearchTrackEditText;
     @BindView(R.id.playlist_settings_button)
     protected ImageButton mSettingsButton;
-    @BindView(R.id.playlist_list_fragment)
+    @BindView(R.id.playlist_list)
     protected RecyclerView mRecyclerView;
     @BindView(R.id.playlist_additional_layout)
     protected ConstraintLayout mAdditionalPanel;
@@ -103,17 +107,16 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
                 mSearchTrackEditText.setVisibility(View.INVISIBLE);
                 mSearchTrackEditText.clearFocus();
                 mInputMethodManager.hideSoftInputFromWindow(mSearchTrackEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_HIDDEN);
-                mPlaylistAdapter.setSearchedPosition(IPlaylist.NOT_INIT);
-                mPlaylistAdapter.notifyDataSetChanged();
+                updateRecyclePosition((int)CursorFactory.getInstance().position() + 1);
             } else {
 
                 // Go to position
                 if (TextTool.isNumeric(text)) {
                     final int position = Integer.valueOf(text);
                     if (position > 0 && position <= mPlaylistAdapter.getItemCount()) {
+                        updateRecyclePosition(position + 1);
                         mPlaylistAdapter.setSearchedPosition(position);
                         mPlaylistAdapter.notifyDataSetChanged();
-                        mRecycleViewLayoutManager.scrollToPositionWithOffsetCenter(position + 1);
                         showToast(R.string.playlist_search_position);
                         return;
                     }
@@ -121,16 +124,16 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
 
                 //  Go to text match
                 final int position = mPlaylistAdapter.searchMatch(text);
-                if (position > IPlaylist.NOT_INIT) {
+                if (position > IPlaylist.ERROR_CODE) {
+                    updateRecyclePosition(position + 1);
                     mPlaylistAdapter.setSearchedPosition(position + 1);
                     mPlaylistAdapter.notifyDataSetChanged();
-                    mRecycleViewLayoutManager.scrollToPositionWithOffsetCenter(position + 1);
                     showToast(R.string.playlist_search_text);
                     return;
                 }
             }
 
-            mPlaylistAdapter.setSearchedPosition(IPlaylist.NOT_INIT);
+            mPlaylistAdapter.setSearchedPosition(IPlaylist.ERROR_CODE);
             showToast(R.string.playlist_search_no_match);
         }
     }
@@ -138,8 +141,29 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
     @OnLongClick(R.id.playlist_search_button)
     protected boolean onSearchLongClickButton() {
         final long position = CursorFactory.getInstance().position();
-        mRecyclerView.smoothScrollToPosition((int)position);
+        updateRecyclePosition((int)position + 1);
         return true;
+    }
+
+    @OnFocusChange(R.id.playlist_search_edit)
+    protected void onFocusChangeEdit(View view, boolean hasFocus) {
+        if (!hasFocus) {
+            mSearchTrackEditText.setText("");
+            mSearchTrackEditText.setVisibility(View.INVISIBLE);
+            mInputMethodManager.hideSoftInputFromWindow(mSearchTrackEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+            mPlaylistAdapter.setSearchedPosition(IPlaylist.ERROR_CODE);
+            mPlaylistAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @OnEditorAction(R.id.playlist_search_edit)
+    protected boolean onEditorActionEdit(TextView view, int actionId, KeyEvent event) {
+        if (actionId == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            onSearchClickButton();
+            return true;
+        }
+
+        return false;
     }
 
     @OnClick(R.id.playlist_settings_button)
@@ -162,8 +186,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
     @Override
     public void onView(boolean isValue) {
         mPlaylistAdapter.setExpand(isValue);
-        mRecycleViewLayoutManager.scrollToPositionWithOffsetCenter((int)CursorFactory.getInstance().position());
-        mRecyclerView.smoothScrollBy(0, 1);
+        updateRecyclePosition((int)CursorFactory.getInstance().position());
         mRecyclerView.scheduleLayoutAnimation();
     }
 
@@ -192,12 +215,15 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
 
         mPlaylistDialog = new PlaylistSettingsDialog(getContext());
         mPlaylistDialog.setOnViewEvent(this);
-
         mSearchTrackEditText.setVisibility(View.INVISIBLE);
-        mSearchTrackEditText.setOnFocusChangeListener(mOnFocusChangeListener);
 
         restoreStates(savedInstanceState);
         setPlaylist();
+    }
+
+    private void updateRecyclePosition(final int position) {
+        mRecycleViewLayoutManager.scrollToPositionWithOffsetCenter(position);
+        mRecyclerView.smoothScrollBy(0, 1);
     }
 
     private void restoreStates(final Bundle savedInstanceState) {
@@ -217,16 +243,25 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
             if (intent != null) {
                 final String action = intent.getAction();
                 if (action != null) {
+
+                    // Change playlist
+                    if (action.equals(PlayerService.RECEIVER_PLAYLIST_CHANGE)) {
+                        setPlaylist();
+                    }
+
                     // Update list resize
-                    if (action.equals(PlayerService.RECEIVER_PLAYLIST_ADD)) {
+                    if (action.equals(PlayerService.RECEIVER_PLAYLIST_CHANGE)) {
                         setPlaylist();
                     }
 
                     // Update current selection
                     if (action.equals(PlayerService.RECEIVER_PLAYLIST_POSITION)) {
-                        mRecycleViewLayoutManager.scrollToPositionWithOffsetCenter((int)CursorFactory.getInstance().position());
-                        mRecyclerView.smoothScrollBy(0, 1);
-                        mPlaylistAdapter.notifyDataSetChanged();
+                        if (intent.hasExtra(PlayerService.EXTRA_PLAYLIST_POSITION)) {
+                            final int position = (int)intent.getLongExtra(PlayerService.EXTRA_PLAYLIST_POSITION, 0L);
+                            mRecycleViewLayoutManager.scrollToPositionWithOffsetCenter(position);
+                            mRecyclerView.smoothScrollBy(0, 1);
+                            mPlaylistAdapter.notifyDataSetChanged();
+                        }
                     }
                 }
             }
@@ -241,23 +276,11 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
 
     private IntentFilter getIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(PlayerService.RECEIVER_PLAYLIST_ADD);
+        intentFilter.addAction(PlayerService.RECEIVER_PLAYLIST_CHANGE);
+        intentFilter.addAction(PlayerService.RECEIVER_PLAYLIST_CHANGE);
         intentFilter.addAction(PlayerService.RECEIVER_PLAYLIST_POSITION);
         return intentFilter;
     }
-
-    private View.OnFocusChangeListener mOnFocusChangeListener = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (!hasFocus) {
-                mSearchTrackEditText.setText("");
-                mSearchTrackEditText.setVisibility(View.INVISIBLE);
-                mInputMethodManager.hideSoftInputFromWindow(mSearchTrackEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-                mPlaylistAdapter.setSearchedPosition(IPlaylist.NOT_INIT);
-                mPlaylistAdapter.notifyDataSetChanged();
-            }
-        }
-    };
 
     private class OnScrollRecycleViewListener extends RecyclerView.OnScrollListener {
 

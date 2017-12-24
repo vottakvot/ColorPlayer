@@ -74,7 +74,7 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
     protected LinearLayout mTimeLayout;
 
     private boolean mIsTouchSeekBar = false;
-    private int mDuration;
+    private int mDuration = 0;
 
     public static ControlFragment newInstance() {
         ControlFragment fragment = new ControlFragment();
@@ -85,7 +85,7 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_control, container, false);
         mUnbinder = ButterKnife.bind(this, view);
-        init();
+        init(savedInstanceState);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, getIntentFilter());
         return view;
     }
@@ -104,15 +104,19 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        final int step = mDuration / MAX_SEEK_POSITION;
-        mCurrentTimeTextView.setText(TimeTool.getDuration(step * seekBar.getProgress()));
+        if (mDuration > 0) {
+            final int step = mDuration / MAX_SEEK_POSITION;
+            mCurrentTimeTextView.setText(TimeTool.getDuration(step * seekBar.getProgress()));
+        }
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        final int step = mDuration / MAX_SEEK_POSITION;
-        PlayerService.sendCommandSeek(step * seekBar.getProgress());
         mIsTouchSeekBar = false;
+        if (mDuration > 0) {
+            final int step = mDuration / MAX_SEEK_POSITION;
+            PlayerService.sendCommandSeek(step * seekBar.getProgress());
+        }
     }
 
     @OnClick(R.id.control_expand)
@@ -147,7 +151,7 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
         PlayerService.sendCommandPrevious();
     }
 
-    private void init() {
+    private void init(final Bundle savedInstanceState) {
         mSeekBar.setOnSeekBarChangeListener(this);
         mSeekBar.setMax(MAX_SEEK_POSITION);
 
@@ -156,7 +160,7 @@ public class ControlFragment extends BaseFragment implements SeekBar.OnSeekBarCh
         setRandomButton(PlayerConfig.getInstance().isRandom());
         setTrackPosition(CursorFactory.getInstance().position() + 1, CursorFactory.getInstance().size());
 
-        if (PlayerConfig.getInstance().getPlaylistId() == IPlaylist.NOT_INIT) {
+        if (PlayerConfig.getInstance().getPlaylistId() == IPlaylist.ERROR_CODE) {
             setTrackName(getRunningString(NOTES, NOTES, mTrackNameTextView));
         } else {
             setTrackName(getRunningString(CursorFactory.getInstance().getTrackName(), " ", mTrackNameTextView));

@@ -23,7 +23,7 @@ public class CursorPlaylist implements IPlaylist {
 
     public CursorPlaylist(@NonNull final Context context) {
         mContext = context;
-        mPlaylistId = NOT_INIT;
+        mPlaylistId = ERROR_CODE;
         mSortBy = CursorTool.FIELD_NONE;
         mSortOrder = CursorTool.SORT_ORDER_ASC;
     }
@@ -37,7 +37,7 @@ public class CursorPlaylist implements IPlaylist {
 
         final int count = CursorTool.addToPlaylist(mContext.getContentResolver(), mPlaylistId, itemsList);
         recountTotalTime();
-        PlayerService.sendBroadcastPlaylistUpdate();
+        PlayerService.sendBroadcastPlaylistChange();
         return count > 0;
     }
 
@@ -45,7 +45,7 @@ public class CursorPlaylist implements IPlaylist {
     public boolean delete(long id) {
         final int count = CursorTool.deleteTrackFromPlaylist(mContext.getContentResolver(), mPlaylistId, id);
         recountTotalTime();
-        PlayerService.sendBroadcastPlaylistUpdate();
+        PlayerService.sendBroadcastPlaylistChange();
         return count > 0;
     }
 
@@ -104,7 +104,7 @@ public class CursorPlaylist implements IPlaylist {
 
     @Override
     public long getTrackId() {
-        return mPlaylist != null ? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media._ID)) : NOT_INIT;
+        return mPlaylist != null ? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media._ID)) : ERROR_CODE;
     }
 
     @Override
@@ -139,12 +139,12 @@ public class CursorPlaylist implements IPlaylist {
 
     @Override
     public long getTrackDuration() {
-        return mPlaylist != null ? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DURATION)) : NOT_INIT;
+        return mPlaylist != null ? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DURATION)) : ERROR_CODE;
     }
 
     @Override
     public long getTrackDateModified() {
-        return mPlaylist != null ? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED)) * 1000L : NOT_INIT;
+        return mPlaylist != null ? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED)) * 1000L : ERROR_CODE;
     }
 
     @Override
@@ -158,13 +158,13 @@ public class CursorPlaylist implements IPlaylist {
             }
         }
 
-        return NOT_INIT;
+        return ERROR_CODE;
     }
 
     @Override
     public IPlaylist clone() {
         CursorPlaylist clone = null;
-        if (mPlaylistId > IPlaylist.NOT_INIT) {
+        if (mPlaylistId > IPlaylist.ERROR_CODE) {
             try {
                 clone = (CursorPlaylist) super.clone();
                 clone.setPlaylist(CursorTool.getTracksFromPlaylist(mContext.getContentResolver(), mPlaylistId, mSortBy, mSortOrder));
@@ -177,9 +177,9 @@ public class CursorPlaylist implements IPlaylist {
     }
 
     public long recountTotalTime() {
+        mTotalTime = 0;
         if (mPlaylist != null) {
             final int position = mPlaylist.getPosition();
-            mTotalTime = 0;
             if (mPlaylist.moveToFirst()) {
                 do {
                     mTotalTime += getTrackDuration();
@@ -193,16 +193,16 @@ public class CursorPlaylist implements IPlaylist {
     }
 
     public IPlaylist setCursor(final long playlistId, final String sortBy, final String sortOrder) {
-        if (playlistId > IPlaylist.NOT_INIT) {
+        if (playlistId > IPlaylist.ERROR_CODE) {
             mPlaylistId = playlistId;
             mSortBy = sortBy;
             mSortOrder = sortOrder;
-            Cursor activePlaylist = CursorTool.getTracksFromPlaylist(mContext.getContentResolver(), mPlaylistId, sortBy, sortOrder);
-            if (activePlaylist != null && activePlaylist.getCount() > 0) {
+            final Cursor activePlaylist = CursorTool.getTracksFromPlaylist(mContext.getContentResolver(), mPlaylistId, sortBy, sortOrder);
+            recountTotalTime();
+            if (activePlaylist != null && activePlaylist.getCount() >= 0) {
                 closeCursor();
                 mPlaylist = activePlaylist;
-                recountTotalTime();
-                PlayerService.sendBroadcastPlaylistUpdate();
+                PlayerService.sendBroadcastPlaylistChange();
                 return this;
             }
         }

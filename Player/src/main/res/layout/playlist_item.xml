@@ -7,12 +7,12 @@
     android:background="@drawable/drawable_selector_recycleview_playlist_item">
 
     <include
-        layout="@layout/playlist_track_item_main"
+        layout="@layout/playlist_item_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <include
-        layout="@layout/playlist_track_item_info"
+        layout="@layout/playlist_item_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

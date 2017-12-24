@@ -33,6 +33,7 @@ import ru.testsimpleapps.coloraudioplayer.managers.explorer.ItemsComparator;
 import ru.testsimpleapps.coloraudioplayer.managers.explorer.MediaExplorerManager;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor.CursorFactory;
 import ru.testsimpleapps.coloraudioplayer.managers.tools.PreferenceTool;
+import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.BaseListAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFilesAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.ExplorerFolderAdapter;
@@ -126,15 +127,20 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
 
     @Override
     public void onItemClick(View view, int position) {
-        typePanelVisibility(false);
-        mFolderPosition = position;
-        mFolderStateAdapter = mRecyclerView.getLayoutManager().onSaveInstanceState();
-        final FolderData folderData = mExplorerFolderAdapter.getItem(position);
-        final ContainerData<ItemData> itemData = folderData.getContainerItemData();
-        mExplorerFilesAdapter.setItems(sortFiles(PreferenceTool.getInstance().getExplorerSortType(),
-                PreferenceTool.getInstance().getExplorerSortOrder(), itemData.getList()));
-        mRecyclerView.setAdapter(mExplorerFilesAdapter);
-        mRecyclerView.scheduleLayoutAnimation();
+        if (mRecyclerView.getAdapter() instanceof ExplorerFolderAdapter) {
+            typePanelVisibility(false);
+            mFolderPosition = position;
+            mFolderStateAdapter = mRecyclerView.getLayoutManager().onSaveInstanceState();
+            final FolderData folderData = mExplorerFolderAdapter.getItem(position);
+            final ContainerData<ItemData> itemData = folderData.getContainerItemData();
+            mExplorerFilesAdapter.setItems(sortFiles(PreferenceTool.getInstance().getExplorerSortType(),
+                    PreferenceTool.getInstance().getExplorerSortOrder(), itemData.getList()));
+            mRecyclerView.setAdapter(mExplorerFilesAdapter);
+            mRecyclerView.scheduleLayoutAnimation();
+        } else if (mRecyclerView.getAdapter() instanceof ExplorerFilesAdapter) {
+            final ItemData itemData = mExplorerFilesAdapter.getItem(position);
+            PlayerService.sendCommandPlayTrack(itemData.getPath());
+        }
     }
 
     @Override
@@ -201,7 +207,7 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
             for (FolderData item : mExplorerFolderAdapter.getItemList()) {
                 item.setChecked(true);
             }
-        } else {
+        } else if (mRecyclerView.getAdapter() instanceof ExplorerFilesAdapter) {
             for (ItemData item : mExplorerFilesAdapter.getItemList()) {
                 item.setChecked(true);
             }
@@ -305,6 +311,7 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         mExplorerDialog = new ExplorerSettingsDialog(getContext());
         mExplorerDialog.setOnViewEvent(this);
         mExplorerFilesAdapter = new ExplorerFilesAdapter(getContext());
+        mExplorerFilesAdapter.setOnItemClickListener(this);
         mExplorerFilesAdapter.setOnItemCheckListener(this);
         mExplorerFolderAdapter = new ExplorerFolderAdapter(getContext());
         mExplorerFolderAdapter.setOnItemClickListener(this);

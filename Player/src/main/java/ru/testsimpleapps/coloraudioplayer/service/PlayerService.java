@@ -66,6 +66,7 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
     * */
     public static final String EXTRA_PLAY_POSITION = "EXTRA_PLAY_POSITION";
     public static final String EXTRA_PLAY_PAUSE = "EXTRA_PLAY_PAUSE";
+    public static final String EXTRA_PLAY_EXPLORER = "EXTRA_PLAY_EXPLORER";
     public static final String EXTRA_PLAY_PROGRESS = "EXTRA_PLAY_PROGRESS";
     public static final String EXTRA_PLAY_DURATION = "EXTRA_PLAY_DURATION";
     public static final String EXTRA_PLAYLIST_POSITION = "EXTRA_PLAYLIST_POSITION";
@@ -75,7 +76,7 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
     /*
     * State update
     * */
-    public static final String RECEIVER_PLAYLIST_ADD = "ru.color_player.action.ADD";
+    public static final String RECEIVER_PLAYLIST_CHANGE = "ru.color_player.action.CHANGE";
     public static final String RECEIVER_PLAYLIST_TRACKS = "ru.color_player.action.TRACKS";
     public static final String RECEIVER_PLAYLIST_NAME = "ru.color_player.action.NAME";
     public static final String RECEIVER_PLAYLIST_POSITION = "ru.color_player.action.POSITION";
@@ -126,19 +127,15 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
     * */
     private SeekBarUpdater mSeekBarUpdater;
 
-
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(App.TAG, getClass().getSimpleName() + " - onCreate()");
         init();
     }
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(App.TAG, getClass().getSimpleName() + " - onDestroy()");
         destroy();
     }
 
@@ -179,11 +176,15 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
                 // Play/Pause action
                 if (command.equals(ACTION_PLAY)) {
                     if (intent.hasExtra(EXTRA_PLAY_POSITION)) {
-                        if (CursorFactory.getInstance().goToId(intent.getLongExtra(EXTRA_PLAY_POSITION, IPlaylist.NOT_INIT))) {
+                        if (CursorFactory.getInstance().goToId(intent.getLongExtra(EXTRA_PLAY_POSITION, IPlaylist.ERROR_CODE))) {
                             isHandled = mMediaPlayer.playNew();
                         }
                     } else if (intent.hasExtra(EXTRA_PLAY_PAUSE)) {
                         isHandled = mMediaPlayer.playPause();
+                    } else if (intent.hasExtra(EXTRA_PLAY_EXPLORER)) {
+                        final String path = intent.getStringExtra(EXTRA_PLAY_EXPLORER);
+                        mMediaPlayer.setTrackPath(path);
+                        isHandled = mMediaPlayer.playNew();
                     }
                 }
 
@@ -204,7 +205,7 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
                     }
                 }
 
-                // Update views
+                // Update control panel
                 sendBroadcastPlayButton(mMediaPlayer.isPlaying());
             }
         }
@@ -213,9 +214,12 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
     }
 
     @Override
-    public void onPlay() {
-        sendBroadcastTrackName(CursorFactory.getInstance().getTrackName());
-        sendBroadcastPlaylistPosition();
+    public void onPlay(final String track) {
+        synchronized (mMediaPlayer) {
+            sendBroadcastPlayButton(mMediaPlayer.isPlaying());
+        }
+        sendBroadcastTrackName(track);
+        sendBroadcastPlaylistPosition(CursorFactory.getInstance().position());
     }
 
     public class LocalBinder extends Binder {
@@ -473,8 +477,8 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
     /*
     * For receiver
     * */
-    public static void sendBroadcastPlaylistUpdate() {
-        Intent intent = new Intent(RECEIVER_PLAYLIST_ADD);
+    public static void sendBroadcastPlaylistChange() {
+        Intent intent = new Intent(RECEIVER_PLAYLIST_CHANGE);
         LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
     }
 
@@ -504,11 +508,11 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
         LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
     }
 
-    public static void sendBroadcastPlaylistPosition() {
+    public static void sendBroadcastPlaylistPosition(final long position) {
         Intent intent = new Intent(RECEIVER_PLAYLIST_POSITION);
+        intent.putExtra(EXTRA_PLAYLIST_POSITION, position);
         LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
     }
-
 
     /*
     * For service command
@@ -533,6 +537,13 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
         App.getContext().startService(intent);
     }
 
+    public static void sendCommandPlayTrack(final String path) {
+        Intent intent = new Intent(App.getContext(), PlayerService.class);
+        intent.setAction(ACTION_PLAY);
+        intent.putExtra(EXTRA_PLAY_EXPLORER, path);
+        App.getContext().startService(intent);
+    }
+
     public static void sendCommandNext() {
         Intent intent = new Intent(App.getContext(), PlayerService.class);
         intent.setAction(ACTION_NEXT);
@@ -552,5 +563,10 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
         App.getContext().startService(intent);
     }
 
+    public static void sendCommandExit() {
+        Intent intent = new Intent(App.getContext(), PlayerService.class);
+        intent.setAction(ACTION_EXIT);
+        App.getContext().startService(intent);
+    }
 
 }
