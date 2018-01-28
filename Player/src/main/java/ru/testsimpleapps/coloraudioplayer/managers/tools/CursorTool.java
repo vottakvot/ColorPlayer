@@ -15,6 +15,7 @@ import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
 
 public class CursorTool {
 
+    public static final Uri CONTENT_URI = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
     public static final String SORT_ORDER_ASC = " ASC";
     public static final String SORT_ORDER_DESC = " DESC";
     public static final String FIELD_NAME = MediaStore.Audio.Media.DATA;
@@ -24,19 +25,17 @@ public class CursorTool {
     public static final String FIELD_ALBUMS = MediaStore.Audio.Media.ALBUM;
     public static final String FIELD_NONE = null;
 
-    public static Map<Long, String> getPlaylists(ContentResolver resolver) {
+    public static Map<Long, String> getPlaylist(final ContentResolver resolver) {
         Map<Long, String> playlistMap = null;
+        final String[] projection = { MediaStore.Audio.Playlists._ID, MediaStore.Audio.Playlists.NAME };
+        final String sort = MediaStore.Audio.Playlists.NAME;
+        final Cursor cursor = resolver.query(CONTENT_URI, projection, null, null, sort);
 
-        Uri media = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
-        String[] projection = {MediaStore.Audio.Playlists._ID, MediaStore.Audio.Playlists.NAME};
-        String sort = MediaStore.Audio.Playlists.NAME;
-        Cursor playlists = resolver.query(media, projection, null, null, sort);
-
-        if (playlists.getCount() > 0) {
+        if (cursor.getCount() > 0) {
             playlistMap = new TreeMap<>();
-            while (playlists.moveToNext()) {
-                playlistMap.put(playlists.getLong(playlists.getColumnIndex(MediaStore.Audio.Playlists._ID)),
-                        playlists.getString(playlists.getColumnIndex(MediaStore.Audio.Playlists.NAME)));
+            while (cursor.moveToNext()) {
+                playlistMap.put(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Playlists._ID)),
+                        cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Playlists.NAME)));
             }
         }
 
@@ -46,7 +45,7 @@ public class CursorTool {
     public static Cursor getTracksFromPlaylist(final ContentResolver contentResolver, final long playListID,
                                                final String sortBy, final String sortType) {
         final Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playListID);
-        final Cursor tracks = contentResolver.query(uri,
+        final Cursor cursor = contentResolver.query(uri,
                 new String[] {
                         CursorTool.FIELD_NAME,
                         CursorTool.FIELD_DURATION,
@@ -55,18 +54,18 @@ public class CursorTool {
                         MediaStore.Audio.Media.ALBUM,
                         MediaStore.Audio.Media.DATE_MODIFIED,
                         MediaStore.Audio.Media.TITLE }, null, null, sortBy + sortType);
-        return (tracks != null && tracks.getCount() > 0) ? tracks : null;
+        return cursor;
     }
 
-    public static long getPlaylistIdByName(ContentResolver resolver, String name) {
+    public static long getPlaylistIdByName(final ContentResolver resolver, final String name) {
         long id = IPlaylist.ERROR_CODE;
-        Cursor cursor = resolver.query(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI,
-                new String[]{MediaStore.Audio.Playlists._ID},
+        final Cursor cursor = resolver.query(CONTENT_URI,
+                new String[]{ MediaStore.Audio.Playlists._ID },
                 MediaStore.Audio.Playlists.NAME + " =? ",
                 new String[] { name }, null);
 
         if (cursor != null) {
-            if (cursor.moveToNext()) {
+            if (cursor.moveToFirst()) {
                 id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Playlists._ID));
             }
             cursor.close();
@@ -75,15 +74,15 @@ public class CursorTool {
         return id;
     }
 
-    public static String getPlaylistNameById(ContentResolver resolver, long id) {
+    public static String getPlaylistNameById(final ContentResolver resolver, final long id) {
         String playlistName = "Playlist not found!";
         if (id < 0)
             return playlistName;
 
-        Cursor cursor = resolver.query(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI,
-                new String[]{MediaStore.Audio.Playlists.NAME},
+        final Cursor cursor = resolver.query(CONTENT_URI,
+                new String[]{ MediaStore.Audio.Playlists.NAME },
                 MediaStore.Audio.Playlists._ID + "=?",
-                new String[]{Long.toString(id)}, null);
+                new String[]{ Long.toString(id) }, null);
 
         if (cursor != null) {
             if (cursor.moveToNext())
@@ -94,7 +93,7 @@ public class CursorTool {
         return playlistName;
     }
 
-    public static Cursor findTrackByID(Cursor playlist, long id) {
+    public static Cursor findTrackByID(final Cursor playlist, final long id) {
         if (playlist != null && playlist.getCount() > 0) {
             playlist.moveToFirst();
             do {
@@ -114,24 +113,29 @@ public class CursorTool {
         if (id == IPlaylist.ERROR_CODE) {
             final ContentValues values = new ContentValues(1);
             values.put(MediaStore.Audio.Playlists.NAME, name);
-            final Uri uri = resolver.insert(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, values);
+            final Uri uri = resolver.insert(CONTENT_URI, values);
             id = Long.parseLong(uri.getLastPathSegment());
         } else {
-            final Uri uri = MediaStore.Audio.Playlists.Members.getContentUri(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI.toString(), id);
-            resolver.delete(uri, null, null);
+            final Uri uri = MediaStore.Audio.Playlists.Members.getContentUri(CONTENT_URI.toString(), id);
+            try {
+                resolver.delete(uri, null, null);
+            } catch (RuntimeException e) {
+                // No need handle
+//                id = IPlaylist.ERROR_CODE;
+            }
         }
 
         return id;
     }
 
 
-    public static int addToPlaylist(ContentResolver resolver, long playlistId, List<Long> songId) {
-        if (playlistId == -1 && songId == null && songId.size() == 0)
+    public static int addToPlaylist(final ContentResolver resolver, final long playlistId, final List<Long> songId) {
+        if (playlistId == -1 || (songId == null && songId.size() == 0))
             return 0;
 
-        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId);
-        String[] projection = new String[]{MediaStore.Audio.Playlists.Members.PLAY_ORDER};
-        Cursor cursor = resolver.query(uri, projection, null, null, null);
+        final Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId);
+        final String[] projection = new String[]{ MediaStore.Audio.Playlists.Members.PLAY_ORDER };
+        final Cursor cursor = resolver.query(uri, projection, null, null, null);
 
         int base = 0;
         if (cursor.moveToLast()) {
@@ -139,10 +143,10 @@ public class CursorTool {
         }
         cursor.close();
 
-        int insertCol = songId.size();
-        ContentValues[] values = new ContentValues[insertCol];
+        final int insertCol = songId.size();
+        final ContentValues[] values = new ContentValues[insertCol];
         for (int i = 0; i < songId.size(); i++) {
-            ContentValues value = new ContentValues(2);
+            final ContentValues value = new ContentValues(2);
             value.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, Integer.valueOf(base + 1));
             value.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, songId.get(i));
             values[i] = value;
@@ -151,18 +155,18 @@ public class CursorTool {
         return resolver.bulkInsert(uri, values);
     }
 
-    public static int deletePlaylist(ContentResolver resolver, long id) {
-        Uri uri = ContentUris.withAppendedId(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, id);
+    public static int deletePlaylist(final ContentResolver resolver, final long id) {
+        final Uri uri = ContentUris.withAppendedId(CONTENT_URI, id);
         return resolver.delete(uri, null, null);
     }
 
-    public static int deleteTrackFromPlaylist(ContentResolver resolver, long playlistId, long trackId) {
+    public static int deleteTrackFromPlaylist(final ContentResolver resolver, final long playlistId, final long trackId) {
         final Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId);
         return resolver.delete(uri, MediaStore.Audio.Media._ID + " = ? ", new String[]{Long.toString(trackId)});
     }
 
-    public static boolean renamePlaylist(ContentResolver resolver, long id, String newName) {
-        long existingId = getPlaylistIdByName(resolver, newName);
+    public static boolean renamePlaylist(final ContentResolver resolver, final long id, final String newName) {
+        final long existingId = getPlaylistIdByName(resolver, newName);
 
         if (existingId == id)
             return false;
@@ -170,9 +174,9 @@ public class CursorTool {
         if (existingId != -1)
             deletePlaylist(resolver, existingId);
 
-        ContentValues values = new ContentValues(1);
+        final ContentValues values = new ContentValues(1);
         values.put(MediaStore.Audio.Playlists.NAME, newName);
-        resolver.update(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, values, "_id=" + id, null);
+        resolver.update(CONTENT_URI, values, "_id=" + id, null);
         return true;
     }
 }

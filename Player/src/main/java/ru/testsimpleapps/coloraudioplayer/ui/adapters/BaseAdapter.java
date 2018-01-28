@@ -13,16 +13,24 @@ public abstract class BaseAdapter extends RecyclerView.Adapter {
         void onItemClick(View view, int position);
     }
 
+    public interface OnItemLongClickListener {
+        void onItemLongClick(View view, int position);
+    }
+
     public interface OnItemCheckListener {
         void onItemCheck(View view, int position);
     }
 
     protected OnItemClickListener mOnItemClickListener;
+    protected OnItemLongClickListener mOnItemLongClickListener;
     protected OnItemCheckListener mOnItemCheckListener;
-
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mOnItemClickListener = listener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        mOnItemLongClickListener = listener;
     }
 
     public void setOnItemCheckListener(OnItemCheckListener listener) {

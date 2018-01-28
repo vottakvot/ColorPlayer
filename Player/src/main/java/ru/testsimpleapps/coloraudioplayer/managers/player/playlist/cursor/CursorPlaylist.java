@@ -36,7 +36,7 @@ public class CursorPlaylist implements IPlaylist {
         }
 
         final int count = CursorTool.addToPlaylist(mContext.getContentResolver(), mPlaylistId, itemsList);
-        recountTotalTime();
+        setCursor(mPlaylistId, mSortBy, mSortOrder);
         PlayerService.sendBroadcastPlaylistChange();
         return count > 0;
     }
@@ -61,7 +61,7 @@ public class CursorPlaylist implements IPlaylist {
 
     @Override
     public boolean goToPosition(long position) {
-        return mPlaylist != null ? mPlaylist.moveToPosition((int) position) : false;
+        return mPlaylist != null && position >= 0 && position < size()? mPlaylist.moveToPosition((int) position) : false;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class CursorPlaylist implements IPlaylist {
 
     @Override
     public long position() {
-        return mPlaylist != null ? mPlaylist.getPosition() : 0L;
+        return isCursor()? mPlaylist.getPosition() : 0L;
     }
 
     @Override
@@ -104,12 +104,12 @@ public class CursorPlaylist implements IPlaylist {
 
     @Override
     public long getTrackId() {
-        return mPlaylist != null ? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media._ID)) : ERROR_CODE;
+        return isCursor()? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media._ID)) : ERROR_CODE;
     }
 
     @Override
     public String getTrackPath() {
-        return mPlaylist != null ? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DATA)) : "";
+        return isCursor()? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DATA)) : "";
     }
 
     @Override
@@ -119,17 +119,17 @@ public class CursorPlaylist implements IPlaylist {
 
     @Override
     public String getTrackArtist() {
-        return mPlaylist != null ? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.ARTIST)) : "";
+        return isCursor()? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.ARTIST)) : "";
     }
 
     @Override
     public String getTrackTitle() {
-        return mPlaylist != null ? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.TITLE)) : "";
+        return isCursor()? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.TITLE)) : "";
     }
 
     @Override
     public String getTrackAlbum() {
-        return mPlaylist != null ? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.ALBUM)) : "";
+        return isCursor()? mPlaylist.getString(mPlaylist.getColumnIndex(MediaStore.Audio.Media.ALBUM)) : "";
     }
 
     @Override
@@ -139,12 +139,12 @@ public class CursorPlaylist implements IPlaylist {
 
     @Override
     public long getTrackDuration() {
-        return mPlaylist != null ? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DURATION)) : ERROR_CODE;
+        return isCursor()? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DURATION)) : ERROR_CODE;
     }
 
     @Override
     public long getTrackDateModified() {
-        return mPlaylist != null ? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED)) * 1000L : ERROR_CODE;
+        return isCursor()? mPlaylist.getLong(mPlaylist.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED)) * 1000L : ERROR_CODE;
     }
 
     @Override
@@ -186,7 +186,11 @@ public class CursorPlaylist implements IPlaylist {
                 } while (mPlaylist.moveToNext());
             }
 
-            mPlaylist.moveToPosition(position);
+            if (position >= 0) {
+                mPlaylist.moveToPosition(position);
+            } else {
+                mPlaylist.moveToFirst();
+            }
         }
 
         return mTotalTime;
@@ -198,13 +202,11 @@ public class CursorPlaylist implements IPlaylist {
             mSortBy = sortBy;
             mSortOrder = sortOrder;
             final Cursor activePlaylist = CursorTool.getTracksFromPlaylist(mContext.getContentResolver(), mPlaylistId, sortBy, sortOrder);
+            closeCursor();
+            mPlaylist = activePlaylist;
             recountTotalTime();
-            if (activePlaylist != null && activePlaylist.getCount() >= 0) {
-                closeCursor();
-                mPlaylist = activePlaylist;
-                PlayerService.sendBroadcastPlaylistChange();
-                return this;
-            }
+            PlayerService.sendBroadcastPlaylistChange();
+            return this;
         }
 
         return null;
@@ -223,6 +225,8 @@ public class CursorPlaylist implements IPlaylist {
         this.mPlaylist = mPlaylist;
     }
 
-
+    private boolean isCursor() {
+        return mPlaylist != null && !mPlaylist.isBeforeFirst();
+    }
 
 }

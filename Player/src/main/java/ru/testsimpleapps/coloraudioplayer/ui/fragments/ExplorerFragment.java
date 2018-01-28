@@ -169,11 +169,11 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         }
 
         mRecyclerView.getAdapter().notifyDataSetChanged();
-        if (items.isEmpty()) {
+        final boolean isAdded = CursorFactory.getInstance().add(items);
+        if (items.isEmpty() || !isAdded) {
             showToast(R.string.explorer_add_to_playlist_nothing);
         } else {
             showToast(getString(R.string.explorer_add_to_playlist) + items.size());
-            CursorFactory.getInstance().add(items);
         }
     }
 
@@ -188,11 +188,11 @@ public class ExplorerFragment extends BaseFragment implements BaseListAdapter.On
         }
 
         mRecyclerView.getAdapter().notifyDataSetChanged();
-        if (items.isEmpty()) {
+        final boolean isAdded = CursorFactory.getInstance().add(items);
+        if (items.isEmpty() || !isAdded) {
             showToast(R.string.explorer_add_to_playlist_nothing);
         } else {
             showToast(getString(R.string.explorer_add_to_playlist) + items.size());
-            CursorFactory.getInstance().add(items);
         }
     }
 

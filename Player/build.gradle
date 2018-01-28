@@ -7,11 +7,11 @@ apply plugin: 'com.android.application'
 //      keyPassword=password
 //      keyAlias=AliasInKeyStore
 //      storeFile=MyAndroidKeys.jks
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-// Initialize a new Properties() object called keystoreProperties.
-def keystoreProperties = new Properties()
-// Load your keystore.properties file into the keystoreProperties object.
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+//def keystorePropertiesFile = rootProject.file("keystore.properties")
+//// Initialize a new Properties() object called keystoreProperties.
+//def keystoreProperties = new Properties()
+//// Load your keystore.properties file into the keystoreProperties object.
+//keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 // Constants
 // App
@@ -41,19 +41,19 @@ android {
         versionName appName
     }
 
-    signingConfigs {
-        signRelease {
-            keyAlias = keystoreProperties['keyAlias']
-            keyPassword = keystoreProperties['keyPassword']
-            storeFile = file(keystoreProperties['storeFile'])
-            storePassword = keystoreProperties['storePassword']
-        }
-    }
+//    signingConfigs {
+//        signRelease {
+//            keyAlias = keystoreProperties['keyAlias']
+//            keyPassword = keystoreProperties['keyPassword']
+//            storeFile = file(keystoreProperties['storeFile'])
+//            storePassword = keystoreProperties['storePassword']
+//        }
+//    }
 
     buildTypes {
         release {
             minifyEnabled true
-            signingConfig signingConfigs.signRelease
+//            signingConfig signingConfigs.signRelease
         }
     }
 
@@ -61,7 +61,6 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
-    buildToolsVersion '26.0.2'
 }
 
 dependencies {

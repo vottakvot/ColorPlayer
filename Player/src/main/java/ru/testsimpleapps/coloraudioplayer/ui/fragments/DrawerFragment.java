@@ -20,6 +20,7 @@ import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.BaseAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.DrawerAdapter;
+import ru.testsimpleapps.coloraudioplayer.ui.dialogs.PlaylistChooserDialog;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.PlaylistCreateDialog;
 
 
@@ -43,6 +44,7 @@ public class DrawerFragment extends BaseFragment implements BaseAdapter.OnItemCl
     };
 
     private PlaylistCreateDialog mPlaylistCreateDialog;
+    private PlaylistChooserDialog mPlaylistChooserDialog;
 
     public static DrawerFragment newInstance() {
         DrawerFragment fragment = new DrawerFragment();
@@ -96,6 +98,7 @@ public class DrawerFragment extends BaseFragment implements BaseAdapter.OnItemCl
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mPlaylistCreateDialog = new PlaylistCreateDialog(getContext());
+        mPlaylistChooserDialog = new PlaylistChooserDialog(getContext());
     }
 
     @Override
@@ -104,9 +107,9 @@ public class DrawerFragment extends BaseFragment implements BaseAdapter.OnItemCl
         switch (drawerItem.getImage()) {
             case R.drawable.image_playlist_create:
                 mPlaylistCreateDialog.show();
-                mMainActivity.closeDrawer();
                 break;
             case R.drawable.image_playlist_choose:
+                mPlaylistChooserDialog.show();
                 break;
             case R.drawable.image_equalizer:
                 break;
@@ -121,6 +124,8 @@ public class DrawerFragment extends BaseFragment implements BaseAdapter.OnItemCl
                 getActivity().finish();
                 break;
         }
+
+        mMainActivity.closeDrawer();
     }
 
 }

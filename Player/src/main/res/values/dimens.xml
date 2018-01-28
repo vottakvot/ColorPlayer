@@ -20,5 +20,6 @@
 
     <!-- Dialogs -->
     <dimen name="dialog_padding">30dp</dimen>
+    <dimen name="dialog_list_height">300dp</dimen>
 
 </resources>

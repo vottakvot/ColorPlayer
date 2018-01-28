@@ -44,6 +44,9 @@
     <color name="drawer_background_item">#8d707070</color>
     <color name="drawer_text_color">#bababa</color>
 
+    <!-- Dialog chooser -->
+    <color name="dialog_chooser_background_item">#8d707070</color>
+
 
     <color name="common_for_define">#80fff700</color>
     <color name="common_config_select">#1affffff</color>

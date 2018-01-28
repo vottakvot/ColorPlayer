@@ -3,6 +3,7 @@ package ru.testsimpleapps.coloraudioplayer.managers.player.playlist.cursor;
 import ru.testsimpleapps.coloraudioplayer.app.App;
 import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.managers.player.playlist.IPlaylist;
+import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 
 public class CursorFactory {
 
@@ -31,8 +32,8 @@ public class CursorFactory {
     public static IPlaylist newInstance() {
         final CursorPlaylist cursorPlaylist = (CursorPlaylist) getInstance();
         synchronized (CursorFactory.class) {
-            cursorPlaylist.setCursor(PlayerConfig.getInstance().getPlaylistId(), PlayerConfig.getInstance().getPlaylistSort(),
-                    PlayerConfig.getInstance().getPlaylistSortOrder());
+            final PlayerConfig playerConfig = PlayerConfig.getInstance();
+            cursorPlaylist.setCursor(playerConfig.getPlaylistId(), playerConfig.getPlaylistSort(), playerConfig.getPlaylistSortOrder());
             cursorPlaylist.goToId(PlayerConfig.getInstance().getTrackId());
         }
 

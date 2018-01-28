@@ -6,20 +6,20 @@ import java.util.Set;
 
 public class CollectionTool {
 
-    public static <A extends Object, B extends Object> A getMapPosition(Map<A, B> map, int position) {
-        if (0 <= position && map != null && position < map.size()) {
+    public static <A, B> Map.Entry<A, B> getMapEntryByPosition(final Map<A, B> map, final int position) {
+        if (map != null && 0 <= position && position < map.size()) {
             int i = 0;
             for (Map.Entry<A, B> item : map.entrySet()) {
                 if (i++ == position)
-                    return item.getKey();
+                    return item;
             }
         }
 
         return null;
     }
 
-    public static <A extends Object> A getSetPosition(Set<A> set, int position) {
-        if (0 <= position && set != null && position < set.size()) {
+    public static <A> A getSetValueByPosition(final Set<A> set, final int position) {
+        if (set != null && 0 <= position && position < set.size()) {
             int i = 0;
             for (A item : set) {
                 if (i++ == position)

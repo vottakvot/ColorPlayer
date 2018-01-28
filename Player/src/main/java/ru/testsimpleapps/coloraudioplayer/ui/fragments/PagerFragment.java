@@ -28,6 +28,8 @@ public class PagerFragment extends BaseFragment {
     public static final String TAG = PagerFragment.class.getSimpleName();
     private static final String TAG_BOTTOM_SHEET_STATE = "TAG_BOTTOM_SHEET_STATE";
 
+    private static final float ALPHA_INFO_PANEL = 1.0f;
+    private static final float ALPHA_COMMON_PANEL = 1.8f;
     private static final int COUNT_PAGES = 2;
     private static final int PLAYLIST_PAGE = 0;
     private static final int EXPLORER_PAGE = 1;
@@ -81,13 +83,15 @@ public class PagerFragment extends BaseFragment {
 
     @OnClick(R.id.control_hide_close_button)
     protected void onCloseInfoClick() {
+        mIsShowInfoPanel = false;
         mControlInfoLayout.setVisibility(View.INVISIBLE);
-        PreferenceTool.getInstance().setControlInfo(false);
+        PreferenceTool.getInstance().setControlInfo(mIsShowInfoPanel);
     }
 
     private void init(final Bundle savedInstanceState) {
         mControlInfoLayout.setVisibility(View.INVISIBLE);
         mViewPager.setAdapter(new AdapterForPages(getChildFragmentManager()));
+        mControlLayout.setAlpha(ALPHA_COMMON_PANEL - 1.0f);
 
         mBottomSheetBehavior = BottomSheetBehavior.from(mControlLayout);
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -109,7 +113,11 @@ public class PagerFragment extends BaseFragment {
             public void onSlide(@NonNull View view, float v) {
                 super.onSlide(view, v);
                 if (mControlInfoLayout != null) {
-                    mControlInfoLayout.setAlpha(1.0f - v);
+                    mControlInfoLayout.setAlpha(ALPHA_INFO_PANEL - v);
+                }
+
+                if (mControlLayout != null) {
+                    mControlLayout.setAlpha(ALPHA_COMMON_PANEL - v);
                 }
             }
         });

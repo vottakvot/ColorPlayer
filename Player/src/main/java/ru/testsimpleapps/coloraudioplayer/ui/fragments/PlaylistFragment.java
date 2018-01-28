@@ -249,11 +249,6 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
                         setPlaylist();
                     }
 
-                    // Update list resize
-                    if (action.equals(PlayerService.RECEIVER_PLAYLIST_CHANGE)) {
-                        setPlaylist();
-                    }
-
                     // Update current selection
                     if (action.equals(PlayerService.RECEIVER_PLAYLIST_POSITION)) {
                         if (intent.hasExtra(PlayerService.EXTRA_PLAYLIST_POSITION)) {
