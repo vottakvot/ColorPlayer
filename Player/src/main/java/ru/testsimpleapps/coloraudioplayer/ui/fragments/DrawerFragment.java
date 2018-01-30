@@ -20,6 +20,7 @@ import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.BaseAdapter;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.DrawerAdapter;
+import ru.testsimpleapps.coloraudioplayer.ui.dialogs.EqualizerDialog;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.PlaylistChooserDialog;
 import ru.testsimpleapps.coloraudioplayer.ui.dialogs.PlaylistCreateDialog;
 
@@ -45,6 +46,7 @@ public class DrawerFragment extends BaseFragment implements BaseAdapter.OnItemCl
 
     private PlaylistCreateDialog mPlaylistCreateDialog;
     private PlaylistChooserDialog mPlaylistChooserDialog;
+    private EqualizerDialog mEqualizerDialog;
 
     public static DrawerFragment newInstance() {
         DrawerFragment fragment = new DrawerFragment();
@@ -99,6 +101,7 @@ public class DrawerFragment extends BaseFragment implements BaseAdapter.OnItemCl
 
         mPlaylistCreateDialog = new PlaylistCreateDialog(getContext());
         mPlaylistChooserDialog = new PlaylistChooserDialog(getContext());
+        mEqualizerDialog = new EqualizerDialog(getContext());
     }
 
     @Override
@@ -112,6 +115,7 @@ public class DrawerFragment extends BaseFragment implements BaseAdapter.OnItemCl
                 mPlaylistChooserDialog.show();
                 break;
             case R.drawable.image_equalizer:
+                mEqualizerDialog.show();
                 break;
             case R.drawable.image_timer:
                 break;

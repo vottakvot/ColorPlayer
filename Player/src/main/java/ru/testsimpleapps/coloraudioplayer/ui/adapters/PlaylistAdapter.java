@@ -2,6 +2,7 @@ package ru.testsimpleapps.coloraudioplayer.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -63,6 +64,7 @@ public class PlaylistAdapter extends BaseAdapter {
                 mViewHolder.mImageTrack.setImageResource(R.drawable.image_item_track);
                 mViewHolder.mCountTrack.setText(String.valueOf(i));
                 mViewHolder.mNameTrack.setText(String.valueOf(mIPlaylist.getTrackName()));
+                mViewHolder.mNameTrack.setTypeface(mViewHolder.mNameTypeface, Typeface.NORMAL);
 
                 // Info
                 if (mIsExpand) {
@@ -79,6 +81,7 @@ public class PlaylistAdapter extends BaseAdapter {
                 if (mIPlaylist.getTrackId() == CursorFactory.getInstance().getTrackId()) {
                     mViewHolder.itemView.setBackgroundResource(R.drawable.drawable_recycleview_item_selection);
                     mViewHolder.itemView.setPadding(mViewPadding, mViewPadding, mViewPadding, mViewPadding);
+                    mViewHolder.mNameTrack.setTypeface(mViewHolder.mNameTrack.getTypeface(), Typeface.BOLD);
                 } else if (mSearchedPosition == i) {
                     mViewHolder.itemView.setBackgroundResource(R.drawable.drawable_recycleview_item_find);
                     mViewHolder.itemView.setPadding(mViewPadding, mViewPadding, mViewPadding, mViewPadding);
@@ -191,6 +194,11 @@ public class PlaylistAdapter extends BaseAdapter {
         @BindView(R.id.playlist_track_date_value)
         TextView mDateTrack;
 
+        /*
+        * Typeface
+        * */
+        Typeface mNameTypeface;
+
         public ViewHolderItem(final View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -202,6 +210,8 @@ public class PlaylistAdapter extends BaseAdapter {
                     }
                 }
             });
+
+            mNameTypeface = mNameTrack.getTypeface();
         }
     }
 
