@@ -92,9 +92,11 @@ public final class PlayerConfig implements Serializable {
         ALL, ONE, NONE
     }
 
+
     /*
     * Audio effects
     * */
+    private transient int mAudioSession = 0;
     private short mEqualizerPresent = 0;
     private short[] mEqualizerBands;
     private short mBassBoostStrength = 0;
@@ -230,5 +232,13 @@ public final class PlayerConfig implements Serializable {
 
     public void setPlaylistSortOrder(String playlistSortOrder) {
         mPlaylistSortOrder = playlistSortOrder;
+    }
+
+    public int getAudioSession() {
+        return mAudioSession;
+    }
+
+    public void setAudioSession(int audioSession) {
+        mAudioSession = audioSession;
     }
 }

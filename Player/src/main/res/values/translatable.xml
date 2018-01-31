@@ -61,7 +61,6 @@
     <string name="playlist_create_wrong_name">Input name!</string>
     <string name="playlist_create_hint">Input playlist name...</string>
 
-
     <string name="playlist_dialog_header">Config music list</string>
     <string name="playlist_sort_header">Sort type</string>
     <string name="playlist_sort_order">Sort order</string>
@@ -71,7 +70,6 @@
     <string name="playlist_sort_by_artist">Artist</string>
     <string name="playlist_sort_by_albums">Album</string>
     <string name="playlist_view_expand">Expand view</string>
-
 
     <string name="playlist_get_header">Choose or delete</string>
     <string name="playlist_get_chose">Chosen playlist:</string>
@@ -102,6 +100,7 @@
     <string name="notification_message">Play music...</string>
 
     <string name="equalizer_custom">User config</string>
+    <string name="equalizer_bass_boost">BassBoost</string>
 
     <string name="timer_message">Timer done!</string>
     <string name="timer_zero">Set time!</string>

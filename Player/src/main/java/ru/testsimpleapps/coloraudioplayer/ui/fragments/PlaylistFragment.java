@@ -199,6 +199,7 @@ public class PlaylistFragment extends BaseFragment implements PlaylistSettingsDi
         mInputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycleview_layout_animation);
         mTranslationAnimation = new OnTranslationAnimation(mAdditionalPanel, OnTranslationAnimation.DEFAULT_DURATION);
+
         mRecycleViewLayoutManager = new RecycleViewLayoutManager(getContext());
         mRecycleViewLayoutManager.setCenter(RECYCLE_CENTER);
         mRecycleViewLayoutManager.setShrinkAmount(RECYCLE_SHRINK_AMOUNT);

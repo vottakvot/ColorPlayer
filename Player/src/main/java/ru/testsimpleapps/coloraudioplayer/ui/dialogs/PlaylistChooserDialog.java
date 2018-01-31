@@ -65,11 +65,11 @@ public class PlaylistChooserDialog extends BaseDialog implements BaseAdapter.OnI
     private void init() {
         setContentView(R.layout.dialog_playlist_chooser);
         ButterKnife.bind(this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mPlaylistChooserAdapter = new PlaylistChooserAdapter(mContext);
         mPlaylistChooserAdapter.setOnItemClickListener(this);
         mPlaylistChooserAdapter.setOnItemLongClickListener(this);
         mRecyclerView.setAdapter(mPlaylistChooserAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
     }
 
     @Override

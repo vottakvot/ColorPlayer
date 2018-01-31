@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.testsimpleapps.coloraudioplayer.R;
 import ru.testsimpleapps.coloraudioplayer.data.DrawerItem;
+import ru.testsimpleapps.coloraudioplayer.managers.player.data.PlayerConfig;
 import ru.testsimpleapps.coloraudioplayer.service.PlayerService;
 import ru.testsimpleapps.coloraudioplayer.ui.activities.MainActivity;
 import ru.testsimpleapps.coloraudioplayer.ui.adapters.BaseAdapter;
@@ -115,7 +116,7 @@ public class DrawerFragment extends BaseFragment implements BaseAdapter.OnItemCl
                 mPlaylistChooserDialog.show();
                 break;
             case R.drawable.image_equalizer:
-                mEqualizerDialog.show();
+                mEqualizerDialog.show(PlayerConfig.getInstance().getAudioSession());
                 break;
             case R.drawable.image_timer:
                 break;

@@ -239,6 +239,7 @@ public class PlayerService extends Service implements Handler.Callback, AudioPla
         PlayerConfig.getInstance().setPlaylistId(2691);
         mMediaPlayer = new AudioPlayer(getApplicationContext());
         mMediaPlayer.setOnEvents(this);
+        PlayerConfig.getInstance().setAudioSession(mMediaPlayer.getAudioSessionId());
         mSeekBarUpdater = new SeekBarUpdater();
         mSeekBarUpdater.execute();
 

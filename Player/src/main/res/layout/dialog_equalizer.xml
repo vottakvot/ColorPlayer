@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/drawable_common_dialog"
@@ -32,14 +31,12 @@
         app:layout_constraintTop_toBottomOf="@+id/equalizer_header" />
 
     <android.support.v7.widget.RecyclerView
-        style="@style/CommonRecycleView"
         android:id="@+id/equalizer_settings_recycle"
+        style="@style/CommonRecycleView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
         android:choiceMode="singleChoice"
         android:dividerHeight="1dp"
         app:layout_constraintBottom_toTopOf="@+id/equalizer_cancel"
@@ -53,7 +50,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/drawable_common_buttons"
-        android:layout_marginTop="8dp"
         android:text="@string/playlist_create_cancel"
         app:layout_constraintTop_toBottomOf="@+id/playlist_chooser_list"
         app:layout_constraintStart_toStartOf="parent"

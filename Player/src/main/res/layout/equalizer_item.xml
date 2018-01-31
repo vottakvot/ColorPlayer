@@ -1,53 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="5dp">
 
     <TextView
         style="@style/MediumTextView"
-        android:id="@+id/bassBoostNote"
+        android:id="@+id/equalizer_item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true" />
+        android:text="Equalizer item"
+        app:layout_constraintEnd_toEndOf="@+id/equalizer_item_seek"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintStart_toStartOf="@+id/equalizer_item_seek"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
-        android:id="@+id/seekEqualizer"
+        style="@style/CommonSeekBar"
+        android:id="@+id/equalizer_item_seek"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/bassBoostNote"
-        android:layout_weight="0"
-        android:minHeight="30dp"
-        android:maxHeight="30dp"
-        android:background="@color/common_transparent"
+        android:layout_marginTop="8dp"
         android:max="100"
-        android:progress="0" />
+        android:maxHeight="30dp"
+        android:minHeight="30dp"
+        android:progress="0"
+        android:splitTrack="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/equalizer_item_text" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
 
     <TextView
-        style="@style/MediumTextView"
-        android:id="@+id/minEqualizer"
+        style="@style/SmallTextView"
+        android:id="@+id/equalizer_max_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/seekEqualizer"
-        android:layout_alignParentLeft="true" />
+        android:gravity="center"
+        android:text="∞"
+        app:layout_constraintTop_toTopOf="@+id/equalizer_item_seek"
+        app:layout_constraintBottom_toBottomOf="@+id/equalizer_item_seek"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guideline" />
 
-    <TextView
-        style="@style/MediumTextView"
-        android:id="@+id/zeroEqualizer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/seekEqualizer"
-        android:layout_centerInParent="true"
-        android:paddingTop="20dp" />
 
-    <TextView
-        style="@style/MediumTextView"
-        android:id="@+id/maxEqualizer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/seekEqualizer"
-        android:layout_alignParentRight="true" />
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
 
 
