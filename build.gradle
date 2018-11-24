@@ -1,6 +1,8 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
+
+    ext {
+        KOTLIN = '1.2.71'
+    }
 
     repositories {
         jcenter()
@@ -8,22 +10,53 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN"
     }
 }
 
 allprojects {
     repositories {
-        jcenter()
-        maven {
-            url "https://maven.google.com"
-        }
         google()
+        jcenter()
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    TARGET_VERS = 28
+    MIN_VERS = 14
+    BUILD_VERS = '28.0.3'
+    MULTIDEX = '1.0.1'
+    SUPPORT = '27.0.2'
+    CONSTRAINT = '1.1.3'
+    FIREBASE = '15.0.2'
+    GOOGLE_SERVICE = '15.0.0'
+    CRASHLYTICS = '2.9.1'
+    DAGGER = '2.15'
+    GLIDE = '4.4.0'
+    ORM = '5.1'
+    BUTTER_KNIFE = '8.8.1'
+}
+
+def getKeystore(String path) {
+    def keystoreFile = rootProject.file(path)
+    def keystoreProperties = new Properties()
+
+    keystoreProperties["keyAlias"] = "<YOUR_ALIAS>"
+    keystoreProperties["keyPassword"] = "<YOUR_PWD>"
+    keystoreProperties["storeFile"] = "<PATH_TO_JKS>"
+    keystoreProperties["storePassword"] = "<KEYSTORE_PWD>"
+
+    if (keystoreFile.exists()) {
+        keystoreProperties.load(new FileInputStream(keystoreFile))
+    } else {
+        def writer = new FileWriter(keystoreFile, false)
+        keystoreProperties.store(writer, "Keystore")
+    }
+
+    return keystoreProperties
 }

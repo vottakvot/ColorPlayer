@@ -1,59 +1,48 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
-// Create a variable called keystorePropertiesFile, and initialize it to your
-// keystore.properties file, in the rootProject folder.
-// Example of file content:
-//      storePassword=password
-//      keyPassword=password
-//      keyAlias=AliasInKeyStore
-//      storeFile=MyAndroidKeys.jks
-//def keystorePropertiesFile = rootProject.file("keystore.properties")
-//// Initialize a new Properties() object called keystoreProperties.
-//def keystoreProperties = new Properties()
-//// Load your keystore.properties file into the keystoreProperties object.
-//keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
-// Constants
-// App
-def appCode = 6
-def appName = "1.0.6"
-def appId = "ru.testsimpleapps.coloraudioplayer"
-def verTarget = 25
-def verMin = 11
-
-// Libs
-def verSupportLibs = "25.4.0"
-def verConstraint = "1.0.2"
-def verMultidex = "1.0.1"
-def verBuildTool = "27.0.0"
-def verButterKnife = "8.8.1"
-
+def APP_NAME = 'audio-player'
+def CODE = 6
+def NAME = '1.0.6'
+def ID = 'ru.testsimpleapps.coloraudioplayer'
 
 android {
-    compileSdkVersion verTarget
-    buildToolsVersion verBuildTool
+
+    compileSdkVersion TARGET_VERS
+    buildToolsVersion BUILD_VERS
 
     defaultConfig {
-        applicationId appId
-        minSdkVersion verMin
-        targetSdkVersion verTarget
-        versionCode appCode
-        versionName appName
+        applicationId ID
+        minSdkVersion MIN_VERS
+        targetSdkVersion TARGET_VERS
+        versionCode CODE
+        versionName NAME
     }
 
-//    signingConfigs {
-//        signRelease {
-//            keyAlias = keystoreProperties['keyAlias']
-//            keyPassword = keystoreProperties['keyPassword']
-//            storeFile = file(keystoreProperties['storeFile'])
-//            storePassword = keystoreProperties['storePassword']
-//        }
-//    }
+    signingConfigs {
+        market {
+            def keystoreProperties = getKeystore("keystore.properties")
+            keyAlias = keystoreProperties['keyAlias']
+            keyPassword = keystoreProperties['keyPassword']
+            storeFile = file(keystoreProperties['storeFile'])
+            storePassword = keystoreProperties['storePassword']
+        }
+    }
 
     buildTypes {
         release {
             minifyEnabled true
-//            signingConfig signingConfigs.signRelease
+            signingConfig signingConfigs.market
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def debug = variant.buildType.isDebuggable()? "_debug" : ""
+            def code = "_build-${CODE}"
+            outputFileName = "$APP_NAME-${variant.versionName}${debug}${code}.apk"
         }
     }
 
@@ -64,17 +53,21 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$KOTLIN"
 
-    // Supports
-    compile 'com.android.support:design:' + verSupportLibs
-    compile 'com.android.support:appcompat-v7:' + verSupportLibs
-    compile 'com.android.support:recyclerview-v7:' + verSupportLibs
-    compile 'com.android.support:cardview-v7:' + verSupportLibs
-    compile 'com.android.support.constraint:constraint-layout:' + verConstraint
-    compile 'com.android.support:multidex:' + verMultidex
+    implementation "com.android.support:multidex:$MULTIDEX"
+    implementation "com.android.support:design:$SUPPORT"
+    implementation "com.android.support:appcompat-v7:$SUPPORT"
+    implementation "com.android.support:recyclerview-v7:$SUPPORT"
+    implementation "com.android.support:cardview-v7:$SUPPORT"
+    implementation "com.android.support.constraint:constraint-layout:$CONSTRAINT"
 
-    // ButterKnife
-    compile 'com.jakewharton:butterknife:' + verButterKnife
-    annotationProcessor 'com.jakewharton:butterknife-compiler:' + verButterKnife
+    implementation "com.google.firebase:firebase-core:$FIREBASE"
+    implementation "com.google.firebase:firebase-config:$FIREBASE"
+    implementation "com.google.android.gms:play-services-auth:$GOOGLE_SERVICE"
+    implementation "com.crashlytics.sdk.android:crashlytics:$CRASHLYTICS"
+
+    implementation "com.jakewharton:butterknife:$BUTTER_KNIFE"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$BUTTER_KNIFE"
 }
