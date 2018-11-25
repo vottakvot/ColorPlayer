@@ -28,7 +28,7 @@ task clean(type: Delete) {
 
 ext {
     TARGET_VERS = 28
-    MIN_VERS = 14
+    MIN_VERS = 21
     BUILD_VERS = '28.0.3'
     MULTIDEX = '1.0.1'
     SUPPORT = '27.0.2'
@@ -39,7 +39,7 @@ ext {
     DAGGER = '2.15'
     GLIDE = '4.4.0'
     ORM = '5.1'
-    BUTTER_KNIFE = '8.8.1'
+    BUTTER_KNIFE = '9.0.0-rc2'
 }
 
 def getKeystore(String path) {

@@ -52,11 +52,15 @@ android {
     }
 }
 
+kapt {
+    generateStubs = true
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$KOTLIN"
 
-    implementation "com.android.support:multidex:$MULTIDEX"
+//    implementation "com.android.support:multidex:$MULTIDEX"
     implementation "com.android.support:design:$SUPPORT"
     implementation "com.android.support:appcompat-v7:$SUPPORT"
     implementation "com.android.support:recyclerview-v7:$SUPPORT"
@@ -68,6 +72,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-auth:$GOOGLE_SERVICE"
     implementation "com.crashlytics.sdk.android:crashlytics:$CRASHLYTICS"
 
-    implementation "com.jakewharton:butterknife:$BUTTER_KNIFE"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$BUTTER_KNIFE"
+    compile "com.jakewharton:butterknife:$BUTTER_KNIFE"
+    kapt "com.jakewharton:butterknife-compiler:$BUTTER_KNIFE"
+
 }

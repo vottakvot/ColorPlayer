@@ -9,12 +9,12 @@
 
     <!-- App bar -->
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_layout"
+        android:id="@+id/appbarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ColorTheme">
         <android.support.v7.widget.Toolbar
-            android:id="@+id/app_bar_toolbar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -34,7 +34,7 @@
     <android.support.v4.widget.DrawerLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/drawer_layout"
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
@@ -46,13 +46,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <FrameLayout
-                android:id="@+id/frame_container"
+                android:id="@+id/frameContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </FrameLayout>
 
         <android.support.design.widget.NavigationView
-            android:id="@+id/drawer_navigation_view"
+            android:id="@+id/navigationView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"
@@ -63,6 +63,7 @@
                 class="ru.testsimpleapps.coloraudioplayer.ui.fragments.DrawerFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+
         </android.support.design.widget.NavigationView>
     </android.support.v4.widget.DrawerLayout>
 
